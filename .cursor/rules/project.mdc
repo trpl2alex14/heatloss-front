@@ -1,0 +1,86 @@
+---
+alwaysApply: true
+---
+## Project structure
+
+- при работе с файлами и диреткориями проекта, используй абсолютные пути 
+
+src/
+  layouts/
+    MainLayout.vue      # С меню, шапкой, футером
+    AuthLayout.vue      # Только форма входа/регистрации
+  app/                  # Глобальные настройки приложения
+    App.vue
+    main.ts
+    router.ts
+    store.ts
+    config.ts
+  features/             # Фичи (основные бизнес-модули)
+    auth/               # Пример: аутентификация
+      components/
+      api/
+      store/
+      types.ts
+      index.ts
+    user/               # Пример: профиль пользователя
+      components/
+      api/
+      store/
+      types.ts
+      index.ts
+    calculations/           # Список расчётов
+      components/
+      api/
+      store/
+      types.ts
+      index.ts
+    calculat/           # Сервис расчёта теплопотерь объекта и подбора оборудования
+      components/
+      api/
+      store/
+      types.ts
+      index.ts     
+    requests/           # Список заявок на расчёт теплопотерь
+      components/
+      api/
+      store/
+      types.ts
+      index.ts
+    cases/              # Кейсы (расширенные расчёты с доп. инфой)
+      components/
+      api/
+      store/
+      types.ts
+      index.ts  
+    directories/        # Справочники (оборудование, материалы, климатология)
+      equipment/
+        components/
+        api/
+        store/
+        types.ts
+        index.ts
+      materials/
+        components/
+        api/
+        store/
+        types.ts
+        index.ts
+      climate/
+        components/
+        api/
+        store/
+        types.ts
+        index.ts
+      index.ts          # Общий экспорт справочников                
+    ...
+  shared/               # Общие переиспользуемые сущности
+    components/         # Общие компоненты (UI-киты, кнопки, инпуты)
+    utils/              # Утилиты и хелперы
+    api/                # Общие API-методы
+    types/              # Общие типы
+    directives/         # Кастомные директивы
+    composables/        # Переиспользуемые composition-функции
+  assets/               # Статические ресурсы (картинки, стили)
+  styles/               # Глобальные стили (SCSS, CSS)
+  env/                  # Файлы окружения (если нужно)
+  tests/                # Тесты (если не рядом с кодом)
