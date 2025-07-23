@@ -3,26 +3,26 @@
 		<h1 class="text-2xl font-bold mb-4">Настройки</h1>
 		<p>Здесь будут настройки приложения.</p>
 		<form class="max-w-md mx-auto mt-8 space-y-6">
-			<UiInputText
+			<BaseInputText
 				v-model="userForm.name"
 				label="Имя"
 				placeholder="Введите имя"
 				class="w-full"
 			/>
-			<UiInputText
+			<BaseInputText
 				v-model="userForm.email"
 				label="Email"
 				placeholder="Введите email"
 				class="w-full"
 				type="email"
 			/>
-			<UiInputText
+			<BaseInputText
 				v-model="userForm.phone"
 				label="Телефон"
 				placeholder="Введите телефон"
 				class="w-full"
 			/>
-			<UiButton
+			<BaseButton
 				:loading="isSaving"
 				class="w-full"
 				@click="onSave"
@@ -35,8 +35,8 @@
 <script setup lang="ts">
 import { ref } from "vue";
 
-import UiInputText from "@shared/components/ui/UiInputText.vue";
-import UiButton from "@shared/components/ui/UiButton.vue";
+import BaseInputText from "@shared/components/ui/BaseInputText.vue";
+import BaseButton from "@shared/components/ui/BaseButton.vue";
 
 interface UserForm {
 	name: string;

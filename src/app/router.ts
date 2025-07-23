@@ -18,6 +18,9 @@ interface IAppRoute {
 
 export type AppRoute = IAppRoute & RouteRecordRaw;
 
+// Используем import.meta.env.MODE для совместимости с Vite
+const isDev = import.meta.env.MODE !== "production";
+
 const routes = [
 	{
 		path: "/create",
@@ -63,7 +66,17 @@ const routes = [
 		meta: { title: "Настройки", icon: "settings.svg", bottom: true },
 		component: () =>
 			import("@features/settings/components/SettingsPage.vue"),
-	},
+	},	
+	...(isDev
+		? [
+				{
+					path: "/ui-kit",
+					name: "UiKit",
+					meta: { title: "UI", icon: "settings.svg" },
+					component: () => import("@/features/ui-kit/UiKitPage.vue"),
+				},
+		  ]
+		: []),
 ];
 
 const router = createRouter({

@@ -1,6 +1,6 @@
 <template>
 	<div class="flex min-h-screen bg-gray-100 text-black">
-		<div class="flex flex-col items-center justify-start w-64 h-screen p-0 sticky top-0">
+		<div class="flex flex-col items-center justify-start h-screen p-0 sticky top-0">
 			<div
 				class="flex items-center justify-center mt-6 mb-8 p-3 border border-gray-200 rounded-xl"
 			>
@@ -13,7 +13,7 @@
 			<SidebarMenu />
 		</div>
 		<main
-			class="flex-1 p-6 my-3 mr-3 pb-12 bg-white border-r border-gray-200 rounded-xl shadow-xl relative"
+			class="flex-1 p-6 my-3 mr-3 pb-14 bg-white border-r border-gray-200 rounded-xl shadow-xl relative"
 		>
 			<slot />
 			<div class="text-xs text-gray-400 absolute bottom-6">

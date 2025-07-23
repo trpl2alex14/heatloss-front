@@ -1,5 +1,5 @@
 <template>
-	<aside class="w-64 h-screen flex flex-col p-0">
+	<aside class="w-70 h-screen flex flex-col p-0">
 		<nav class="flex-1 flex flex-col gap-1 px-2">
 			<SidebarMenuItem
 				v-for="route in topMenuRoutes"

@@ -3,5 +3,10 @@
 @theme {
 	--font-sans: "Roboto", sans-serif;
 	--color-black: #202020;
-	--my-color-gray: #d8d6d6;
+	--my-color-gray: #687377;
+}
+
+html {
+	font-size: 14px;
+	line-height: normal;
 }

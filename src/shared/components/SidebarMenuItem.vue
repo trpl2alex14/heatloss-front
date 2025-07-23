@@ -3,7 +3,7 @@
 		:is="isButton ? 'button' : 'router-link'"
 		v-bind="componentProps"
 		:class="[
-			'flex items-center gap-2 my-1 mx-5 text-lg rounded-md font-medium transition-colors duration-300',
+			'flex items-center gap-2 my-1 mx-5 text-xl rounded-md font-medium transition-colors duration-300',
 			isActive ? 'text-(--my-color-gray)' : 'hover:bg-gray-200',
 		]"
 	>
