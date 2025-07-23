@@ -24,3 +24,6 @@ dist-ssr
 *.sln
 *.sw?
 *.code-workspace
+
+# TypeScript generated files
+components.d.ts

@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import Layout from '@layouts/MainLayout.vue'
 </script>
 
@@ -6,4 +6,4 @@ import Layout from '@layouts/MainLayout.vue'
   <Layout>
     <router-view />
   </Layout>
-</template> 
+</template>

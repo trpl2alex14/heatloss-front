@@ -1,4 +1,18 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
+
+interface RouteMeta {
+  title: string
+  icon?: string
+  bottom?: boolean
+}
+
+interface IAppRoute {
+  name: string,
+  path: string,
+  meta: RouteMeta
+}
+
+export type AppRoute = IAppRoute & RouteRecordRaw
 
 const routes = [
   {

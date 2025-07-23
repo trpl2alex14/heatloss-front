@@ -13,6 +13,6 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import SidebarMenu from '@shared/components/SidebarMenu.vue'
 </script> 
