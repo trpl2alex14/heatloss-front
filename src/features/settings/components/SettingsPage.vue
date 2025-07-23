@@ -35,7 +35,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
 
-// Используем базовые обёртки для PrimeVue из shared/components/ui
 import UiInputText from "@shared/components/ui/UiInputText.vue";
 import UiButton from "@shared/components/ui/UiButton.vue";
 

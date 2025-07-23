@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Roboto", sans-serif;
-  --color-black: #202020;
-  --my-color-gray: #D8D6D6;  
-} 
+	--font-sans: "Roboto", sans-serif;
+	--color-black: #202020;
+	--my-color-gray: #d8d6d6;
+}
