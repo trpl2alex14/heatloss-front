@@ -7,6 +7,7 @@
 		showButtonBar
 		dateFormat="dd/mm/yy"
 		:placeholder="placeholder"
+		@clear-click="onClear"
 	/>
 </template>
 
@@ -32,4 +33,8 @@ const modelValue = computed({
 const passThroughProps = computed(() => ({
 	...attrs,
 }));
+
+const onClear = () => {	
+	emit("update:modelValue", null);
+};
 </script>
