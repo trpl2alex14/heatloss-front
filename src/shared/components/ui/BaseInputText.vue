@@ -36,6 +36,7 @@ const props = defineProps({
 		default: "text",
 	},
 });
+
 const emit = defineEmits(["update:modelValue"]);
 
 const modelValueProxy = computed({
