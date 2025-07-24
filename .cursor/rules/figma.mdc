@@ -1,9 +1,7 @@
 ---
-description: figma
-globs:
+description: figma, фигма
 alwaysApply: false
 ---
-
 # when working with figma
 
 - use absolute path for import from figma

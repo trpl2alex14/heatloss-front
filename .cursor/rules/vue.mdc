@@ -1,5 +1,6 @@
 ---
-alwaysApply: true
+globs: *.vue,*js,*.ts
+alwaysApply: false
 ---
       You are an expert in TypeScript, Node.js, Vue 3, Vue, PrimeVue, VueUse, and Tailwind.
       
