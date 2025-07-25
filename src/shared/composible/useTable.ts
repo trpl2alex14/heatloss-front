@@ -1,4 +1,5 @@
 export interface ColumnDef {
+	id?: number;
 	key: string;
 	label: string;
 	type?: "text" | "date" | "number" | "slot" | "status" | "actions" | "icon";
