@@ -1,7 +1,7 @@
 import { useRouter } from "vue-router";
 import type { AppRoute } from "@app/router";
 import { ref, onMounted, computed } from "vue";
-import { loadIcon } from "@shared/utils/iconLoader";
+import { loadIcon } from "@/shared/utils/assetLoader";
 
 type MenuRoute = AppRoute & { meta: { iconSrc?: string } };
 
