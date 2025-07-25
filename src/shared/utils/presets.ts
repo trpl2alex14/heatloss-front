@@ -2,6 +2,14 @@ import { definePreset } from "@primeuix/themes";
 import Aura from "@primeuix/themes/aura";
 
 export const myStylePreset = definePreset(Aura, {
+	components: {
+		chip: {
+			root: {
+				borderRadius: "0.6rem",
+				paddingY: "0.2rem",
+			}
+		},
+	},
 	semantic: {
 		primary: {
 			50: "{red.50}",
@@ -25,6 +33,6 @@ export const myStylePreset = definePreset(Aura, {
 					activeColor: "#ed0314",
 				},
 			},
-		},
+		}
 	},
 });
