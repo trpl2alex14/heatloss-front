@@ -1,18 +1,28 @@
 <template>
-	<Menu :model="actions" popup ref="menu" />
-	<Button icon="pi pi-ellipsis-v" @click="toggleMenu" class="p-button-text" />
+	<Menu :model="menuItems" popup ref="menu" />
+	<Button icon="pi pi-ellipsis-v" @click="toggleMenu" class="p-0!" variant="link" />
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import Menu from "primevue/menu";
 import Button from "primevue/button";
+import type { ActionDef } from "@/shared/composible/useTable";
 
-defineProps<{
-	actions: Array<{ label: string; icon?: string; command: () => void }>;
+const props = defineProps<{
+	actions: ActionDef[];
+	id: number;
 }>();
 
+const menuItems = computed(() =>
+	props.actions.map(action => ({
+		...action,
+		command: () => action.command(props.id)
+	}))
+);
+
 const menu = ref();
+
 const toggleMenu = (event: Event) => {
 	menu.value.toggle(event);
 };
