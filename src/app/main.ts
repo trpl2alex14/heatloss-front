@@ -4,9 +4,11 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
 import { myStylePreset } from "@shared/utils/presets";
+import ConfirmationService from 'primevue/confirmationservice';
 
 createApp(App)
 	.use(router)
+	.use(ConfirmationService)
 	.use(PrimeVue, { 
 		locale: {
 			clear: "Очистить",
