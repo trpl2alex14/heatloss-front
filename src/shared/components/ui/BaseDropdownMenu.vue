@@ -1,13 +1,18 @@
 <template>
 	<Menu :model="menuItems" popup ref="menu" />
-	<Button icon="pi pi-ellipsis-v" @click="toggleMenu" class="p-0!" variant="link" />
+	<Button
+		icon="pi pi-ellipsis-v"
+		@click="toggleMenu"
+		class="p-0!"
+		variant="link"
+	/>
 </template>
 
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import Menu from "primevue/menu";
 import Button from "primevue/button";
-import type { ActionDef } from "@/shared/composible/useTable";
+import type { ActionDef } from "@/shared/types/table";
 
 const props = defineProps<{
 	actions: ActionDef[];
@@ -15,9 +20,9 @@ const props = defineProps<{
 }>();
 
 const menuItems = computed(() =>
-	props.actions.map(action => ({
+	props.actions.map((action) => ({
 		...action,
-		command: () => action.command(props.id)
+		command: () => action.command(props.id),
 	}))
 );
 

@@ -15,7 +15,7 @@
 <script setup lang="ts">
 import { computed, defineProps, defineEmits, ref } from "vue";
 import MultiSelect from "primevue/multiselect";
-import type { ColumnDef } from "@/shared/composible/useTable";
+import type { ColumnDef } from "@/shared/types/table";
 
 const props = defineProps({
 	modelValue: {

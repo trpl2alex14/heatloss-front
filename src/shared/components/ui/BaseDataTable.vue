@@ -53,7 +53,10 @@
 							v-bind="getIconColumn(data[col.key])"
 						></span>
 					</template>
-					<template v-else-if="col.type === 'number'" #body="{ data }">
+					<template
+						v-else-if="col.type === 'number'"
+						#body="{ data }"
+					>
 						<span>{{ data[col.key] }}</span>
 						<span
 							v-if="col.measure"
@@ -96,11 +99,11 @@
 					</template>
 				</Column>
 			</template>
-            <template v-if="expandable" #expansion="slotProps">
-                <div class="p-4">                    
+			<template v-if="expandable" #expansion="slotProps">
+				<div class="p-4">
 					<slot name="expansion" :data="slotProps.data" />
-                </div>
-            </template>			
+				</div>
+			</template>
 		</DataTable>
 	</div>
 </template>
@@ -113,11 +116,7 @@ import BaseDataTableColsPicker from "./BaseDataTableColumnsPicker.vue";
 import BaseDropdownMenu from "./BaseDropdownMenu.vue";
 import Column from "primevue/column";
 import Tag from "primevue/tag";
-import type {
-	ColumnDef,
-	ActionDef,
-	StatusDef,
-} from "@/shared/composible/useTable";
+import type { ColumnDef, ActionDef, StatusDef } from "@/shared/types/table";
 
 const props = defineProps<{
 	columns: ColumnDef[];
@@ -154,8 +153,11 @@ const sortedColumns = computed(() => {
 });
 
 const getColumnStyle = (col: ColumnDef) => {
-	return col?.style || (col.type === 'icon' ? 'width: 4rem;text-align: center' : '');
-}
+	return (
+		col?.style ||
+		(col.type === "icon" ? "width: 4rem;text-align: center" : "")
+	);
+};
 
 const getTagAttr = (value: string | number) => {
 	if (props.statuses) {
