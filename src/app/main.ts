@@ -5,6 +5,7 @@ import App from "./App.vue";
 import router from "./router";
 import { myStylePreset } from "@shared/utils/presets";
 import ConfirmationService from 'primevue/confirmationservice';
+import Tooltip from 'primevue/tooltip';
 
 createApp(App)
 	.use(router)
@@ -21,4 +22,5 @@ createApp(App)
 		},
 		theme: { preset: myStylePreset } 
 	})
+	.directive("tooltip", Tooltip)
 	.mount("#app");
