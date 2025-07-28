@@ -1,5 +1,5 @@
 <template>
-	<div class="flex justify-between items-start gap-8 pb-2 w-full">
+	<div class="flex justify-between items-start gap-8 pb-2 w-full mb-4">
 		<div>
 			<h2 class="text-2xl font-normal leading-none">
 				{{ title }}
