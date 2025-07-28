@@ -10,6 +10,9 @@
 <script setup lang="ts">
 import calcIcon from "@assets/icons/pencil-ruler.svg";
 import { computed, type PropType } from "vue";
+import { useLink } from "@/shared/composible/useLink";
+
+const { link } = useLink();
 
 const props = defineProps({
 	data: {
@@ -31,6 +34,6 @@ const url = computed(() => {
 });
 
 const component = computed(() => {
-	return props.type === 'link' ? 'a' : (import.meta.env.VITE_LINK || 'router-link');
+	return props.type === 'link' ? 'a' : link;
 });
 </script>

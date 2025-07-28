@@ -2,6 +2,7 @@
 	<div class="p-0">
 		<Head title="Head" subtitle="Общий компонент заголовка раздела">
 			<template #actions>
+				<RowCounter value="123" label="Кейсов" />
 				<BaseButton label="Действие" icon="plus" />
 			</template>
 		</Head>
@@ -117,11 +118,8 @@ import BaseSearch from "@/shared/components/ui/BaseSearch.vue";
 import BaseDatePicker from "@/shared/components/ui/BaseDatePicker.vue";
 import BaseProgressBar from "@/shared/components/ui/BaseProgressBar.vue";
 import CalculationBtn from "@/shared/components/calculationBtn.vue";
-import type {
-	ColumnDef,
-	ActionDef,
-	StatusDef,
-} from "@/shared/composible/useTable";
+import RowCounter from "@/shared/components/RowCounter.vue";
+import type { ColumnDef, ActionDef, StatusDef } from "@/shared/types/table";
 import BaseChip from "@/shared/components/ui/BaseChip.vue";
 import { loadImage } from "@/shared/utils/assetLoader";
 
