@@ -119,7 +119,8 @@ import BaseDatePicker from "@/shared/components/ui/BaseDatePicker.vue";
 import BaseProgressBar from "@/shared/components/ui/BaseProgressBar.vue";
 import CalculationBtn from "@/shared/components/calculationBtn.vue";
 import RowCounter from "@/shared/components/RowCounter.vue";
-import type { ColumnDef, ActionDef, StatusDef } from "@/shared/types/table";
+import type { ColumnDef, StatusDef } from "@/shared/types/table";
+import type { ActionDef } from "@/shared/types/menu";
 import BaseChip from "@/shared/components/ui/BaseChip.vue";
 import { loadImage } from "@/shared/utils/assetLoader";
 
