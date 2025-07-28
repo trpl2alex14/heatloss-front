@@ -1,7 +1,5 @@
-<template>
-	<div class="pb-5">
-		<slot name="header" />
-	</div>
+<template>	
+	<slot name="header" />	
 	<div class="flex gap-6">
 		<div class="w-80 flex-shrink-0">
 			<SubMenu :items="subMenuItems" />

@@ -75,7 +75,7 @@ const routes = [
 			{
 				path: "materials",
 				name: "DirectoriesMaterials",
-				meta: { title: "Материалы", icon: "brick-wall.svg" },
+				meta: { title: "Огр. конструкции", icon: "brick-wall.svg" },
 				component: () =>
 					import("@features/directories/view/MaterialsPage.vue"),
 			},
