@@ -1,6 +1,6 @@
 <template>
 	<component
-		:is="isButton ? 'button' : 'router-link'"
+		:is="isButton ? 'button' : link"
 		v-bind="componentProps"
 		:class="[
 			'flex items-center gap-2 my-1 mx-5 text-xl rounded-md font-medium transition-colors duration-300',
@@ -25,6 +25,9 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useRoute } from "vue-router";
+import { useLink } from "@/shared/composible/useLink";
+
+const { link } = useLink();
 
 interface Props {
 	to?: string;
@@ -37,7 +40,18 @@ interface Props {
 const props = defineProps<Props>();
 const route = useRoute();
 
-const isActive = computed(() => props.to && route.path === props.to);
+const isActive = computed(() => {
+	if (!props.to) return false;
+
+	if (route.path === props.to) return true;
+
+	// Если текущий маршрут начинается с пути меню и не равен ему, то это дочерний маршрут
+	if (route.path.startsWith(props.to) && route.path !== props.to) {
+		return true;
+	}
+
+	return false;
+});
 
 const componentProps = computed(() => {
 	return props.isButton ? {} : { to: props.to };

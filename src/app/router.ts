@@ -8,6 +8,7 @@ interface RouteMeta {
 	title: string;
 	icon?: string;
 	bottom?: boolean;
+	hasSubMenu?: boolean;
 }
 
 interface IAppRoute {
@@ -56,9 +57,36 @@ const routes = [
 	{
 		path: "/directories",
 		name: "Directories",
-		meta: { title: "Справочники", icon: "database.svg" },
-		component: () =>
-			import("@features/directories/components/DirectoriesPage.vue"),
+		meta: { title: "Справочники", icon: "database.svg", hasSubMenu: true },
+		component: () => import("@features/directories/view/Layout.vue"),
+		children: [
+			{
+				path: "",
+				name: "DirectoriesIndex",
+				redirect: "/directories/equipment",
+			},
+			{
+				path: "equipment",
+				name: "DirectoriesEquipment",
+				meta: { title: "Оборудование", icon: "heater.svg" },
+				component: () =>
+					import("@features/directories/view/EquipmentPage.vue"),
+			},
+			{
+				path: "materials",
+				name: "DirectoriesMaterials",
+				meta: { title: "Материалы", icon: "brick-wall.svg" },
+				component: () =>
+					import("@features/directories/view/MaterialsPage.vue"),
+			},
+			{
+				path: "climate",
+				name: "DirectoriesClimate",
+				meta: { title: "Климатология", icon: "map-pinned.svg" },
+				component: () =>
+					import("@features/directories/view/ClimatePage.vue"),
+			},
+		],
 	},
 	{
 		path: "/settings",
@@ -66,7 +94,7 @@ const routes = [
 		meta: { title: "Настройки", icon: "settings.svg", bottom: true },
 		component: () =>
 			import("@features/settings/components/SettingsPage.vue"),
-	},	
+	},
 	...(isDev
 		? [
 				{
