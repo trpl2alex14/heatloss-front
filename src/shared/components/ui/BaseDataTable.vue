@@ -16,7 +16,7 @@
 		<div class="flex items-center gap-2 ml-auto">
 			<slot name="top-right" />
 			<BaseDataTableColsPicker
-				v-if="customizable"
+				v-if="customizable && columns.length > 1"
 				v-model="viewColumns"
 				:options="columns"
 			/>
@@ -57,9 +57,9 @@
 						v-else-if="col.type === 'number'"
 						#body="{ data }"
 					>
-						<span>{{ data[col.key] }}</span>
+						<span>{{ data[col.key] ?? "-" }}</span>
 						<span
-							v-if="col.measure"
+							v-if="data[col.key] && col.measure"
 							class="text-sm text-gray-300 ml-1"
 							>{{ col.measure }}</span
 						>
@@ -116,7 +116,8 @@ import BaseDataTableColsPicker from "./BaseDataTableColumnsPicker.vue";
 import BaseDropdownMenu from "./BaseDropdownMenu.vue";
 import Column from "primevue/column";
 import Tag from "primevue/tag";
-import type { ColumnDef, ActionDef, StatusDef } from "@/shared/types/table";
+import type { ColumnDef, StatusDef } from "@/shared/types/table";
+import type { ActionDef } from "@/shared/types/menu";
 
 const props = defineProps<{
 	columns: ColumnDef[];

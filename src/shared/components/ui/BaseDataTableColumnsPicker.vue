@@ -1,5 +1,6 @@
 <template>
 	<MultiSelect
+		v-if="hiddenColumns.length > 0"
 		placeholder="Выбрать колонки"
 		dropdown-icon="pi pi-cog"
 		display="chip"

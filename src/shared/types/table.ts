@@ -10,14 +10,15 @@ export interface ColumnDef {
 	style?: string;
 }
 
-export interface ActionDef {
-	label: string;
-	icon?: string;
-	command: (id: number) => void;
-}
-
 export interface StatusDef {
 	key: string | number;
 	label: string;
-	type: "success" | "info" | "warn" | "secondary" | "danger" | "danger" | "contrast";
+	type:
+		| "success"
+		| "info"
+		| "warn"
+		| "secondary"
+		| "danger"
+		| "danger"
+		| "contrast";
 }
