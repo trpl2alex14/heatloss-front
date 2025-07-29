@@ -10,8 +10,8 @@ export interface ColumnDef {
 	style?: string;
 }
 
-export interface StatusDef {
-	key: string | number;
+export interface TypeLabelDef {
+	key: number | string;
 	label: string;
 	type:
 		| "success"
@@ -21,4 +21,17 @@ export interface StatusDef {
 		| "danger"
 		| "danger"
 		| "contrast";
+}
+
+export interface TypeImageDef {
+	key: number | string;
+	label?: string;
+	image: string;
+}
+
+export interface TypeIconDef {
+	key: number | string;
+	label?: string;
+	icon: string;
+	color?: string;
 }
