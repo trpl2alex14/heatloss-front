@@ -8,15 +8,16 @@
 import { computed } from "vue";
 import MaterialIcon from "@/assets/icons/material.svg";
 import ConstructIcon from "@/assets/icons/construct.svg";
+import type { Category } from "@/shared/types/category";
 
-const types = [
+const types : Category[] = [
 	{
-		type: 1,
+		id: 1,
 		label: "Материал",
 		icon: MaterialIcon,
 	},
 	{
-		type: 2,
+		id: 2,
 		label: "Конструкция",
 		icon: ConstructIcon,
 	},
@@ -27,6 +28,6 @@ const props = defineProps<{
 }>();
 
 const icon = computed(() => {
-	return types.find((t) => t.type === props.type);
+	return types.find((t) => t.id === props.type);
 });
 </script>
