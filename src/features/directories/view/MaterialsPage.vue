@@ -5,14 +5,14 @@
 			subtitle="Справочник материалов и ограждающих конструкций"
 		>
 			<template #actions>
-				<RowCounter :value="tableData.length" label="Записей" />
+				<RowCounter :value="pageData.length" />
 				<BaseButton label="Добавить" icon="plus" />
 			</template>
 		</Head>
 
 		<BaseDataTable
 			:columns="columns"
-			:data="pagedData"
+			:data="pagedDataTransformed"
 			:pagination="pagination"
 			:actions="dropdownActions"
 			customizable
@@ -52,7 +52,8 @@ import BaseDataTable from "@/shared/components/ui/BaseDataTable.vue";
 import BaseChip from "@/shared/components/ui/BaseChip.vue";
 import TypeIcon from "@/features/directories/components/TypeIcon.vue";
 import type { ColumnDef } from "@/shared/types/table";
-import { dropdownActions } from "@/features/directories/composible/useDropdownMenu";
+import { dropdownActions } from "@/features/directories/composables/useDropdownMenu";
+import { useTable } from "@/shared/composables/useTable";
 
 const columns: ColumnDef[] = [
 	{ key: "name", label: "Название", sortable: true, sort: 2 },
@@ -63,7 +64,7 @@ const columns: ColumnDef[] = [
 		type: "slot",
 		style: "width: 80px;",
 		hidden: true,
-		sort: 1
+		sort: 1,
 	},
 	{
 		key: "type",
@@ -71,14 +72,14 @@ const columns: ColumnDef[] = [
 		type: "slot",
 		sortable: true,
 		style: "width: 60px; text-align: center",
-		sort: 3
+		sort: 3,
 	},
 	{
 		key: "value",
 		label: "Коэфф. (А/Б)",
 		type: "text",
 		style: "width: 110px; text-align: right; white-space: nowrap;",
-		sort: 5
+		sort: 5,
 	},
 	{
 		key: "r",
@@ -86,12 +87,18 @@ const columns: ColumnDef[] = [
 		type: "number",
 		style: "width: 120px; text-align: right",
 		measure: "м²*С/Вт",
-		sort: 6
+		sort: 6,
 	},
-	{ key: "surface", label: "Поверхность", type: "slot", hidden: true, sort: 10 },
+	{
+		key: "surface",
+		label: "Поверхность",
+		type: "slot",
+		hidden: true,
+		sort: 10,
+	},
 ];
 
-const tableData = ref([
+const pageData = ref([
 	{
 		id: 1,
 		name: "Минеральная (каменная) вата, плотностью 25-45 кг/м3",
@@ -138,40 +145,18 @@ const tableData = ref([
 	},
 ]);
 
-const searchValue = ref("");
-
-const pagination = ref({
-	page: 1,
-	pageSize: 10,
-	total: tableData.value.length,
-});
-
-const pagedData = computed(() => {
-	let filtered = tableData.value;
-	if (searchValue.value) {
-		filtered = filtered.filter(
-			(row) =>
-				row.name
-					.toLowerCase()
-					.includes(searchValue.value.toLowerCase()) ||
-				row.category
-					.toLowerCase()
-					.includes(searchValue.value.toLowerCase())
-		);
+const { searchValue, pagination, tableData, onPageChange } = useTable(
+	pageData,
+	{
+		searchFields: ["name", "category"],
+		pageSize: 10,
 	}
-	pagination.value.total = filtered.length;
-	return filtered
-		.slice(
-			(pagination.value.page - 1) * pagination.value.pageSize,
-			pagination.value.page * pagination.value.pageSize
-		)
-		.map((row) => ({
-			...row,
-			value: row.a || row.b ? `${row.a ?? "-"}/${row.b ?? "-"}` : "-",
-		}));
-});
+);
 
-function onPageChange(page: number) {
-	pagination.value.page = page;
-}
+const pagedDataTransformed = computed(() => {
+	return tableData.value.map((row) => ({
+		...row,
+		value: row.a || row.b ? `${row.a ?? "-"}/${row.b ?? "-"}` : "-",
+	}));
+});
 </script>
