@@ -1,5 +1,5 @@
 <template>
-	<div class="rounded-xl p-6 mb-4 border border-gray-200">
+	<div class="rounded-xl p-3 mb-4 border border-gray-200">
 		<nav class="flex flex-col gap-2">
 			<component
 				:is="link"
