@@ -116,7 +116,7 @@ import BaseDataTableColsPicker from "./BaseDataTableColumnsPicker.vue";
 import BaseDropdownMenu from "./BaseDropdownMenu.vue";
 import Column from "primevue/column";
 import Tag from "primevue/tag";
-import type { ColumnDef, StatusDef } from "@/shared/types/table";
+import type { ColumnDef, TypeLabelDef } from "@/shared/types/table";
 import type { ActionDef } from "@/shared/types/menu";
 
 const props = defineProps<{
@@ -128,7 +128,7 @@ const props = defineProps<{
 	sortOrder?: 1 | -1;
 	customizable?: boolean;
 	actions?: ActionDef[];
-	statuses?: StatusDef[];
+	statuses?: TypeLabelDef[];
 	expandable?: boolean;
 }>();
 
