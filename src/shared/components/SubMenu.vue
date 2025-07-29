@@ -30,7 +30,7 @@
 import { computed } from "vue";
 import { useRoute } from "vue-router";
 import type { SubMenuItem } from "@/shared/types/submenu";
-import { useLink } from "@/shared/composible/useLink";
+import { useLink } from "@/shared/composables/useLink";
 
 const { link } = useLink();
 

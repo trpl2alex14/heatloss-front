@@ -35,7 +35,7 @@
 import SidebarMenuItem from "./SidebarMenuItem.vue";
 import Divider from "./Divider.vue";
 import userIcon from "@assets/icons/user-round.svg";
-import useMenu from "@shared/composible/useMenu";
+import useMenu from "@/shared/composables/useMenu";
 
 const { topMenuRoutes, bottomMenuRoutes } = useMenu();
 </script>
