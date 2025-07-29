@@ -5,10 +5,17 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
+import { plural } from "@/shared/utils/text";
+
 interface Props {
-	value: string | number;
+	value: number;
 	label?: string;
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
+
+const label = computed(() => {
+	return props?.label || plural(props.value, ["запись", "записи", "записей"]);	
+});
 </script>
