@@ -18,10 +18,19 @@ export function useTable<T extends Record<string, any>>(
 	const { searchFields = [], pageSize = 10 } = options;
 
 	const searchValue = ref("");
+
 	const pagination = ref<Pagination>({
 		page: 1,
 		pageSize,
 		total: data.value.length,
+	});
+
+	const sort = ref<{
+		sortField: string | undefined;
+		sortOrder: 1 | -1 | undefined;
+	}>({
+		sortField: undefined,
+		sortOrder: undefined,
 	});
 
 	const filteredData = computed(() => {
@@ -40,16 +49,46 @@ export function useTable<T extends Record<string, any>>(
 		return filtered;
 	});
 
+	const sortedData = computed(() => {
+		if (sort.value.sortField && sort.value.sortOrder) {
+			const field = sort.value.sortField as keyof T;
+			return filteredData.value.sort((a, b) => {
+				if (
+					typeof a[field] === "number" &&
+					typeof b[field] === "number"
+				) {
+					return sort.value.sortOrder === 1
+						? a[field] - b[field]
+						: b[field] - a[field];
+				}
+				if (
+					typeof a[field] === "string" &&
+					typeof b[field] === "string"
+				) {
+					return sort.value.sortOrder === 1
+						? a[field].localeCompare(b[field])
+						: b[field].localeCompare(a[field]);
+				}
+				return 0;
+			});
+		}
+		return filteredData.value;
+	});
+
 	const tableData = computed(() => {
-		pagination.value.total = filteredData.value.length;
-		return filteredData.value.slice(
+		pagination.value.total = sortedData.value.length;
+		return sortedData.value.slice(
 			(pagination.value.page - 1) * pagination.value.pageSize,
 			pagination.value.page * pagination.value.pageSize
 		);
 	});
 
-	function onPageChange(page: number) {
-		pagination.value.page = page;
+	function onPageChange(page: Pagination) {
+		pagination.value = page;
+	}
+
+	function onSortChange(value: any) {
+		sort.value = value;
 	}
 
 	function resetPagination() {
@@ -67,6 +106,7 @@ export function useTable<T extends Record<string, any>>(
 		tableData,
 		filteredData,
 		onPageChange,
+		onSortChange,
 		resetPagination,
 		clearSearch,
 	};

@@ -5,23 +5,29 @@
 			subtitle="Список доступного отопительного оборудования"
 		>
 			<template #actions>
-				<RowCounter :value="pageData.length" />
+				<RowCounter :value="equipmentData.length" />
 				<BaseButton label="Добавить" icon="plus" />
 			</template>
 		</Head>
 
+		<div v-if="error" class="flex justify-center items-center p-8">
+			<div class="text-red-500">{{ error }}</div>
+		</div>
 		<BaseDataTable
+			:loading="isLoading"
 			:columns="columns"
 			:data="pagedDataTransformed"
 			:pagination="pagination"
 			:actions="dropdownActions"
 			customizable
 			@update:pagination="onPageChange"
+			@update:sort="onSortChange"
 		>
 			<template #top-left>
 				<BaseSelectButton
 					v-model="filterValue"
 					:options="filterOptions"
+					@update:model-value="onFilterChange"
 				/>
 			</template>
 			<template #top-right>
@@ -39,14 +45,14 @@
 				/>
 			</template>
 			<template #slot-product="{ data }">
-				<TypeColumn :type="data.product" :types="productCategory"/>
+				<TypeColumn :type="data.product" :types="productCategory" />
 			</template>
 			<template #slot-tags="{ data }">
 				<div class="flex flex-wrap gap-1">
 					<BaseChip
 						v-for="tag in data.tags"
 						:key="tag"
-						:label="tag"						
+						:label="tag"
 					/>
 				</div>
 			</template>
@@ -64,13 +70,11 @@ import BaseDataTable from "@/shared/components/ui/BaseDataTable.vue";
 import BaseChip from "@/shared/components/ui/BaseChip.vue";
 import BaseSelectButton from "@/shared/components/ui/BaseSelectButton.vue";
 import TypeColumn from "@features/directories/components/TypeColumn.vue";
-import type {
-	ColumnDef,
-	TypeIconDef
-} from "@/shared/types/table";
+import type { ColumnDef, TypeIconDef } from "@/shared/types/table";
 import { dropdownActions } from "@/features/directories/composables/useProductDropdownMenu";
 import { useTable } from "@/shared/composables/useTable";
 import { useTypes } from "@features/directories/composables/useTypes";
+import { useEquipmentData } from "@features/directories/composables/useEquipmentData";
 
 const columns: ColumnDef[] = [
 	{
@@ -86,7 +90,7 @@ const columns: ColumnDef[] = [
 		type: "slot",
 		style: "width: 80px;",
 		hidden: true,
-		sort: 2,		
+		sort: 2,
 	},
 	{
 		key: "product",
@@ -127,7 +131,7 @@ const columns: ColumnDef[] = [
 	},
 	{
 		key: "characteristics",
-		label: "Характеристики",		
+		label: "Характеристики",
 		sort: 8,
 		hidden: true,
 	},
@@ -146,7 +150,14 @@ const filterOptions = [
 	{ label: "Все", value: "all" },
 ];
 
+const filterValue = ref("all");
+
 const { productCategory } = useTypes();
+
+const onFilterChange = (value: string) => {
+	filterValue.value = value;
+	loadEquipmentData(value);
+};
 
 const statuses: TypeIconDef[] = [
 	{
@@ -161,92 +172,14 @@ const statuses: TypeIconDef[] = [
 	},
 ];
 
-const filterValue = ref("fleyt");
+const { equipmentData, isLoading, error, loadEquipmentData } =
+	useEquipmentData();
 
-const pageData = ref([
-	{
-		id: 1,
-		status: "published",
-		photo: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=80&q=80",
-		product: "fleyt",
-		category: "Радиаторы",
-		name: "Флэйт 500В - 50 Белый",
-		article: "46747337722",
-		price: 127012,
-		characteristics: "Мощность - 500Вт",
-		tags: ["под окно", "белый", "каркасник"],
-	},
-	{
-		id: 2,
-		status: "hidden",
-		photo: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=80&q=80",
-		product: "fleyt",
-		category: "Терморегулятор",
-		name: "Welrok Ls",
-		article: "46747332722",
-		price: 12012,
-		characteristics: "Мощность - 500Вт",
-		tags: ["wi-Fi", "каркасник"],
-	},
-	{
-		id: 3,
-		status: "published",
-		photo: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=80&q=80",
-		product: "kouzi",
-		category: "Радиаторы",
-		name: "Флэйт 500В - 50 Белый",
-		article: "46747337722",
-		price: 127012,
-		characteristics: "Мощность - 500Вт",
-		tags: ["каркасник"],
-	},
-	{
-		id: 4,
-		status: "hidden",
-		photo: "https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=80&q=80",
-		product: "fleyt",
-		category: "Терморегулятор",
-		name: "Welrok Ls",
-		article: "46747332722",
-		price: 12012,
-		characteristics: "Мощность - 500Вт",
-		tags: ["каркасник"],
-	},
-	{
-		id: 5,
-		status: "published",
-		photo: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=80&q=80",
-		product: "fleyt",
-		category: "Радиаторы",
-		name: "Флэйт 500В - 50 Белый",
-		article: "46747337722",
-		price: 127012,
-		characteristics: "Мощность - 500Вт",
-		tags: ["каркасник"],
-	},
-	{
-		id: 6,
-		status: "published",
-		photo: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=80&q=80",
-		product: "all",
-		category: "Терморегулятор",
-		name: "Welrok Ls",
-		article: "46747332722",
-		price: 12012,
-		characteristics: "Мощность - 500Вт",
-		tags: ["каркасник"],
-	},
-]);
-
-
-
-const { searchValue, pagination, tableData, onPageChange } = useTable(
-	pageData,
-	{
+const { searchValue, pagination, tableData, onPageChange, onSortChange } =
+	useTable(equipmentData, {
 		searchFields: ["name", "category", "article"],
 		pageSize: 10,
-	}
-);
+	});
 
 const pagedDataTransformed = computed(() => {
 	return tableData.value.map((row) => ({

@@ -31,6 +31,7 @@
 			:loading="loading"
 			:sortField="sortField"
 			:sortOrder="sortOrder"
+			removableSort
 			@sort="onSortChange"
 			responsiveLayout="scroll"
 			class="w-full data-table-fix"
@@ -183,18 +184,19 @@ const getIconColumn = (value: string | { icon: string; color: string }) => {
 
 const emit = defineEmits([
 	"update:pagination",
-	"update:sortField",
-	"update:sortOrder",
+	"update:sort",	
 ]);
 
-const onSortChange = (e: any) => {
-	emit("update:sortField", e.sortField);
-	emit("update:sortOrder", e.sortOrder);
+const onSortChange = (e: any) => {	
+	emit("update:sort", {
+		sortField: e.sortField,
+		sortOrder: e.sortOrder,
+	});
 };
 
 const onPaginationPageChange = (page: number) => {
 	emit("update:pagination", {
-		...props.pagination!,
+		...props.pagination,
 		page,
 	});
 };
