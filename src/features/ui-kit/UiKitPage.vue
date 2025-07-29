@@ -2,7 +2,7 @@
 	<div class="p-0">
 		<Head title="Head" subtitle="Общий компонент заголовка раздела">
 			<template #actions>
-				<RowCounter value="123" label="Кейсов" />
+				<RowCounter :value="123" label="Кейсов" />
 				<BaseButton label="Действие" icon="plus" />
 			</template>
 		</Head>
@@ -72,10 +72,7 @@
 					</template>
 				</template>
 				<template #slot-product="{ data }">
-					<img
-						v-bind="getProductInfo(data?.product)"
-						class="w-5 h-5"
-					/>
+					<TypeColumn :type="data.product || 'all'" :types="productCategory" short/>
 				</template>
 				<template #slot-image="{ data }">
 					<img
@@ -108,7 +105,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 import Head from "@/shared/components/Head.vue";
 import BaseButton from "@/shared/components/ui/BaseButton.vue";
 import BaseDataTable from "@/shared/components/ui/BaseDataTable.vue";
@@ -119,10 +116,13 @@ import BaseDatePicker from "@/shared/components/ui/BaseDatePicker.vue";
 import BaseProgressBar from "@/shared/components/ui/BaseProgressBar.vue";
 import CalculationBtn from "@/shared/components/calculationBtn.vue";
 import RowCounter from "@/shared/components/RowCounter.vue";
-import type { ColumnDef, StatusDef } from "@/shared/types/table";
+import type { ColumnDef, TypeLabelDef } from "@/shared/types/table";
 import type { ActionDef } from "@/shared/types/menu";
 import BaseChip from "@/shared/components/ui/BaseChip.vue";
-import { loadImage } from "@/shared/utils/assetLoader";
+import TypeColumn from "@features/directories/components/TypeColumn.vue";
+import { useTypes } from "@features/directories/composables/useTypes";
+
+const { productCategory } = useTypes();
 
 const columns: ColumnDef[] = [
 	{
@@ -245,39 +245,12 @@ const tableData = ref([
 	},
 ]);
 
-const statuses: StatusDef[] = [
+const statuses: TypeLabelDef[] = [
 	{ key: 1, label: "Опубликован", type: "success" },
 	{ key: 2, label: "В работе", type: "info" },
 	{ key: 3, label: "Кейс", type: "warn" },
 	{ key: "hide", label: "Скрыт", type: "secondary" },
 ];
-
-const products = ref([
-	{ key: "kouzi", label: "Коузи", img: "kouzi.png" },
-	{ key: "fleyt", label: "Флэйт", img: "fleyt.png" },
-	{ key: "all", label: "Гревольт", img: "grevolt.png" },
-]);
-
-const productImages = ref<Record<string, string>>({});
-
-onMounted(async () => {
-	const images = await Promise.all(
-		products.value.map(async (product) => {
-			return {
-				[product.key]: await loadImage(product.img),
-			};
-		})
-	);
-	productImages.value = Object.assign({}, ...images);
-});
-
-const getProductInfo = (key: string) => {
-	const product = products.value.find((product) => product.key === key);
-	return {
-		src: productImages.value[key || "all"],
-		alt: product?.label || "",
-	};
-};
 
 const pagination = ref({ page: 1, pageSize: 10, total: 11 });
 

@@ -36,7 +36,7 @@
 				</div>
 			</template>
 			<template #slot-type="{ data }">
-				<TypeIcon :type="data.type" />
+				<TypeIcon :type="data.type" :types="materialTypes" short/>
 			</template>
 		</BaseDataTable>
 	</div>
@@ -50,10 +50,11 @@ import RowCounter from "@/shared/components/RowCounter.vue";
 import BaseSearch from "@/shared/components/ui/BaseSearch.vue";
 import BaseDataTable from "@/shared/components/ui/BaseDataTable.vue";
 import BaseChip from "@/shared/components/ui/BaseChip.vue";
-import TypeIcon from "@/features/directories/components/TypeIcon.vue";
+import TypeIcon from "@/features/directories/components/TypeColumn.vue";
 import type { ColumnDef } from "@/shared/types/table";
 import { dropdownActions } from "@/features/directories/composables/useDropdownMenu";
 import { useTable } from "@/shared/composables/useTable";
+import { useTypes } from "@features/directories/composables/useTypes";
 
 const columns: ColumnDef[] = [
 	{ key: "name", label: "Название", sortable: true, sort: 2 },
@@ -144,6 +145,8 @@ const pageData = ref([
 		surface: ["стены"],
 	},
 ]);
+
+const { materialTypes } = useTypes();
 
 const { searchValue, pagination, tableData, onPageChange } = useTable(
 	pageData,
