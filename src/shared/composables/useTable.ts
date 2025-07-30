@@ -33,51 +33,58 @@ export function useTable<T extends Record<string, any>>(
 		sortOrder: undefined,
 	});
 
-	const filteredData = computed(() => {
-		let filtered = data.value;
+	const filteredData = (
+		data: T[],
+		searchValue: string,
+		searchFields: (keyof T)[]
+	) => {
+		let filtered = data;
+		const searchTerm = searchValue.toLowerCase();
 
-		if (searchValue.value) {
-			const searchTerm = searchValue.value.toLowerCase();
-			filtered = filtered.filter((row) => {
-				return searchFields.some((field) => {
-					const value = row[field];
-					return String(value).toLowerCase().includes(searchTerm);
-				});
+		return filtered.filter((row) => {
+			return searchFields.some((field) => {
+				const value = row[field];
+				return String(value).toLowerCase().includes(searchTerm);
 			});
-		}
+		});
+	};
 
-		return filtered;
-	});
-
-	const sortedData = computed(() => {
-		if (sort.value.sortField && sort.value.sortOrder) {
-			const field = sort.value.sortField as keyof T;
-			return filteredData.value.sort((a, b) => {
-				if (
-					typeof a[field] === "number" &&
-					typeof b[field] === "number"
-				) {
-					return sort.value.sortOrder === 1
-						? a[field] - b[field]
-						: b[field] - a[field];
-				}
-				if (
-					typeof a[field] === "string" &&
-					typeof b[field] === "string"
-				) {
-					return sort.value.sortOrder === 1
-						? a[field].localeCompare(b[field])
-						: b[field].localeCompare(a[field]);
-				}
-				return 0;
-			});
-		}
-		return filteredData.value;
-	});
+	const sortedData = (data: T[], field: keyof T, sortOrder: 1 | -1) => {
+		return data.sort((a, b) => {
+			if (typeof a[field] === "number" && typeof b[field] === "number") {
+				return sortOrder === 1
+					? a[field] - b[field]
+					: b[field] - a[field];
+			}
+			if (typeof a[field] === "string" && typeof b[field] === "string") {
+				return sortOrder === 1
+					? a[field].localeCompare(b[field])
+					: b[field].localeCompare(a[field]);
+			}
+			return 0;
+		});
+	};
 
 	const tableData = computed(() => {
-		pagination.value.total = sortedData.value.length;
-		return sortedData.value.slice(
+		let resultData = data.value;
+		if (searchValue.value) {
+			resultData = filteredData(
+				resultData,
+				searchValue.value,
+				searchFields
+			);
+		}
+
+		if (sort.value.sortField && sort.value.sortOrder) {
+			resultData = sortedData(
+				resultData,
+				sort.value.sortField,
+				sort.value.sortOrder
+			);
+		}
+
+		pagination.value.total = resultData.length;
+		return resultData.slice(
 			(pagination.value.page - 1) * pagination.value.pageSize,
 			pagination.value.page * pagination.value.pageSize
 		);
@@ -104,7 +111,6 @@ export function useTable<T extends Record<string, any>>(
 		searchValue,
 		pagination,
 		tableData,
-		filteredData,
 		onPageChange,
 		onSortChange,
 		resetPagination,
