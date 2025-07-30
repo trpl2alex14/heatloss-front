@@ -25,7 +25,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineEmits } from "vue";
+import { defineProps, defineEmits, watch } from "vue";
 import Button from "primevue/button";
 
 const props = defineProps<{
@@ -34,6 +34,12 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits(["update:page"]);
+
+watch(props, () => {
+	if(props.currentPage > props.totalPages) {
+		emit("update:page", props.totalPages);
+	} 
+});
 
 const goToPrev = () => {
 	if (props.currentPage > 1) emit("update:page", props.currentPage - 1);
