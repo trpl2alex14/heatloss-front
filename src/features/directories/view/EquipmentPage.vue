@@ -10,9 +10,6 @@
 			</template>
 		</Head>
 
-		<div v-if="error" class="flex justify-center items-center p-8">
-			<div class="text-red-500">{{ error }}</div>
-		</div>
 		<BaseDataTable
 			:loading="isLoading"
 			:columns="columns"
@@ -172,7 +169,7 @@ const statuses: TypeIconDef[] = [
 	},
 ];
 
-const { equipmentData, isLoading, error, loadEquipmentData } =
+const { equipmentData, isLoading, loadEquipmentData } =
 	useEquipmentData();
 
 const { searchValue, pagination, tableData, onPageChange, onSortChange } =

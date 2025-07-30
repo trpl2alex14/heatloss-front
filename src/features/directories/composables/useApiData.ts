@@ -1,5 +1,6 @@
-import { ref, onMounted, computed, shallowRef } from "vue";
+import { ref, onMounted, computed, shallowRef, watch } from "vue";
 import axios from "axios";
+import { useMessage } from "@/shared/composables/useMessage";
 
 export const useApiData = <T>(endpoint: string, autoLoad = true) => {
 	const data = shallowRef<T[]>([]);
@@ -12,7 +13,7 @@ export const useApiData = <T>(endpoint: string, autoLoad = true) => {
 
 		try {
 			const response = await axios.get<{ data: T[], status: string, error?: string }>(endpoint, { params });
-			data.value = await response.data?.data ?? [];
+			data.value = response.data?.data ?? [];
 			if (response.data?.status !== "success") {
 				throw new Error(response.data?.error ?? "Ошибка при загрузке данных");
 			}
@@ -33,6 +34,14 @@ export const useApiData = <T>(endpoint: string, autoLoad = true) => {
 			loadData();
 		});
 	}
+
+	const { error: errorMessage } = useMessage();
+
+	watch(error, (newVal) => {
+		if (newVal) {
+			errorMessage(newVal);
+		}
+	});
 
 	return {
 		data: computed(() => data.value),

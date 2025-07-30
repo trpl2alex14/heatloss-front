@@ -6,10 +6,12 @@ import router from "./router";
 import { myStylePreset } from "@shared/utils/presets";
 import ConfirmationService from 'primevue/confirmationservice';
 import Tooltip from 'primevue/tooltip';
+import ToastService from 'primevue/toastservice';
 
 createApp(App)
 	.use(router)
 	.use(ConfirmationService)
+	.use(ToastService)
 	.use(PrimeVue, { 
 		locale: {
 			clear: "Очистить",
