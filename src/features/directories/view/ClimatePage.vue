@@ -20,8 +20,7 @@
 			@update:pagination="onPageChange"
 			@update:sort="onSortChange"
 		>
-			<template #top-left>
-			</template>
+			<template #top-left> </template>
 			<template #top-right>
 				<BaseSearch v-model="searchValue" />
 			</template>
@@ -39,10 +38,9 @@ import BaseDataTable from "@/shared/components/ui/BaseDataTable.vue";
 import { useTable } from "@/shared/composables/useTable";
 import { useClimateData } from "@features/directories/composables/useClimateData";
 import { plural } from "@/shared/utils/text";
-import { dropdownActions } from "@/features/directories/composables/useDropdownMenu";
+import { dropdownActions } from "@/features/directories/composables/useClimateDropdownMenu";
 
-const { climateData, isLoading, columns } =
-	useClimateData();
+const { climateData, isLoading, columns } = useClimateData();
 
 const { searchValue, pagination, tableData, onPageChange, onSortChange } =
 	useTable(climateData, {

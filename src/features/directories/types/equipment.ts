@@ -1,8 +1,12 @@
+export type Status = "published" | "hidden";
+
+export type Type = "fleyt" | "kouzi" | "all";
+
 export interface EquipmentItem {
 	id: number;
-	status: "published" | "hidden";
+	status: Status;
 	photo: string;
-	product: string;
+	product: Type;
 	category: string;
 	name: string;
 	article: string;

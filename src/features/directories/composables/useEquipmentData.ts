@@ -1,5 +1,5 @@
 import type { EquipmentItem } from "@features/directories/types/equipment";
-import { useApiData } from "./useApiData";
+import { useApiData } from "@/shared/composables/useApiData";
 import { route } from "@/shared/utils/router";
 import type { ColumnDef } from "@/shared/types/table";
 

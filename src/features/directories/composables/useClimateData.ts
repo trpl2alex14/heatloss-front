@@ -1,5 +1,5 @@
 import type { ClimateItem } from "@features/directories/types/climate";
-import { useApiData } from "./useApiData";
+import { useApiData } from "../../../shared/composables/useApiData";
 import { route } from "@/shared/utils/router";
 import type { ColumnDef } from "@/shared/types/table";
 
@@ -9,7 +9,7 @@ const columns: ColumnDef[] = [
 	{ key: "city", label: "Город", sortable: true, sort: 2 },
 	{
 		key: "humidity",
-		label: "Зона влажности",		
+		label: "Зона влажности",
 		style: "width: 100px; text-align: center",
 		sort: 4,
 		hidden: true,
