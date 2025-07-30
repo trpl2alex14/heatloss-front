@@ -67,85 +67,11 @@ import BaseDataTable from "@/shared/components/ui/BaseDataTable.vue";
 import BaseChip from "@/shared/components/ui/BaseChip.vue";
 import BaseSelectButton from "@/shared/components/ui/BaseSelectButton.vue";
 import TypeColumn from "@features/directories/components/TypeColumn.vue";
-import type { ColumnDef, TypeIconDef } from "@/shared/types/table";
+import type { TypeIconDef } from "@/shared/types/table";
 import { dropdownActions } from "@/features/directories/composables/useProductDropdownMenu";
 import { useTable } from "@/shared/composables/useTable";
 import { useTypes } from "@features/directories/composables/useTypes";
 import { useEquipmentData } from "@features/directories/composables/useEquipmentData";
-
-const columns: ColumnDef[] = [
-	{
-		key: "status",
-		label: "",
-		type: "slot",
-		style: "width: 20px;",
-		sort: 1,
-	},
-	{
-		key: "photo",
-		label: "Фото",
-		type: "slot",
-		style: "width: 80px;",
-		hidden: true,
-		sort: 2,
-	},
-	{
-		key: "product",
-		label: "Продукт",
-		type: "slot",
-		sortable: true,
-		style: "width: 100px;",
-		sort: 3,
-	},
-	{
-		key: "category",
-		label: "Категория",
-		sortable: true,
-		sort: 4,
-		hidden: true,
-	},
-	{
-		key: "name",
-		label: "Название",
-		sortable: true,
-		sort: 5,
-	},
-	{
-		key: "article",
-		label: "Артикул",
-		style: "width: 100px;",
-		sort: 6,
-		hidden: true,
-	},
-	{
-		key: "price",
-		label: "Стоимость",
-		type: "number",
-		sortable: true,
-		style: "width: 90px; text-align: right",
-		measure: "₽",
-		sort: 7,
-	},
-	{
-		key: "characteristics",
-		label: "Характеристики",
-		sort: 8,
-		hidden: true,
-	},
-	{
-		key: "tags",
-		label: "Тэги",
-		type: "slot",
-		hidden: true,
-		sort: 9,
-	},
-];
-
-const filterOptions = [
-	{ label: "Флэйт", value: "fleyt" },
-	{ label: "Коузи", value: "kouzi" },
-	{ label: "Все", value: "all" },
-];
 
 const filterValue = ref("all");
 
@@ -169,7 +95,7 @@ const statuses: TypeIconDef[] = [
 	},
 ];
 
-const { equipmentData, isLoading, loadEquipmentData } =
+const { equipmentData, isLoading, loadEquipmentData, columns, filterOptions } =
 	useEquipmentData();
 
 const { searchValue, pagination, tableData, onPageChange, onSortChange } =
