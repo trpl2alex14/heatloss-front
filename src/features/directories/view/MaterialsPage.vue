@@ -59,10 +59,10 @@ import BaseSearch from "@/shared/components/ui/BaseSearch.vue";
 import BaseDataTable from "@/shared/components/ui/BaseDataTable.vue";
 import BaseChip from "@/shared/components/ui/BaseChip.vue";
 import BaseSelectButton from "@/shared/components/ui/BaseSelectButton.vue";
-import TypeIcon from "@/features/directories/components/TypeColumn.vue";
+import TypeIcon from "@/shared/components/TypeColumn.vue";
 import { dropdownActions } from "@/features/directories/composables/useMaterialDropdownMenu";
 import { useTable } from "@/shared/composables/useTable";
-import { useTypes } from "@features/directories/composables/useTypes";
+import { useTypes } from "@/shared/composables/useTypes";
 import { useMaterialData } from "@features/directories/composables/useMaterialData";
 
 const filterValue = ref("all");

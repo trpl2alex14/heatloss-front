@@ -69,23 +69,22 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import Head from "@/shared/components/SubHead.vue";
 import BaseButton from "@/shared/components/ui/BaseButton.vue";
-import RowCounter from "@/shared/components/RowCounter.vue";
 import BaseSearch from "@/shared/components/ui/BaseSearch.vue";
 import BaseDataTable from "@/shared/components/ui/BaseDataTable.vue";
 import BaseChip from "@/shared/components/ui/BaseChip.vue";
 import BaseSelectButton from "@/shared/components/ui/BaseSelectButton.vue";
-import { dropdownActions } from "../composables/useDropdownMenu";
-import { useCalculationData } from "@features/calculations/composables/useCalculationData";
-import type { TypeLabelDef, TypeIconDef } from "@/shared/types/table";
-import type { CalculationStatus } from "@features/calculations/types/calculation";
-import { useTypes } from "@features/directories/composables/useTypes";
-import TypeColumn from "@features/directories/components/TypeColumn.vue";
 import BaseDatePicker from "@/shared/components/ui/BaseDatePicker.vue";
-import type { CalculationItem } from "@features/calculations/types/calculation";
-import type { PaginationOptions } from "@/shared/types/table";
+import TypeColumn from "@/shared/components/TypeColumn.vue";
+import Head from "@/shared/components/SubHead.vue";
+import RowCounter from "@/shared/components/RowCounter.vue";
+import { dropdownActions } from "../composables/useDropdownMenu";
+import { useCalculationData } from "../composables/useCalculationData";
+import type { TypeLabelDef, TypeIconDef, PaginationOptions } from "@/shared/types/table";
+import type { CalculationStatus, CalculationItem } from "../types/calculation";
+import { useTypes } from "@/shared/composables/useTypes";
 import { useLazyRequest } from "@/shared/composables/useLazyRequest";
+
 
 const { productCategory } = useTypes();
 
@@ -115,12 +114,20 @@ const {
 	pagination,
 } = useCalculationData();
 
-const { onPageChange, onDateChange, filterDates, filterValue, onFilterChange, searchValue, onSortChange } =
-	useLazyRequest<CalculationItem>(loadCalculationData, true, {
-		dateField: "date",
-		filterField: "status",
-		searchFields: searchFields,
-	});
+const {
+	onPageChange,
+	onDateChange,
+	filterDates,
+	filterValue,
+	onFilterChange,
+	searchValue,
+	onSortChange,
+} = useLazyRequest<CalculationItem>(loadCalculationData, true, {
+	dateField: "date",
+	filterField: "status",
+	searchFields: searchFields,
+	pageSize: 15,
+});
 
 filterValue.value = "all";
 

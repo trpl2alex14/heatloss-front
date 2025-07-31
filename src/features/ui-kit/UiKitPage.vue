@@ -72,7 +72,11 @@
 					</template>
 				</template>
 				<template #slot-product="{ data }">
-					<TypeColumn :type="data.product || 'all'" :types="productCategory" short/>
+					<TypeColumn
+						:type="data.product || 'all'"
+						:types="productCategory"
+						short
+					/>
 				</template>
 				<template #slot-image="{ data }">
 					<img
@@ -119,8 +123,8 @@ import RowCounter from "@/shared/components/RowCounter.vue";
 import type { ColumnDef, TypeLabelDef } from "@/shared/types/table";
 import type { ActionDef } from "@/shared/types/menu";
 import BaseChip from "@/shared/components/ui/BaseChip.vue";
-import TypeColumn from "@features/directories/components/TypeColumn.vue";
-import { useTypes } from "@features/directories/composables/useTypes";
+import TypeColumn from "@/shared/components/TypeColumn.vue";
+import { useTypes } from "@/shared/composables/useTypes";
 
 const { productCategory } = useTypes();
 

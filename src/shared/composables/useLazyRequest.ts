@@ -9,6 +9,7 @@ type LazyRequestOptions<T> = {
 	dateField?: keyof T;
 	filterField?: keyof T;
 	searchFields?: (keyof T)[];
+	pageSize?: number;
 };
 
 export const useLazyRequest = <T>(
@@ -19,7 +20,7 @@ export const useLazyRequest = <T>(
 	const requestData : RequestDataOptions<T> = reactive({
 		lazyLoad: {
 			page: 1,
-			pageSize: 10,
+			pageSize: options?.pageSize || 10,
 		},
 	});
 
