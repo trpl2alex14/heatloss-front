@@ -77,7 +77,6 @@ import BaseDataTable from "@/shared/components/ui/BaseDataTable.vue";
 import BaseChip from "@/shared/components/ui/BaseChip.vue";
 import BaseSelectButton from "@/shared/components/ui/BaseSelectButton.vue";
 import { dropdownActions } from "../composables/useDropdownMenu";
-import { useTable } from "@/shared/composables/useTable";
 import { useCalculationData } from "@features/calculations/composables/useCalculationData";
 import type { TypeLabelDef, TypeIconDef } from "@/shared/types/table";
 import type { CalculationStatus } from "@features/calculations/types/calculation";
@@ -125,12 +124,8 @@ const { onPageChange, onDateChange, filterDates, filterValue, onFilterChange, se
 
 filterValue.value = "all";
 
-const { tableData } = useTable(calculationData, {	
-	lazy: true,
-});
-
 const pagedDataTransformed = computed(() => {
-	return tableData.value.map((row) => ({
+	return calculationData.value.map((row) => ({
 		...row,
 		cost: row.cost.toLocaleString("ru-RU"),
 		date: new Date(row.date),
