@@ -1,5 +1,5 @@
 import type { MaterialItem } from "@features/directories/types/materials";
-import { useApiData } from "@/shared/composables/useApiData";
+import { useApiData, type RequestDataOptions } from "@/shared/composables/useApiData";
 import { route } from "@/shared/utils/router";
 import type { ColumnDef } from "@/shared/types/table";
 
@@ -62,10 +62,13 @@ export const useMaterialData = () => {
 	} = useApiData<MaterialItem>(route("directories.materials"));
 
 	const loadMaterialData = (filterValue?: string) => {
-		const params =
-			filterValue && filterValue !== "all"
-				? { category: filterValue }
-				: {};
+		const params: RequestDataOptions<MaterialItem> = {};
+		if(filterValue && filterValue !== "all"){
+			params.filter = {
+				category: filterValue,
+			};
+		}
+
 		loadData(params);
 	};
 

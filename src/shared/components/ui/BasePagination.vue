@@ -37,7 +37,7 @@ const emit = defineEmits(["update:page"]);
 
 watch(props, () => {
 	if(props.currentPage > props.totalPages) {
-		emit("update:page", props.totalPages);
+		emit("update:page", props.totalPages || 1);
 	} 
 });
 

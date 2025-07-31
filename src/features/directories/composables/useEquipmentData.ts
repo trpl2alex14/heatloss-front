@@ -1,5 +1,5 @@
 import type { EquipmentItem } from "@features/directories/types/equipment";
-import { useApiData } from "@/shared/composables/useApiData";
+import { useApiData, type RequestDataOptions } from "@/shared/composables/useApiData";
 import { route } from "@/shared/utils/router";
 import type { ColumnDef } from "@/shared/types/table";
 
@@ -87,10 +87,13 @@ export const useEquipmentData = () => {
 	} = useApiData<EquipmentItem>(route("directories.equipment"));
 
 	const loadEquipmentData = (filterValue?: string) => {
-		const params =
-			filterValue && filterValue !== "all"
-				? { product: filterValue }
-				: {};
+		const params: RequestDataOptions<EquipmentItem> = {};
+		if(filterValue && filterValue !== "all"){
+			params.filter = {
+				product: filterValue,
+			};
+		}		
+
 		loadData(params);
 	};
 

@@ -1,34 +1,27 @@
 import { ref, computed, type Ref } from "vue";
-
-interface Pagination {
-	page: number;
-	pageSize: number;
-	total: number;
-}
+import type { PaginationOptions, SortOptions } from "@/shared/types/table";
 
 interface UseTableOptions<T> {
 	searchFields?: (keyof T)[];
 	pageSize?: number;
+	lazy?: boolean;
 }
 
 export function useTable<T extends Record<string, any>>(
 	data: Ref<T[]>,
 	options: UseTableOptions<T> = {}
 ) {
-	const { searchFields = [], pageSize = 10 } = options;
+	const { searchFields = [], pageSize = 10, lazy = false } = options;
 
 	const searchValue = ref("");
 
-	const pagination = ref<Pagination>({
+	const pagination = ref<PaginationOptions>({
 		page: 1,
 		pageSize,
 		total: data.value.length,
 	});
 
-	const sort = ref<{
-		sortField: string | undefined;
-		sortOrder: 1 | -1 | undefined;
-	}>({
+	const sort = ref<SortOptions<T>>({
 		sortField: undefined,
 		sortOrder: undefined,
 	});
@@ -78,9 +71,13 @@ export function useTable<T extends Record<string, any>>(
 		if (sort.value.sortField && sort.value.sortOrder) {
 			resultData = sortedData(
 				resultData,
-				sort.value.sortField,
+				sort.value.sortField as keyof T,
 				sort.value.sortOrder
 			);
+		}
+
+		if(lazy) {
+			return resultData;
 		}
 
 		pagination.value.total = resultData.length;
@@ -90,7 +87,7 @@ export function useTable<T extends Record<string, any>>(
 		);
 	});
 
-	function onPageChange(page: Pagination) {
+	function onPageChange(page: PaginationOptions) {
 		pagination.value = page;
 	}
 

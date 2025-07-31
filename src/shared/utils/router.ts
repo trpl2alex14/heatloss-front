@@ -6,6 +6,8 @@ export function route(name: string) {
 			return "/data/materials.json";
 		case "directories.climate":
 			return "/data/climate.json";
+		case "calculations":
+			return "/data/calculations.lazy.json";
 	}
 	return "";
 }

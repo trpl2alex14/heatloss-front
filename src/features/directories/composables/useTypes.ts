@@ -4,6 +4,7 @@ import ConstructIcon from "@assets/icons/construct.svg";
 import imageFleyt from "@/assets/images/fleyt.png";
 import imageKouzi from "@/assets/images/kouzi.png";
 import imageAll from "@/assets/images/grevolt.png";
+import type { Product } from "@/shared/types/produtcs";
 
 const materialTypes: TypeImageDef[] = [
 	{
@@ -18,8 +19,9 @@ const materialTypes: TypeImageDef[] = [
 	},
 ];
 
+type ProductType = TypeImageDef & {key: Product};
 
-const productCategory: TypeImageDef[] = [
+const productCategory: ProductType[] = [
 	{
 		key: "fleyt",
 		label: "Флэйт",

@@ -1,0 +1,140 @@
+{
+	"data": [
+		{
+			"id": 12001,
+			"rating": 1,
+			"area": 124.5,
+			"city": "Москва",
+			"cost": 127012,
+			"power": 12.6,
+			"consumption": 1467,
+			"status": "published",
+			"tags": ["каркасник", "дом", "утепленный"],
+			"date": "2025-04-01",
+			"product": "fleyt"
+		},
+		{
+			"id": 12002,
+			"rating": 2,
+			"area": 78.1,
+			"city": "Санкт-Петербург",
+			"cost": 80212,
+			"power": 8.2,
+			"consumption": 762,
+			"status": "working",
+			"tags": ["кирпич", "баня", "лента", "весна-осень"],
+			"date": "2025-04-12",
+			"product": "all"
+		},
+		{
+			"id": 12003,
+			"rating": 3,
+			"area": 38.1,
+			"city": "Челябинск",
+			"cost": 50212,
+			"power": 5.1,
+			"consumption": 262,
+			"status": "hide",
+			"tags": ["баня", "весна-осень"],
+			"date": "2025-04-12",
+			"product": "fleyt"
+		},
+		{
+			"id": 12004,
+			"rating": 4,
+			"area": 1242,
+			"city": "Казань",
+			"cost": 21127012,
+			"power": 125.3,
+			"consumption": 24067,
+			"status": "published",
+			"tags": ["дом", "утепленный"],
+			"date": "2025-02-12",
+			"product": "kouzi"
+		},
+		{
+			"id": 12005,
+			"rating": 5,
+			"area": 1242,
+			"city": "Казань",
+			"cost": 21127012,
+			"power": 125.3,
+			"consumption": 24067,
+			"status": "case",
+			"tags": ["дом", "утепленный"],
+			"date": "2023-04-12",
+			"product": "fleyt"
+		},
+		{
+			"id": 12006,
+			"rating": 4,
+			"area": 95.3,
+			"city": "Екатеринбург",
+			"cost": 98750,
+			"power": 10.2,
+			"consumption": 1150,
+			"status": "published",
+			"tags": ["каркасник", "дом"],
+			"date": "2025-03-15",
+			"product": "fleyt"
+		},
+		{
+			"id": 12007,
+			"rating": 3,
+			"area": 45.8,
+			"city": "Новосибирск",
+			"cost": 45680,
+			"power": 6.1,
+			"consumption": 420,
+			"status": "working",
+			"tags": ["баня", "весна-осень"],
+			"date": "2025-03-20",
+			"product": "all"
+		},
+		{
+			"id": 12008,
+			"rating": 5,
+			"area": 156.7,
+			"city": "Краснодар",
+			"cost": 145200,
+			"power": 15.8,
+			"consumption": 1820,
+			"status": "published",
+			"tags": ["кирпич", "дом", "утепленный"],
+			"date": "2025-03-10",
+			"product": "kouzi"
+		},
+		{
+			"id": 12009,
+			"rating": 2,
+			"area": 67.4,
+			"city": "Владивосток",
+			"cost": 72340,
+			"power": 7.5,
+			"consumption": 680,
+			"status": "hide",
+			"tags": ["каркасник", "баня"],
+			"date": "2025-03-25",
+			"product": "fleyt"
+		},
+		{
+			"id": 12010,
+			"rating": 4,
+			"area": 89.2,
+			"city": "Ростов-на-Дону",
+			"cost": 92350,
+			"power": 9.3,
+			"consumption": 890,
+			"status": "published",
+			"tags": ["дом", "утепленный"],
+			"date": "2025-03-05",
+			"product": "all"
+		}
+	],
+	"status": "success",
+	"pagination": {
+		"total": 100,
+		"page": 1,
+		"pageSize": 10
+	}
+}

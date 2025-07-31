@@ -35,3 +35,23 @@ export interface TypeIconDef {
 	icon: string;
 	color?: string;
 }
+
+export type PaginationOptions = {
+	page: number;
+	pageSize: number;
+	total: number;
+};
+
+export type SortOptions<T> = {
+	sortField?: keyof T;
+	sortOrder?: 1 | -1;
+};
+
+export type SearchOptions<T> = {
+	searchFields: (keyof T)[];
+	searchValue: string;
+};
+
+export type FilterOptions<T> = {
+	[key in keyof T]?: string | number | boolean | Date[];
+};
