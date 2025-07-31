@@ -116,13 +116,16 @@ const {
 	pagination,
 } = useCalculationData();
 
-const { onPageChange, onDateChange, filterDates, filterValue, onFilterChange } =
-	useLazyRequest<CalculationItem>(loadCalculationData, true, 'date', 'status');
+const { onPageChange, onDateChange, filterDates, filterValue, onFilterChange, searchValue, onSortChange } =
+	useLazyRequest<CalculationItem>(loadCalculationData, true, {
+		dateField: "date",
+		filterField: "status",
+		searchFields: searchFields,
+	});
 
 filterValue.value = "all";
 
-const { searchValue, tableData, onSortChange } = useTable(calculationData, {
-	searchFields: searchFields,
+const { tableData } = useTable(calculationData, {	
 	lazy: true,
 });
 

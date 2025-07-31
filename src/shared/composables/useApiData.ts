@@ -30,15 +30,16 @@ type ResponseData<T> = {
 const requestParams = <T>(params?: RequestDataOptions<T>) => {
 	const options: Record<string, any> = {};
 	if (params?.search) {
-		options.search = JSON.stringify({
+		options.search = {
 			fields: params.search.searchFields,
-			value: params.search.searchValue,
-		});
+			value: JSON.stringify(params.search.searchValue),
+		};
 	}
 	if (params?.sort && params.sort.sortField && params.sort.sortOrder) {
-		options.sort = JSON.stringify({
-			[params.sort.sortField]: params.sort.sortOrder,
-		});
+		options.sort = {
+			field: params.sort.sortField,
+			order: params.sort.sortOrder,
+		};
 	}
 	if (params?.lazyLoad) {
 		options.limit = params.lazyLoad.pageSize;		
