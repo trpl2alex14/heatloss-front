@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineEmits, useAttrs, computed } from "vue";
+import { useAttrs, computed } from "vue";
 import DatePicker from "primevue/datepicker";
 
 interface BaseDatePickerProps {

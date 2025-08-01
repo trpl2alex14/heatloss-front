@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, useAttrs, computed } from "vue";
+import { useAttrs, computed } from "vue";
 import Chip from "primevue/chip";
 
 const props = defineProps({

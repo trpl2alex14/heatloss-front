@@ -2,7 +2,7 @@ import type { Product } from "@/shared/types/produtcs";
 
 export interface CalculationItem {
 	id: string;
-	rating: number;	
+	rating: number;
 	area: number;
 	city: string;
 	cost: number;

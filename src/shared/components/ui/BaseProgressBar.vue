@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, useAttrs, defineProps, useSlots, type PropType } from "vue";
+import { computed, useAttrs, useSlots, type PropType } from "vue";
 import ProgressBar from "primevue/progressbar";
 
 const props = defineProps({

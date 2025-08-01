@@ -25,7 +25,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineEmits, watch } from "vue";
+import { watch } from "vue";
 import Button from "primevue/button";
 
 const props = defineProps<{

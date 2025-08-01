@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineProps, defineEmits, ref } from "vue";
+import { computed, ref } from "vue";
 import MultiSelect from "primevue/multiselect";
 import type { ColumnDef } from "@/shared/types/table";
 
