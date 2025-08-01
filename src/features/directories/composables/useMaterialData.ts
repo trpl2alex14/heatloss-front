@@ -1,5 +1,5 @@
 import type { MaterialItem } from "@features/directories/types/materials";
-import { useApiData, type RequestDataOptions } from "@/shared/composables/useApiData";
+import { useFetchCollection, type RequestDataOptions } from "@/shared/composables/useFetchCollection";
 import { route } from "@/shared/utils/router";
 import type { ColumnDef } from "@/shared/types/table";
 
@@ -59,7 +59,7 @@ export const useMaterialData = () => {
 		error,
 		loadData,
 		clearError,
-	} = useApiData<MaterialItem>(route("directories.materials"));
+	} = useFetchCollection<MaterialItem>(route("directories.materials"));
 
 	const loadMaterialData = (filterValue?: string) => {
 		const params: RequestDataOptions<MaterialItem> = {};

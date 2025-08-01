@@ -1,8 +1,5 @@
 import type { CalculationItem } from "@features/calculations/types/calculation";
-import {
-	useApiData,
-	type RequestDataOptions,
-} from "@/shared/composables/useApiData";
+import { useFetchCollection, type RequestDataOptions } from "@/shared/composables/useFetchCollection";
 import { route } from "@/shared/utils/router";
 import type { ColumnDef } from "@/shared/types/table";
 
@@ -109,7 +106,7 @@ export const useCalculationData = () => {
 		loadData,
 		clearError,
 		pagination,
-	} = useApiData<CalculationItem>(route("calculations"), false);
+	} = useFetchCollection<CalculationItem>(route("calculations"), false);
 
 	const loadCalculationData = (params?: RequestDataOptions<CalculationItem>) => {
 		loadData(params);

@@ -1,7 +1,7 @@
 import type { ClimateItem } from "@features/directories/types/climate";
-import { useApiData } from "../../../shared/composables/useApiData";
 import { route } from "@/shared/utils/router";
 import type { ColumnDef } from "@/shared/types/table";
+import { useFetchCollection } from "@/shared/composables/useFetchCollection";
 
 const columns: ColumnDef[] = [
 	{ key: "id", label: "ID", sortable: true, sort: 1, style: "width: 60px;" },
@@ -73,7 +73,7 @@ export const useClimateData = () => {
 		error,
 		loadData,
 		clearError,
-	} = useApiData<ClimateItem>(route("directories.climate"));
+	} = useFetchCollection<ClimateItem>(route("directories.climate"));
 
 	const loadClimateData = () => {
 		loadData();

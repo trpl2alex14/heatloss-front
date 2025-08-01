@@ -1,5 +1,5 @@
 import type { EquipmentItem } from "@features/directories/types/equipment";
-import { useApiData, type RequestDataOptions } from "@/shared/composables/useApiData";
+import { useFetchCollection, type RequestDataOptions } from "@/shared/composables/useFetchCollection";
 import { route } from "@/shared/utils/router";
 import type { ColumnDef } from "@/shared/types/table";
 
@@ -84,7 +84,7 @@ export const useEquipmentData = () => {
 		error,
 		loadData,
 		clearError,
-	} = useApiData<EquipmentItem>(route("directories.equipment"));
+	} = useFetchCollection<EquipmentItem>(route("directories.equipment"));
 
 	const loadEquipmentData = (filterValue?: string) => {
 		const params: RequestDataOptions<EquipmentItem> = {};

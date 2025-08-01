@@ -1,5 +1,4 @@
-import { ref, onMounted, computed, shallowRef, watch } from "vue";
-import axios from "axios";
+import { ref, onMounted, computed, watch } from "vue";
 import { useMessage } from "@/shared/composables/useMessage";
 import type {
 	SortOptions,
@@ -7,6 +6,7 @@ import type {
 	FilterOptions,
 	PaginationOptions,
 } from "@/shared/types/table";
+import { useApi, type ResponseData } from "@/shared/composables/useApi";
 
 type LazyLoadOptions = {
 	page: number;
@@ -20,16 +20,13 @@ export type RequestDataOptions<T> = {
 	filter?: FilterOptions<T>;
 };
 
-type ResponseData<T> = {
-	data: T[];
-	status: string;
-	error?: string;
+type ResponseCollection<T> = ResponseData<T[]> & {
 	pagination?: PaginationOptions;
 };
 
 const requestParams = <T>(params?: RequestDataOptions<T>) => {
 	const options: Record<string, any> = {};
-	if (params?.search) {
+	if (params?.search && params.search.searchValue) {
 		options.search = {
 			fields: params.search.searchFields,
 			value: JSON.stringify(params.search.searchValue),
@@ -42,7 +39,7 @@ const requestParams = <T>(params?: RequestDataOptions<T>) => {
 		};
 	}
 	if (params?.lazyLoad) {
-		options.limit = params.lazyLoad.pageSize;		
+		options.limit = params.lazyLoad.pageSize;
 		const offset = (params.lazyLoad.page - 1) * params.lazyLoad.pageSize;
 		if (offset > 0) {
 			options.offset = offset;
@@ -54,55 +51,23 @@ const requestParams = <T>(params?: RequestDataOptions<T>) => {
 	return options;
 };
 
-export const useApiData = <T>(
-	endpoint: string,
-	autoLoad = true,	
-) => {
-	const data = shallowRef<T[]>([]);
-	const isLoading = ref(false);
-	const error = ref<string | null>(null);
-	const pagination = ref<PaginationOptions>({
+export const useFetchCollection = <T>(endpoint: string, autoLoad = true) => {
+	const {
+		data: dataApi,
+		isLoading,
+		error,
+		loadData: loadDataApi,
+		clearError,
+	} = useApi<RequestDataOptions<T>, ResponseCollection<T>>(endpoint);
+
+	const defPagination = ref<PaginationOptions>({
 		page: 1,
 		pageSize: 10,
 		total: 0,
 	});
 
 	const loadData = async (params?: RequestDataOptions<T>) => {
-		isLoading.value = true;
-		error.value = null;
-
-		try {
-			const response = await axios.get<ResponseData<T>>(endpoint, {
-				params: requestParams(params),
-			});
-
-			if (response.data?.status !== "success") {
-				throw new Error(
-					response.data?.error ?? "Ошибка при загрузке данных"
-				);
-			}
-
-			data.value = response.data?.data ?? [];
-			if (response.data?.pagination) {
-				pagination.value = {
-					page: response.data?.pagination.page,
-					pageSize: response.data?.pagination.pageSize,
-					total: response.data?.pagination.total,
-				};
-			}
-		} catch (err) {
-			error.value =
-				err instanceof Error
-					? err.message
-					: "Ошибка при загрузке данных";
-			console.error("Ошибка загрузки данных:", err);
-		} finally {
-			isLoading.value = false;
-		}
-	};
-
-	const clearError = () => {
-		error.value = null;
+		loadDataApi(requestParams(params));
 	};
 
 	if (autoLoad) {
@@ -119,8 +84,21 @@ export const useApiData = <T>(
 		}
 	});
 
+	const data = computed(() => {
+		return dataApi.value.data ?? [];
+	});
+
+	const pagination = computed({
+		get: () => {
+			return dataApi.value.pagination ?? defPagination.value;
+		},
+		set: (value) => {
+			defPagination.value = value;
+		},
+	});
+
 	return {
-		data: computed(() => data.value),
+		data,
 		isLoading: computed(() => isLoading.value),
 		error: computed(() => error.value),
 		loadData,

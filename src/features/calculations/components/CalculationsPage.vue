@@ -80,11 +80,14 @@ import Head from "@/shared/components/SubHead.vue";
 import RowCounter from "@/shared/components/RowCounter.vue";
 import { dropdownActions } from "../composables/useDropdownMenu";
 import { useCalculationData } from "../composables/useCalculationData";
-import type { TypeLabelDef, TypeIconDef, PaginationOptions } from "@/shared/types/table";
+import type {
+	TypeLabelDef,
+	TypeIconDef,
+	PaginationOptions,
+} from "@/shared/types/table";
 import type { CalculationStatus, CalculationItem } from "../types/calculation";
 import { useTypes } from "@/shared/composables/useTypes";
-import { useLazyRequest } from "@/shared/composables/useLazyRequest";
-
+import { useLazyTable } from "@/shared/composables/useLazyTable";
 
 const { productCategory } = useTypes();
 
@@ -122,7 +125,7 @@ const {
 	onFilterChange,
 	searchValue,
 	onSortChange,
-} = useLazyRequest<CalculationItem>(loadCalculationData, true, {
+} = useLazyTable<CalculationItem>(loadCalculationData, true, {
 	dateField: "date",
 	filterField: "status",
 	searchFields: searchFields,
@@ -132,7 +135,7 @@ const {
 filterValue.value = "all";
 
 const pagedDataTransformed = computed(() => {
-	return calculationData.value.map((row) => ({
+	return calculationData.value.map((row: CalculationItem) => ({
 		...row,
 		cost: row.cost.toLocaleString("ru-RU"),
 		date: new Date(row.date),

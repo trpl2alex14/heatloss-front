@@ -1,5 +1,9 @@
 import type { RequestDataOptions } from "@/shared/composables/useApiData";
-import type { FilterOptions, PaginationOptions, SortOptions } from "@/shared/types/table";
+import type {
+	FilterOptions,
+	PaginationOptions,
+	SortOptions,
+} from "@/shared/types/table";
 import { onMounted, reactive, ref, watch } from "vue";
 import { useDebounce } from "@/shared/utils/debounce";
 
@@ -12,12 +16,12 @@ type LazyRequestOptions<T> = {
 	pageSize?: number;
 };
 
-export const useLazyRequest = <T>(
+export const useLazyTable = <T>(
 	loadData: (params?: RequestDataOptions<T>) => void,
 	autoLoad?: boolean,
 	options?: LazyRequestOptions<T>
 ) => {
-	const requestData : RequestDataOptions<T> = reactive({
+	const requestData: RequestDataOptions<T> = reactive({
 		lazyLoad: {
 			page: 1,
 			pageSize: options?.pageSize || 10,
@@ -30,9 +34,10 @@ export const useLazyRequest = <T>(
 
 	const searchValue = ref("");
 
-	const loadDataDebounced = (data: RequestDataOptions<T>) => debounce(() => {
-		loadData(data);
-	}, 500);
+	const loadDataDebounced = (data: RequestDataOptions<T>) =>
+		debounce(() => {
+			loadData(data);
+		}, 500);
 
 	watch(searchValue, (value) => {
 		requestData.search = {
