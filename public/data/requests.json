@@ -1,0 +1,90 @@
+{
+	"data": [
+		{
+			"id": 12002,
+			"status": "cancelled",
+			"progress": 25,
+			"date": "2025-04-12",
+			"area": 124.5,
+			"floors": 2,
+			"city": "Москва",
+			"client": "Иван Иванович",
+			"contacts": ["+7 (920) 12-12-333", "test@ivan.com"],
+			"tags": ["каркасник", "дом"],
+			"product": "fleyt"
+		},
+		{
+			"id": 12003,
+			"status": "completed",
+			"progress": 100,
+			"date": "2025-04-12",
+			"area": 224.1,
+			"floors": 2,
+			"city": "Краснодар",
+			"client": "Иван Иванович",
+			"contacts": ["+7 (920) 12-12-333", "test@ivan.com"],
+			"tags": ["каркасник", "кирпичь"],
+			"product": "kouzi",
+			"calculation": 12003
+		},
+		{
+			"id": 1244,
+			"status": "working",
+			"progress": 91,
+			"date": "2025-04-12",
+			"area": 2121,
+			"floors": 21,
+			"city": "Москва",
+			"client": "Иван",
+			"contacts": ["+7 (920) 12-12-333", "test@ivan.com"],
+			"tags": ["каркасник", "баня"],
+			"product": "fleyt"
+		},
+		{
+			"id": 12004,
+			"status": "completed",
+			"progress": 100,
+			"date": "2025-04-12",
+			"area": 124.5,
+			"floors": 2,
+			"city": "Казань",
+			"client": "Алексей Иванович",
+			"contacts": ["+7 (920) 12-12-333"],
+			"tags": ["каркасник"],
+			"product": "all",
+			"calculation": 12004
+		},
+		{
+			"id": 1245,
+			"status": "pending",
+			"progress": 65,
+			"date": "2025-04-12",
+			"area": 124.5,
+			"floors": 2,
+			"city": "Москва",
+			"client": "Иван Иванович",
+			"contacts": ["+7 (920) 12-12-333", "test@ivan.com"],
+			"tags": ["каркасник"],
+			"product": "fleyt"
+		},
+		{
+			"id": 12005,
+			"status": "working",
+			"progress": 91,
+			"date": "2025-04-12",
+			"area": 33.5,
+			"floors": 1,
+			"city": "Челябинск",
+			"client": "Юрий",
+			"contacts": ["test@ivan.com"],
+			"tags": ["каркасник", "квартира", "СИП"],
+			"product": "all"
+		}
+	],
+	"status": "success",
+	"pagination": {
+		"total": 25,
+		"page": 1,
+		"pageSize": 15
+	}
+}

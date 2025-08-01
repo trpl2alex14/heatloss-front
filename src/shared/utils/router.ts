@@ -8,6 +8,8 @@ export function route(name: string) {
 			return "/data/climate.json";
 		case "calculations":
 			return "/data/calculations.lazy.json";
+		case "requests":
+			return "/data/requests.json";
 	}
 	return "";
 }
