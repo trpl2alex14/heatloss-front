@@ -61,7 +61,17 @@
 				</div>
 			</template>
 			<template #expansion="{ data }">
-				<h5>Orders for {{ data }}</h5>
+				<div class="p-4 bg-gray-50">
+					<h5 class="font-semibold mb-2">
+						Детали расчёта {{ data.id }}
+					</h5>
+					<div class="grid grid-cols-2 gap-4 text-sm">
+						<div><strong>Клиент:</strong> {{ data.client }}</div>
+						<div><strong>Город:</strong> {{ data.city }}</div>
+						<div><strong>Площадь:</strong> {{ data.area }} м²</div>
+						<div><strong>Этажи:</strong> {{ data.floors }}</div>						
+					</div>
+				</div>
 			</template>
 		</BaseDataTable>
 	</div>

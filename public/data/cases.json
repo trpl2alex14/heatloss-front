@@ -1,0 +1,85 @@
+{
+	"data": [
+		{
+			"id": 1267,
+			"status": "published",
+			"calculation": 1267,
+			"product": "kouzi",
+			"category": 1,
+			"label": "Каркасник",
+			"area": 124.5,
+			"city": "Москва",
+			"cost": 127012,
+			"power": 12.6,
+			"consumption": 5300,
+			"date": "2025-04-12",
+			"image": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=150&q=80"
+		},
+		{
+			"id": 1268,
+			"status": "hide",
+			"calculation": 1268,
+			"product": "fleyt",
+			"category": 2,
+			"label": "Газоблок",
+			"area": 22.5,
+			"city": "Казань",
+			"cost": 227012,
+			"power": 2.6,
+			"consumption": 12300,
+			"date": "2025-04-12",
+			"image": "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=150&q=80"
+		},
+		{
+			"id": 1269,
+			"status": "published",
+			"calculation": 1269,
+			"product": "all",
+			"label": "Газоблок",
+			"category": 2,
+			"area": 24.5,
+			"city": "Москва",
+			"cost": 127012,
+			"power": 12.6,
+			"consumption": 5300,
+			"date": "2025-04-12",
+			"image": "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=150&q=80"
+		},
+		{
+			"id": 1270,
+			"status": "published",
+			"calculation": 1270,
+			"product": "fleyt",
+			"label": "Многоквартирный дом",
+			"category": 3,
+			"area": 2508.5,
+			"city": "Челябинск",
+			"cost": 127012,
+			"power": 12.6,
+			"consumption": 5300,
+			"date": "2025-04-12",
+			"image": "https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=150&q=80"
+		},
+		{
+			"id": 1271,
+			"status": "hide",
+			"calculation": 1271,
+			"product": "kouzi",
+			"category": 1,
+			"label": "Кофейня",
+			"area": 174.5,
+			"city": "Москва",
+			"cost": 127012,
+			"power": 12.6,
+			"consumption": 5300,
+			"date": "2025-04-12",
+			"image": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=150&q=80"
+		}
+	],
+	"status": "success",
+	"pagination": {
+		"total": 25,
+		"page": 1,
+		"pageSize": 15
+	}
+}

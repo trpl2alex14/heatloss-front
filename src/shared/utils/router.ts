@@ -10,6 +10,8 @@ export function route(name: string) {
 			return "/data/calculations.lazy.json";
 		case "requests":
 			return "/data/requests.json";
+		case "cases":
+			return "/data/cases.json";
 	}
 	return "";
 }
