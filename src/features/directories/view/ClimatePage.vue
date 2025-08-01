@@ -39,11 +39,12 @@ import { useTable } from "@/shared/composables/useTable";
 import { useClimateData } from "@features/directories/composables/useClimateData";
 import { plural } from "@/shared/utils/text";
 import { dropdownActions } from "@/features/directories/composables/useClimateDropdownMenu";
+import type { ClimateItem } from "@/features/directories/types/climate";
 
 const { climateData, isLoading, columns } = useClimateData();
 
 const { searchValue, pagination, tableData, onPageChange, onSortChange } =
-	useTable(climateData, {
+	useTable<ClimateItem>(climateData, {
 		searchFields: ["region", "city"],
 		pageSize: 15,
 	});

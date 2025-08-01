@@ -66,7 +66,7 @@
 						>
 					</template>
 					<template v-else-if="col.type === 'slot'" #body="{ data }">
-						<slot :name="`slot-${col.key}`" :data="data" />
+						<slot :name="`slot-${col.key}`" :data="data" :col="col" />
 					</template>
 					<template
 						v-else-if="statuses && col.type === 'status'"
@@ -74,7 +74,7 @@
 					>
 						<Tag
 							v-bind="getTagAttr(data[col.key])"
-							class="font-medium"
+							class="font-medium whitespace-nowrap"
 						/>
 					</template>
 					<template

@@ -72,6 +72,7 @@ import { dropdownActions } from "@/features/directories/composables/useProductDr
 import { useTable } from "@/shared/composables/useTable";
 import { useTypes } from "@/shared/composables/useTypes";
 import { useEquipmentData } from "@features/directories/composables/useEquipmentData";
+import type { EquipmentItem } from "@/features/directories/types/equipment";
 
 const filterValue = ref("all");
 
@@ -99,7 +100,7 @@ const { equipmentData, isLoading, loadEquipmentData, columns, filterOptions } =
 	useEquipmentData();
 
 const { searchValue, pagination, tableData, onPageChange, onSortChange } =
-	useTable(equipmentData, {
+	useTable<EquipmentItem>(equipmentData, {
 		searchFields: ["name", "category", "article"],
 		pageSize: 10,
 	});

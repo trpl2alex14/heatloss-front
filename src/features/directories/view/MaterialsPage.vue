@@ -64,6 +64,7 @@ import { dropdownActions } from "@/features/directories/composables/useMaterialD
 import { useTable } from "@/shared/composables/useTable";
 import { useTypes } from "@/shared/composables/useTypes";
 import { useMaterialData } from "@features/directories/composables/useMaterialData";
+import type { MaterialItem } from "@/features/directories/types";
 
 const filterValue = ref("all");
 
@@ -78,7 +79,7 @@ const { materialData, isLoading, loadMaterialData, columns, filterOptions } =
 	useMaterialData();
 
 const { searchValue, pagination, tableData, onPageChange, onSortChange } =
-	useTable(materialData, {
+	useTable<MaterialItem>(materialData, {
 		searchFields: ["name", "category"],
 		pageSize: 10,
 	});

@@ -61,7 +61,7 @@ const barStyle = computed(() => {
 const progressProps = computed(() => ({
 	value: props.value,
 	mode: props.mode,
-	showValue: !props.hide && props.value > 20,
+	showValue: !props.hide && props.value > 30,
 	...$attrs,
 }));
 </script>
