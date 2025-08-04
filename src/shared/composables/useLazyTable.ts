@@ -1,4 +1,4 @@
-import type { RequestDataOptions } from "@/shared/composables/useApiData";
+import type { RequestDataOptions } from "@shared/composables/useFetchCollection.ts";
 import type {
 	FilterOptions,
 	PaginationOptions,
