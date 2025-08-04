@@ -8,8 +8,9 @@
 			v-model="modelValueProxy"
 			:placeholder="placeholder"
 			:type="type"
-			variant="filled"
 			class="w-full"
+			variant="filled"
+			:disabled="disabled"
 		/>
 	</IftaLabel>
 </template>
@@ -35,6 +36,10 @@ const props = defineProps({
 		type: String,
 		default: "text",
 	},
+	disabled: {
+		type: Boolean,
+		default: false
+	}
 });
 
 const emit = defineEmits(["update:modelValue"]);

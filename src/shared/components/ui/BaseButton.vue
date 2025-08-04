@@ -46,7 +46,7 @@ const props = defineProps({
 		default: "primary",
 	},
 	variant: {
-		type: String as PropType<"outlined" | "filled" | "text" | undefined>,
+		type: String as PropType<"outlined" | "filled" | "text" | "link" | undefined>,
 		default: "filled",
 	},
 	type: {
