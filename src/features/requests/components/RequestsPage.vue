@@ -5,8 +5,8 @@
 			subtitle="Список входящих заявок на расчётов отопления"
 		>
 			<template #actions>
-				<RowCounter :value="requestData.length" />
-				<BaseButton label="Создать заявку" icon="plus" />
+				<RowCounter :value="requestData.length"/>
+				<BaseButton label="Создать заявку" icon="plus"/>
 			</template>
 		</Head>
 
@@ -17,7 +17,7 @@
 			:pagination="pagination"
 			:actions="dropdownActions"
 			:statuses="statuses"
-			customizable			
+			customizable
 			@update:pagination="onPageChange"
 			@update:sort="onSortChange"
 		>
@@ -29,7 +29,7 @@
 				/>
 			</template>
 			<template #top-right>
-				<BaseSearch v-model="searchValue" />
+				<BaseSearch v-model="searchValue"/>
 				<BaseDatePicker
 					v-model="filterDates"
 					selectionMode="range"
@@ -48,7 +48,7 @@
 				</div>
 			</template>
 			<template #slot-status="{ data }">
-				<TypeColumn :type="data.status" :types="statuses" short />
+				<TypeColumn :type="data.status" :types="statuses" short/>
 			</template>
 			<template #slot-progress="{ data }">
 				<CalculationBtn
@@ -61,7 +61,7 @@
 					style="height: 1rem; max-width: 10rem"
 				>
 					<template #compleat>
-						<CalculationBtn :data="data?.progress" />
+						<CalculationBtn :data="data?.progress"/>
 					</template>
 				</BaseProgressBar>
 			</template>
@@ -70,10 +70,10 @@
 				<span
 					v-if="data[col.key] && col.measure"
 					class="text-sm text-gray-300"
-					>{{ col.measure }}</span
-				><br />
+				>{{ col.measure }}</span
+				><br/>
 				<span class="text-gray-500 text-sm"
-					>{{ data.floors }}
+				>{{ data.floors }}
 					{{ plural(data.floors, ["этаж", "этажа", "этажей"]) }}</span
 				>
 			</template>
@@ -91,7 +91,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import {computed} from "vue";
 import BaseButton from "@/shared/components/ui/BaseButton.vue";
 import BaseSearch from "@/shared/components/ui/BaseSearch.vue";
 import BaseDataTable from "@/shared/components/ui/BaseDataTable.vue";
@@ -101,25 +101,25 @@ import BaseDatePicker from "@/shared/components/ui/BaseDatePicker.vue";
 import BaseProgressBar from "@/shared/components/ui/BaseProgressBar.vue";
 import CalculationBtn from "@/shared/components/calculationBtn.vue";
 import TypeColumn from "@/shared/components/TypeColumn.vue";
-import Head from "@/shared/components/SubHead.vue";
+import Head from "@/shared/components/Head.vue";
 import RowCounter from "@/shared/components/RowCounter.vue";
-import { dropdownActions } from "../composables/useDropdownMenu";
-import { useRequestData } from "../composables/useRequestData";
-import type { TypeLabelDef, PaginationOptions } from "@/shared/types/table";
-import type { RequestStatus, RequestItem } from "../types/request";
-import { useTypes } from "@/shared/composables/useTypes";
-import { useLazyTable } from "@/shared/composables/useLazyTable";
-import { plural } from "@shared/utils/text";
+import {dropdownActions} from "../composables/useDropdownMenu";
+import {useRequestData} from "../composables/useRequestData";
+import type {TypeLabelDef} from "@/shared/types/table";
+import type {RequestItem, RequestStatus} from "../types/request";
+import {useTypes} from "@/shared/composables/useTypes";
+import {useLazyTable} from "@/shared/composables/useLazyTable";
+import {plural} from "@shared/utils/text";
 
-const { productCategory } = useTypes();
+const {productCategory} = useTypes();
 
 const searchFields: (keyof RequestItem)[] = ["id", "city", "client"];
 
 const statuses: TypeLabelDef[] & { key: RequestStatus }[] = [
-	{ key: "pending", label: "Заполняются", type: "info" },
-	{ key: "working", label: "В работе", type: "warn" },
-	{ key: "completed", label: "Обработаны", type: "success" },
-	{ key: "cancelled", label: "Отменены", type: "secondary" },
+	{key: "pending", label: "Заполняются", type: "info"},
+	{key: "working", label: "В работе", type: "warn"},
+	{key: "completed", label: "Обработаны", type: "success"},
+	{key: "cancelled", label: "Отменены", type: "secondary"},
 ];
 
 const {
@@ -155,9 +155,9 @@ const pagedDataTransformed = computed(() => {
 		progress:
 			row.progress === 100 && row.calculation
 				? {
-						url: `/calculations/${row.calculation}`,
-						label: `${row.calculation}`,
-				  }
+					url: `/calculations/${row.calculation}`,
+					label: `${row.calculation}`,
+				}
 				: row.progress,
 	}));
 });
