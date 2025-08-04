@@ -1,4 +1,4 @@
-export function route(name: string) {
+export function route(name: string, id? :number) {
 	switch (name) {
 		case "directories.equipment":
 			return "/data/equipment.json";
@@ -12,6 +12,10 @@ export function route(name: string) {
 			return "/data/requests.json";
 		case "cases":
 			return "/data/cases.json";
+		case "crm.lead":
+			return `https://kouzi.bitrix24.ru/crm/lead/details/${id}/`;
+		case "crm.deal":
+			return `https://kouzi.bitrix24.ru/crm/deal/details/${id}/`;
 	}
 	return "";
 }
