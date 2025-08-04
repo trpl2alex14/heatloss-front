@@ -15,12 +15,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import SelectButton from "primevue/selectbutton";
-
-interface Option {
-	label: string;
-	value: any;
-	[key: string]: any;
-}
+import type { Option } from "@shared/types/selectButton.ts";
 
 const props = defineProps({
 	modelValue: {
