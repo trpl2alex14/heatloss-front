@@ -72,10 +72,7 @@
 						v-else-if="statuses && col.type === 'status'"
 						#body="{ data }"
 					>
-						<Tag
-							v-bind="getTagAttr(data[col.key])"
-							class="font-medium whitespace-nowrap"
-						/>
+						<BaseStatusTag v-if="statuses" :statuses="statuses" :status="data[col.key]"/>
 					</template>
 					<template
 						v-else-if="actions && col.type === 'actions'"
@@ -116,9 +113,9 @@ import BasePagination from "./BasePagination.vue";
 import BaseDataTableColsPicker from "./BaseDataTableColumnsPicker.vue";
 import BaseDropdownMenu from "./BaseDropdownMenu.vue";
 import Column from "primevue/column";
-import Tag from "primevue/tag";
 import type { ColumnDef, TypeLabelDef } from "@/shared/types/table";
 import type { ActionDef } from "@/shared/types/menu";
+import BaseStatusTag from "@shared/components/ui/BaseStatusTag.vue";
 
 const props = defineProps<{
 	columns: ColumnDef[];
@@ -161,16 +158,6 @@ const getColumnStyle = (col: ColumnDef) => {
 	);
 };
 
-const getTagAttr = (value: string | number) => {
-	if (props.statuses) {
-		const status = props.statuses.find((s) => s.key === value);
-		return {
-			severity: status?.type || "info",
-			value: status?.label || value,
-		};
-	}
-};
-
 const getIconColumn = (value: string | { icon: string; color: string }) => {
 	const icon = typeof value === "string" ? value : value.icon;
 	return {
@@ -184,10 +171,10 @@ const getIconColumn = (value: string | { icon: string; color: string }) => {
 
 const emit = defineEmits([
 	"update:pagination",
-	"update:sort",	
+	"update:sort",
 ]);
 
-const onSortChange = (e: any) => {	
+const onSortChange = (e: any) => {
 	emit("update:sort", {
 		sortField: e.sortField,
 		sortOrder: e.sortOrder,
