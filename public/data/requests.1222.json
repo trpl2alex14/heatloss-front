@@ -1,0 +1,143 @@
+{
+	"status": "success",
+	"data": {
+		"id": 1222,
+		"status": "working",
+		"progress": 75,
+		"date": "12-04-2025",
+		"area": 127,
+		"width": 7,
+		"length": 12,
+		"wallHeight": 7,
+		"ridgeHeight": 7,
+		"city": "Челябинск",
+		"product": "fleyt",
+		"client": {
+			"name": "Иван Иванович",
+			"phone": "+7(351)255-22-11",
+			"lead": 12254,
+			"deal": 3452
+		},
+		"attachments": [
+			{
+				"label": "проект.pdf",
+				"url": "/file.pdf"
+			},
+			{
+				"label": "document kp.pdf",
+				"url": "/file.pdf"
+			},
+			{
+				"label": "1 этаж картинка.png",
+				"url": "/file.pdf"
+			}
+		],
+		"tags": [
+			"дом",
+			"постоянное проживание",
+			"отапливаемая снизу",
+			"угловая",
+			"мансарда",
+			"окраска по ral",
+			"дистанционное управление",
+			"есть wi-fi",
+			"есть камин"
+		],
+		"constructions": [
+			{
+				"id": 1,
+				"label": "Крыша утепленная наклонная",
+				"type": "roof",
+				"area": 127,
+				"materials": [
+					{
+						"id": 1,
+						"name": "Мин. вата плотностью 25-50",
+						"width": 150
+					},
+					{
+						"id": 2,
+						"name": "Дерево, сосна ель поперек волокон",
+						"width": 50
+					}
+				]
+			},
+			{
+				"id": 2,
+				"label": "Пристрой к дому",
+				"type": "walls",
+				"area": 47,
+				"materials": [
+					{
+						"id": 3,
+						"name": "Мин. вата плотностью 25-50",
+						"width": 150
+					},
+					{ "id": 4, "name": "OSB", "width": 50 }
+				]
+			},
+			{
+				"id": 3,
+				"label": "Стена наружная",
+				"type": "walls",
+				"materials": [{ "id": 5, "name": "Газоблок", "width": 400 }]
+			},
+			{
+				"id": 4,
+				"label": "Пол над техподпольем, расп. выше уровня земли",
+				"type": "floor",
+				"materials": [
+					{ "id": 6, "name": "Бетон D500", "width": 200 },
+					{
+						"id": 7,
+						"name": "Плиты из эструдированного полистирола \"ПЕНОПЛЭКС Фасад\"",
+						"width": 50
+					}
+				]
+			},
+			{
+				"id": 5,
+				"label": "Витражи и окна",
+				"type": "windows",
+				"materials": [{ "id": 8, "name": "Двухкамерный стеклопакет" }]
+			}
+		],
+		"floors": [
+			{
+				"height": 2.6,
+				"tags": ["цокольный этаж"],
+				"rooms": [
+					{
+						"name": "Спальня",
+						"windows": [{ "typeId": 1, "count": 2, "area": 11 }],
+						"area": 11,
+						"height": 2.6,
+						"tags": ["уличная дверь", "окна в пол"]
+					},
+					{
+						"name": "Спальня",
+						"windows": [{ "typeId": 1, "count": 2, "area": 11 }],
+						"area": 11,
+						"height": 2.6
+					}
+				]
+			},
+			{
+				"height": 2.6,
+				"tags": ["мансарда"],
+				"rooms": [
+					{
+						"name": "Спальня",
+						"area": 11,
+						"height": 2.6,
+						"tags": ["мансарда", "теплый пол"]
+					}
+				]
+			}
+		],
+		"electricity": {
+			"power": "15 кВт",
+			"price": 3.5
+		}
+	}
+}

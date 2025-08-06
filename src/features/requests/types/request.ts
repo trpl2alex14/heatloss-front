@@ -1,5 +1,5 @@
 import type { Product } from "@/shared/types/produtcs";
-import type { ClientRequest } from "@/shared/types/client";
+import type { ClientRequest, Attach } from "@/shared/types/client";
 
 export type RequestStatus = "working" | "completed" | "pending" | "cancelled";
 
@@ -66,6 +66,7 @@ export interface RequestDetails {
 	tags?: TagShort[];
 
 	client: ClientRequest;
+	attachments?: Attach[];
 
 	area?: number;
 	width?: number;
