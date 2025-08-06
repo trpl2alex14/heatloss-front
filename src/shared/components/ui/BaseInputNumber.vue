@@ -1,28 +1,27 @@
 <template>
 	<IftaLabel class="space-y-1">
-		<label v-if="label" class="block text-sm font-medium text-gray-700">{{
-			label
-		}}</label>
-		<Textarea
+		<InputNumber
 			v-bind="inputAttrs"
 			v-model="modelValueProxy"
 			:placeholder="placeholder"
 			class="w-full"
 			variant="filled"
 			:disabled="disabled"
-			:rows="rows"
 		/>
+		<label v-if="label" class="block text-sm font-medium text-gray-700">{{
+			label
+		}}</label>
 	</IftaLabel>
 </template>
 
 <script setup lang="ts">
 import { computed, useAttrs } from "vue";
-import Textarea from "primevue/textarea";
+import InputNumber from "primevue/inputnumber";
 
 const props = defineProps({
 	modelValue: {
-		type: String,
-		default: "",
+		type: Number,
+		default: 0,
 	},
 	label: {
 		type: String,
@@ -35,10 +34,6 @@ const props = defineProps({
 	disabled: {
 		type: Boolean,
 		default: false,
-	},
-	rows: {
-		type: String,
-		default: 3,
 	},
 });
 
@@ -58,8 +53,8 @@ const inputAttrs = computed(() => {
 </script>
 
 <style lang="scss">
-.p-textarea {
-	--p-textarea-disabled-background: var(--color-gray-200);
-	--p-textarea-disabled-color: var(--color-gray-800);
+.p-inputnumber {
+	--p-inputtext-disabled-background: var(--color-gray-100);
+	--p-inputtext-disabled-color: var(--color-gray-800);
 }
 </style>

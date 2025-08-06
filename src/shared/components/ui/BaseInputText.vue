@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, useAttrs } from "vue";
 import InputText from "primevue/inputtext";
 
 const props = defineProps({
@@ -38,8 +38,8 @@ const props = defineProps({
 	},
 	disabled: {
 		type: Boolean,
-		default: false
-	}
+		default: false,
+	},
 });
 
 const emit = defineEmits(["update:modelValue"]);
@@ -49,8 +49,17 @@ const modelValueProxy = computed({
 	set: (v) => emit("update:modelValue", v),
 });
 
+const attrs = useAttrs();
+
 const inputAttrs = computed(() => {
 	const { modelValue, label, placeholder, type, ...rest } = props;
-	return rest;
+	return { ...attrs, ...rest };
 });
 </script>
+
+<style lang="scss">
+.p-inputtext {
+	--p-inputtext-disabled-background: var(--color-gray-200);
+	--p-inputtext-disabled-color: var(--color-gray-800);
+}
+</style>

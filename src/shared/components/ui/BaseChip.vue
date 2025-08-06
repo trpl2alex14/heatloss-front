@@ -1,8 +1,11 @@
 <template>
 	<Chip
 		v-bind="chipProps"
-		v-on="$attrs"
 		:class="['mr-1', 'text-sm', $attrs.class]"
+		:style="[
+			{ '--p-chip-icon-font-size': iconSize || '1rem' },
+			{ '--p-chip-icon-size': iconSize || '1rem' },
+		]"
 		@remove="onRemove()"
 	/>
 </template>
@@ -11,24 +14,25 @@
 import { useAttrs, computed } from "vue";
 import Chip from "primevue/chip";
 
-const props = defineProps({
-	label: String,
-	icon: String,
-	image: String,
-	removable: Boolean,
-});
+type Props = {
+	label: string;
+	icon?: string;
+	image?: string;
+	removable?: boolean;
+	iconSize?: string;
+};
+
+const props = defineProps<Props>();
 
 const $attrs = useAttrs();
 const $emit = defineEmits(["remove"]);
 
 const chipProps = computed(() => ({
-	label: props.label,
-	icon: props.icon,
-	image: props.image,
-	removable: props.removable,
+	...props,
+	icon: props?.icon ? `pi pi-${props.icon}` : undefined,
 }));
 
 const onRemove = () => {
-	$emit("remove");	
+	$emit("remove");
 };
 </script>
