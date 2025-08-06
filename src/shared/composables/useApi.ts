@@ -15,12 +15,12 @@ export const useApi = <T, K>(
 	const isLoading = ref(false);
 	const error = ref<string | null>(null);
 	
-	const loadData = async (params?: T) => {
+	const loadData = async (params?: T | null, id?: string) => {
 		isLoading.value = true;
 		error.value = null;
 
 		try {
-			const response = await axios.get(endpoint,	{params});
+			const response = await axios.get(endpoint + (id || ""), params ? {params} : {});
 
 			if (response.data?.status !== "success") {
 				throw new Error(
