@@ -3,8 +3,6 @@ alwaysApply: true
 ---
 ## Project structure
 
-- использовать компоненты primevue оборачивая в базовый компонент сохраняемый в shared/components/ui
-- все стальные общие компонеты, которые не являются обертками primevue, размещать в shared/components
 - при работе с файлами и диреткориями проекта, используй абсолютные пути
 - используй единообразное формотирование в проекте (indent_style = tab; indent_size = 4; end_of_line = lf)
 - пиши документацию, только если явно просят
@@ -39,62 +37,38 @@ src/
     store.ts
     config.ts
   features/             # Фичи (основные бизнес-модули)
-    auth/               # Пример: аутентификация
+    calculations/           # Список расчётов и расчёт
       components/
+      composables/
+      view/             # старницы разделов
       api/
       store/
-      types.ts
+      types/
       index.ts
-    user/               # Пример: профиль пользователя
-      components/
-      api/
-      store/
-      types.ts
-      index.ts
-    calculations/           # Список расчётов
-      components/
-      api/
-      store/
-      types.ts
-      index.ts
-    calculat/           # Сервис расчёта теплопотерь объекта и подбора оборудования
-      components/
-      api/
-      store/
-      types.ts
-      index.ts     
     requests/           # Список заявок на расчёт теплопотерь
       components/
+      composables/
+      view/             # старницы разделов
       api/
       store/
-      types.ts
+      types/
       index.ts
     cases/              # Кейсы (расширенные расчёты с доп. инфой)
       components/
+      composables/
+      view/             # старницы разделов
       api/
       store/
-      types.ts
-      index.ts  
+      types/
+      index.ts
     directories/        # Справочники (оборудование, материалы, климатология)
-      equipment/
         components/
+        composables/
+        view/             # старницы разделов
         api/
         store/
-        types.ts
-        index.ts
-      materials/
-        components/
-        api/
-        store/
-        types.ts
-        index.ts
-      climate/
-        components/
-        api/
-        store/
-        types.ts
-        index.ts
-      index.ts          # Общий экспорт справочников                
+        types/
+        index.ts        
     ...
   shared/               # Общие переиспользуемые сущности
     components/         # Общие компоненты (UI-киты, кнопки, инпуты)

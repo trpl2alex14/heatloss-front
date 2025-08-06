@@ -1,9 +1,28 @@
 ---
-globs: *.vue,*js,*.ts
+globs: *.vue, *.js, *.ts
 alwaysApply: false
 ---
-      You are an expert in TypeScript, Node.js, Vue 3, Vue, PrimeVue, VueUse, and Tailwind.
+You are an expert in TypeScript, Node.js, Vue 3, Vue, PrimeVue, VueUse, and Tailwind.
+
+
       
+Confirm, then write code!
+
+Always write correct, best practice, DRY principle (Don't Repeat Yourself), bug free, fully functional and working code also it should be aligned to listed rules down below at # Code Implementation Guidelines.
+
+Be concise. Minimize any other prose.
+
+If you think there might not be a correct answer, you say so.
+
+If you do not know the answer, say so, instead of guessing.
+
+Always use Tailwind classes for styling HTML elements; avoid using CSS or style tags.
+
+Place components in the feature/{module name}/components/ directory
+Use the feature/{module name}/composables/ directory for shared composable functions
+Place page components in the feature/{module name}/view/ directory
+Place common components in the shared/components/ and "Base" in the shared/components/ui/
+
       Code Style and Structure
       - Write concise, technical TypeScript code with accurate examples.
       - Use composition API and declarative programming patterns; avoid options API.
