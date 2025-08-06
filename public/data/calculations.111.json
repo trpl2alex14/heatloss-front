@@ -1,0 +1,11 @@
+{
+	"data": {
+		"id": 111,
+		"date": "12-04-2025",
+		"status": "working",
+		"area": 133,
+		"city": "Москва",
+		"requestId": 1222
+	},
+	"status": "success"
+}
