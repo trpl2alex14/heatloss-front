@@ -1,6 +1,11 @@
 import type { Product } from "@/shared/types/produtcs";
+import type { ClientRequest } from "@/shared/types/client";
 
 export type RequestStatus = "working" | "completed" | "pending" | "cancelled";
+
+export type ConstructionType = "roof" | "walls" | "floor" | "windows" | "doors";
+
+export type TagShort = string;
 
 export interface RequestItem {
 	id: number;
@@ -15,4 +20,67 @@ export interface RequestItem {
 	tags: string[];
 	product: Product;
 	calculation?: number;
+}
+
+export interface Window {
+	typeId: number;
+	count: number;
+	area?: number;
+}
+
+export interface Room {
+	name?: string;
+	windows?: Window[];
+	area: number;
+	height?: number;
+	tags?: TagShort[];
+}
+
+export interface Material {
+	id: number;
+	name: string;
+	width?: number;
+}
+
+export interface Construction {
+	id: number;
+	label?: string;
+	type: ConstructionType;
+	area?: number;
+	materials: Material[];
+}
+
+export interface Floor {
+	height?: number;
+	tags?: TagShort[];
+	rooms: Room[];
+}
+
+export interface RequestDetails {
+	id: number;
+	status: RequestStatus;
+	progress: number;
+	date: string;
+	product: Product;
+
+	tags?: TagShort[];
+
+	client: ClientRequest;
+
+	area?: number;
+	width?: number;
+	length?: number;
+	wallHeight?: number;
+	ridgeHeight?: number;
+
+	city?: string;
+
+	constructions?: Construction[];
+
+	floors?: Floor[];
+
+	electricity?: {
+		power?: string;
+		price?: number;
+	};
 }

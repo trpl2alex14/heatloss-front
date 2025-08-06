@@ -8,7 +8,8 @@
 				text
 				:href="route('crm.lead', client.lead)"
 				target="_blank"
-				icon="link"/>
+				icon="link"
+			/>
 			<BaseButton
 				v-if="client.deal"
 				:label="`Сделка №${client.deal}`"
@@ -16,13 +17,10 @@
 				text
 				:href="route('crm.deal', client.deal)"
 				target="_blank"
-				icon="link"/>
+				icon="link"
+			/>
 		</div>
-		<BaseInputText
-			v-model="client.name"
-			label="Клиент"
-			disabled
-		/>
+		<BaseInputText v-model="client.name" label="Клиент" disabled />
 		<div class="flex flex-wrap gap-2">
 			<BaseInputText
 				v-model="client.phone"
@@ -48,30 +46,30 @@
 		/>
 		<div class="flex gap-x-4 flex-wrap">
 			<BaseButton
-				v-for="(attach , key) in attachments"
+				v-for="(attach, key) in attachments"
 				:label="attach.label"
 				:key="key"
 				as="a"
 				text
 				:href="attach.url"
 				target="_blank"
-				icon="file"/>
+				icon="file"
+			/>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import type {Attach, Request} from "@shared/types/request.ts";
+import type { Attach, ClientRequest } from "@/shared/types/client";
 import BaseButton from "@shared/components/ui/BaseButton.vue";
 import BaseInputText from "@shared/components/ui/BaseInputText.vue";
 import BaseTextArea from "@shared/components/ui/BaseTextArea.vue";
-import {route} from "@shared/utils/router.ts";
+import { route } from "@shared/utils/router.ts";
 
 type Props = {
-	client: Request,
-	attachments?: Attach[]
-}
+	client: ClientRequest;
+	attachments?: Attach[];
+};
 
 defineProps<Props>();
-
 </script>
