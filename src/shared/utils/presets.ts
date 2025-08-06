@@ -7,7 +7,7 @@ export const myStylePreset = definePreset(Aura, {
 			root: {
 				borderRadius: "0.6rem",
 				paddingY: "0.2rem",
-			}
+			},
 		},
 	},
 	semantic: {
@@ -33,6 +33,6 @@ export const myStylePreset = definePreset(Aura, {
 					activeColor: "#ed0314",
 				},
 			},
-		}
+		},
 	},
 });

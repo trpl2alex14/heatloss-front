@@ -28,7 +28,7 @@ const routes = [
 		name: "CreateCalculation",
 		meta: { title: "Создать расчёт", icon: "file-plus-2.svg" },
 		component: () =>
-			import("@features/calculations/components/CalculationsPage.vue"),
+			import("@features/calculations/view/CalculationPage.vue"),
 	},
 	{
 		path: "/",
@@ -39,7 +39,7 @@ const routes = [
 		name: "Calculations",
 		meta: { title: "Расчёты", icon: "layout-list.svg" },
 		component: () =>
-			import("@features/calculations/components/CalculationsPage.vue"),
+			import("@features/calculations/view/CalculationsPage.vue"),
 	},
 	{
 		path: "/requests",

@@ -15,7 +15,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import SelectButton from "primevue/selectbutton";
-import type { Option } from "@shared/types/selectButton.ts";
+import type { SelectButtonOption } from "@/shared/types/ui";
 
 const props = defineProps({
 	modelValue: {
@@ -23,7 +23,7 @@ const props = defineProps({
 		default: undefined,
 	},
 	options: {
-		type: Array as () => Option[],
+		type: Array as () => SelectButtonOption[],
 		required: true,
 	},
 	optionLabel: {
@@ -66,3 +66,12 @@ const computedClass = computed(() =>
 	].join(" ")
 );
 </script>
+
+<style lang="scss">
+.p-selectbutton {
+	.p-togglebutton {
+		--p-togglebutton-background: var(--color-gray-100);
+		--p-togglebutton-checked-background: var(--color-gray-100);
+	}
+}
+</style>
