@@ -118,7 +118,7 @@ import BasePagination from "@/shared/components/ui/BasePagination.vue";
 import BaseSearch from "@/shared/components/ui/BaseSearch.vue";
 import BaseDatePicker from "@/shared/components/ui/BaseDatePicker.vue";
 import BaseProgressBar from "@/shared/components/ui/BaseProgressBar.vue";
-import CalculationBtn from "@/shared/components/calculationBtn.vue";
+import CalculationBtn from "@/shared/components/CalculationBtn.vue";
 import RowCounter from "@/shared/components/RowCounter.vue";
 import type { ColumnDef, TypeLabelDef } from "@/shared/types/table";
 import type { ActionDef } from "@/shared/types/menu";
