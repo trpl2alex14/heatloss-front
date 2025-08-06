@@ -1,0 +1,70 @@
+{
+	"data": [
+		{
+			"id": 1,
+			"icon": "home",
+			"label": "дом"
+		},
+		{
+			"id": 2,
+			"icon": "calendar-clock",
+			"label": "постоянное проживание"
+		},
+		{
+			"id": 3,
+			"icon": "arrow-up",
+			"label": "отапливаемая снизу"
+		},
+		{
+			"id": 4,
+			"icon": "window-maximize",
+			"label": "угловая"
+		},
+		{
+			"id": 5,
+			"icon": "eject",
+			"label": "мансарда"
+		},
+		{
+			"id": 6,
+			"icon": "palette",
+			"label": "окраска по ral"
+		},
+		{
+			"id": 7,
+			"icon": "wifi",
+			"label": "дистанционное управление"
+		},
+		{
+			"id": 8,
+			"icon": "wifi",
+			"label": "есть wi-fi"
+		},
+		{
+			"id": 9,
+			"icon": "sun",
+			"label": "есть камин"
+		},
+		{
+			"id": 10,
+			"icon": "window-minimize",
+			"label": "цокольный этаж"
+		},
+		{
+			"id": 11,
+			"icon": "wave-pulse",
+			"label": "теплый пол"
+		},
+		{
+			"id": 12,
+			"icon": "sign-out",
+			"label": "уличная дверь"
+		},
+		{
+			"id": 13,
+			"icon": "table",
+			"label": "окна в пол"
+		}
+	],
+	"status": "success"
+}

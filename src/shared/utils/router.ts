@@ -16,6 +16,8 @@ export function route(name: string, id? :number) {
 			return `https://kouzi.bitrix24.ru/crm/lead/details/${id}/`;
 		case "crm.deal":
 			return `https://kouzi.bitrix24.ru/crm/deal/details/${id}/`;
+		case "/api/tags":
+			return "/data/tags.json";
 	}
 	return "";
 }
