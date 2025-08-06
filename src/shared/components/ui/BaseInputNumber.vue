@@ -4,7 +4,8 @@
 			v-bind="inputAttrs"
 			v-model="modelValueProxy"
 			:placeholder="placeholder"
-			class="w-full"
+			class="w-full"			
+			:pt="{ pcInputText: { root: { style: 'width: 100%' } } }"
 			variant="filled"
 			:disabled="disabled"
 		/>
