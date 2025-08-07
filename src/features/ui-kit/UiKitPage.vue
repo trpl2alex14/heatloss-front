@@ -16,6 +16,45 @@
 
 		<section class="mb-8">
 			<h2 class="text-md font-normal mt-3">
+				BaseSelect ({{ selectedProduct || "Не выбран" }})
+			</h2>
+			<div class="space-y-4">
+				<BaseSelect
+					v-model="selectedProduct"
+					:options="selectProductsOptions"
+					label="Продукт"
+					placeholder="Выберите продукт"
+					class="w-54"
+				/>
+				<BaseSelect
+					v-model="selectedProduct"
+					:options="cities"
+					label="Город"
+					placeholder="Выберите город"
+					class="w-54"
+					filter
+				/>
+			</div>
+		</section>
+
+		<section class="mb-8">
+			<h2 class="text-md font-normal mt-3">
+				BaseMultiSelect ({{ selectedProducts?.length || 0 }} выбрано)
+			</h2>
+			<div class="space-y-4">
+				<BaseMultiSelect
+					v-model="selectedProducts"
+					:options="selectProductsOptions"
+					label="Продукты"
+					placeholder="Выберите продукты"
+					class="w-80"
+					:show-toggle-all="false"
+				/>
+			</div>
+		</section>
+
+		<section class="mb-8">
+			<h2 class="text-md font-normal mt-3">
 				BasePagination ({{ pagination.page }})
 			</h2>
 			<BasePagination
@@ -114,6 +153,8 @@ import Head from "@/shared/components/Head.vue";
 import BaseButton from "@/shared/components/ui/BaseButton.vue";
 import BaseDataTable from "@/shared/components/ui/BaseDataTable.vue";
 import BaseSelectButton from "@/shared/components/ui/BaseSelectButton.vue";
+import BaseSelect from "@/shared/components/ui/BaseSelect.vue";
+import BaseMultiSelect from "@/shared/components/ui/BaseMultiSelect.vue";
 import BasePagination from "@/shared/components/ui/BasePagination.vue";
 import BaseSearch from "@/shared/components/ui/BaseSearch.vue";
 import BaseDatePicker from "@/shared/components/ui/BaseDatePicker.vue";
@@ -282,4 +323,30 @@ const selectOptions = [
 const selectValue = ref("all");
 
 const dates = ref(null);
+
+// Данные для BaseSelect
+const selectedProduct = ref();
+
+// Данные для BaseMultiSelect
+const selectedProducts = ref<(string | number)[]>([]);
+
+const selectProductsOptions = productCategory.map((item) => ({
+	label: item.label,
+	value: item.key,
+	icon: item.image,
+}));
+
+const cities = [
+	{ label: "Москва", value: "moscow" },
+	{ label: "Санкт-Петербург", value: "saint-petersburg" },
+	{ label: "Новосибирск", value: "novosibirsk" },
+	{ label: "Екатеринбург", value: "ekaterinburg" },
+	{ label: "Казань", value: "kazan" },
+	{ label: "Ростов-на-Дону", value: "rostov-on-don" },
+	{ label: "Уфа", value: "ufa" },
+	{ label: "Красноярск", value: "krasnoyarsk" },
+	{ label: "Пермь", value: "perm" },
+	{ label: "Волгоград", value: "volgograd" },
+	{ label: "Краснодар", value: "krasnodar" },
+];
 </script>

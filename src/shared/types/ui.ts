@@ -4,6 +4,13 @@ export interface SelectButtonOption {
 	[key: string]: any;
 }
 
+export interface SelectOption {
+	label?: string;
+	value: any;
+	icon?: string;
+	[key: string]: any;
+}
+
 export interface Tag {
 	icon?: string;
 	label: string;
