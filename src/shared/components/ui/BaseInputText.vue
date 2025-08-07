@@ -21,7 +21,7 @@ import InputText from "primevue/inputtext";
 
 const props = defineProps({
 	modelValue: {
-		type: String,
+		type: [String, Number],
 		default: "",
 	},
 	label: {
@@ -45,7 +45,7 @@ const props = defineProps({
 const emit = defineEmits(["update:modelValue"]);
 
 const modelValueProxy = computed({
-	get: () => props.modelValue,
+	get: () => props.modelValue as string,
 	set: (v) => emit("update:modelValue", v),
 });
 
