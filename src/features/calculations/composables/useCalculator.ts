@@ -8,7 +8,7 @@ export const useCalculator = () => {
 	
 	const title = computed(() => {
 		return (
-			calculation.value?.title ??
+			calculation.value?.title ||
 			(calculation.value?.city && calculation.value?.area ?
 			`${calculation.value.city} - Дом ${calculation.value.area} м²` :
 			'Новый расчёт')

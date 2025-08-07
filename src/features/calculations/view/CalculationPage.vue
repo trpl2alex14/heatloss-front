@@ -18,7 +18,9 @@
 					/>
 				</div>
 			</div>
-			<div class="flex-1">calc</div>
+			<div class="flex-1">
+				<Calculation v-model="calculation" />
+			</div>
 			<div
 				class="w-140 flex-shrink-0 border border-gray-300 p-3 rounded-xl"
 			>
@@ -65,13 +67,13 @@ import {
 	ClientDetails,
 	CalculationResult,
 	RequestDetails,
+	Calculation,
 } from "@features/calculations/components";
 import type { SelectButtonOption } from "@/shared/types/ui";
 import type { SubMenuItem } from "@shared/types/submenu.ts";
 import { useCalculator } from "@features/calculations/composables/useCalculator.ts";
 import { useRequest } from "@/features/calculations/api/request";
 import { useFetchCalculation } from "@/features/calculations/api/calculation";
-
 
 const {
 	result: calculationResult,
@@ -81,16 +83,12 @@ const {
 } = useCalculator();
 
 const requestId = computed(() => {
+	// TODO: взять из route params
 	return calculation.value.requestId;
 });
 
-const {
-	requestData,
-	attachments,
-	client,
-	hasRequest,
-	loadRequestData,
-} = useRequest("");
+const { requestData, attachments, client, hasRequest, loadRequestData } =
+	useRequest("");
 
 watch(requestId, (newId) => {
 	if (newId) {
@@ -98,13 +96,29 @@ watch(requestId, (newId) => {
 	}
 });
 
+// TODO: взять из route params
 const calculationId = 111;
 
-const { isLoading, error, loadCalculationData } = useFetchCalculation(calculationId, calculation);
+const { /*isLoading, error,*/ loadCalculationData } = useFetchCalculation(
+	calculationId,
+	calculation
+);
 
 onMounted(() => {
 	loadCalculationData();
 });
+
+const copyAll = () => {
+	console.log("copyAll");
+};
+
+const copyConstructions = () => {
+	console.log("copyConstructions");
+};
+
+const copyRooms = () => {
+	console.log("copyRooms");
+};
 
 const tab = ref("result");
 
@@ -126,18 +140,6 @@ const rightBoxTabs = computed<SelectButtonOption[]>(() => {
 		},
 	];
 });
-
-const copyAll = () => {
-	console.log("copyAll");
-};
-
-const copyConstructions = () => {
-	console.log("copyConstructions");
-};
-
-const copyRooms = () => {
-	console.log("copyRooms");
-};
 
 const subMenuItems: SubMenuItem[] = [
 	{
