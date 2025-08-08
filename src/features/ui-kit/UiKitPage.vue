@@ -77,6 +77,23 @@
 
 		<section class="mb-8">
 			<h2 class="text-md font-normal mt-3">
+				BaseToggleSwitch ({{ toggleValue ? "Включен" : "Выключен" }})
+			</h2>
+			<div class="space-y-4">
+				<BaseToggleSwitch
+					v-model="toggleValue"
+					label="Включить уведомления"
+				/>
+				<BaseToggleSwitch
+					v-model="toggleValue2"
+					label="Автосохранение"
+				/>
+				<BaseToggleSwitch v-model="toggleValue3" :disabled="true" />
+			</div>
+		</section>
+
+		<section class="mb-8">
+			<h2 class="text-md font-normal mt-3">
 				BaseDataTable {{ searchValue }}
 			</h2>
 			<BaseDataTable
@@ -159,6 +176,7 @@ import BasePagination from "@/shared/components/ui/BasePagination.vue";
 import BaseSearch from "@/shared/components/ui/BaseSearch.vue";
 import BaseDatePicker from "@/shared/components/ui/BaseDatePicker.vue";
 import BaseProgressBar from "@/shared/components/ui/BaseProgressBar.vue";
+import BaseToggleSwitch from "@/shared/components/ui/BaseToggleSwitch.vue";
 import CalculationBtn from "@/shared/components/CalculationBtn.vue";
 import RowCounter from "@/shared/components/RowCounter.vue";
 import type { ColumnDef, TypeLabelDef } from "@/shared/types/table";
@@ -349,4 +367,9 @@ const cities = [
 	{ label: "Волгоград", value: "volgograd" },
 	{ label: "Краснодар", value: "krasnodar" },
 ];
+
+// Данные для BaseToggleSwitch
+const toggleValue = ref(false);
+const toggleValue2 = ref(true);
+const toggleValue3 = ref(false);
 </script>
