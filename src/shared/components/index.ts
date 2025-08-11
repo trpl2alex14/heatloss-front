@@ -22,3 +22,6 @@ export { default as BaseDataTableColumnsPicker } from "./ui/BaseDataTableColumns
 export { default as BaseProgressBar } from "./ui/BaseProgressBar.vue";
 export { default as BaseDropdownMenu } from "./ui/BaseDropdownMenu.vue";
 export { default as BaseSearch } from "./ui/BaseSearch.vue";
+export { default as BaseSelect } from "./ui/BaseSelect.vue";
+export { default as BaseMultiSelect } from "./ui/BaseMultiSelect.vue";
+export { default as BaseToggleSwitch } from "./ui/BaseToggleSwitch.vue";

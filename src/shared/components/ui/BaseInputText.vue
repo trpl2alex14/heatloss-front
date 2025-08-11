@@ -1,23 +1,31 @@
 <template>
-	<IftaLabel class="space-y-1">
-		<label v-if="label" class="block text-sm font-medium text-gray-700">{{
-			label
-		}}</label>
-		<InputText
-			v-bind="inputAttrs"
-			v-model="modelValueProxy"
-			:placeholder="placeholder"
-			:type="type"
-			class="w-full"
-			variant="filled"
-			:disabled="disabled"
-		/>
-	</IftaLabel>
+	<div>
+		<InputGroup class="w-auto">
+			<IftaLabel class="space-y-1">
+				<label v-if="label" class="block text-sm font-medium text-gray-700">{{
+					label
+				}}</label>
+				<InputText
+					v-bind="inputAttrs"
+					v-model="modelValueProxy"
+					:placeholder="placeholder"
+					:type="type"
+					class="w-full"
+					variant="filled"
+					:disabled="disabled"
+				/>
+			</IftaLabel>
+			<InputGroupAddon v-if="clearable">
+        		<Button icon="pi pi-times" class="h-full" text @click="modelValueProxy = ''"/>
+    		</InputGroupAddon>
+		</InputGroup>		
+	</div>
 </template>
 
 <script setup lang="ts">
 import { computed, useAttrs } from "vue";
 import InputText from "primevue/inputtext";
+import InputGroup from "primevue/inputgroup";
 
 const props = defineProps({
 	modelValue: {
@@ -37,6 +45,10 @@ const props = defineProps({
 		default: "text",
 	},
 	disabled: {
+		type: Boolean,
+		default: false,
+	},
+	clearable: {
 		type: Boolean,
 		default: false,
 	},
@@ -60,6 +72,6 @@ const inputAttrs = computed(() => {
 <style lang="scss">
 .p-inputtext {
 	--p-inputtext-disabled-background: var(--color-gray-200);
-	--p-inputtext-disabled-color: var(--color-gray-800);
+	--p-inputtext-disabled-color: var(--color-gray-800);	
 }
 </style>
