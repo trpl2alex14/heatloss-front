@@ -2,6 +2,7 @@ import type { MaterialItem } from "@features/directories/types/materials";
 import { useFetchCollection, type RequestDataOptions } from "@/shared/composables/useFetchCollection";
 import { route } from "@/shared/utils/router";
 import type { ColumnDef } from "@/shared/types/table";
+import { MaterialType } from "@features/directories/types/materials";
 
 const columns: ColumnDef[] = [
 	{ key: "name", label: "Название", sortable: true, sort: 2 },
@@ -48,8 +49,8 @@ const columns: ColumnDef[] = [
 
 const filterOptions = [
 	{ label: "Все", value: "all" },
-	{ label: "Конструкции", value: 2 },
-	{ label: "Материалы", value: 1 },
+	{ label: "Конструкции", value: MaterialType.Construction },
+	{ label: "Материалы", value: MaterialType.Material },
 ];
 
 export const useMaterialData = () => {
