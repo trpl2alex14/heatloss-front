@@ -1,9 +1,12 @@
 <template>
 	<div class="flex justify-between items-start gap-8 pb-2 w-full mb-4">
 		<div>
-			<h1 class="text-3xl font-normal leading-none">
-				{{ title }}
-			</h1>
+			<div class="flex items-center gap-2">
+				<h1 class="text-3xl font-normal leading-none">
+					{{ title }}
+				</h1>
+				<slot name="title-actions" />
+			</div>
 			<p
 				v-if="subtitle"
 				class="text-base font-normal leading-5 text-(--my-color-gray) mt-2"
