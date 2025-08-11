@@ -6,6 +6,7 @@
 				v-for="item in menuItems"
 				:key="item.path"
 				:to="item.path"
+				@click="action(item)"
 				class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-50 transition-colors duration-200"
 				:class="{
 					'hover:text-gray-500': !isActive(item.path),
@@ -46,5 +47,11 @@ const menuItems = computed(() => props.items);
 
 const isActive = (path: string) => {
 	return route.path === path || route.path.startsWith(path + "/");
+};
+
+const action = (item: SubMenuItem) => {
+	if (item.action) {
+		item.action();
+	}
 };
 </script>
