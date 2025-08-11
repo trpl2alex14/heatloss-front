@@ -2,7 +2,9 @@ import { computed, ref } from "vue";
 import type { CalculationDetails, CalculationResult } from "@/features/calculations/types/calculation.ts";
 
 export const useCalculator = () => {
-	const calculation = ref<CalculationDetails>({} as CalculationDetails);
+	const calculation = ref<CalculationDetails>({
+		useSeason: "permanent",
+	} as CalculationDetails);
 
 
 	

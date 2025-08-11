@@ -1,6 +1,8 @@
+import type { ClimateItem } from "@/features/directories/types";
 import type { Product } from "@/shared/types/produtcs";
 
 export type CalculationStatus = "published" | "working" | "case" | "hide";
+export type UseSeason = "permanent" | "seasonal" | "freeze";
 
 export interface CalculationItem {
 	id: number;
@@ -22,10 +24,22 @@ export interface CalculationDetails {
 	status: CalculationStatus;
 
 	requestId?: number;
-	
-	city: string;
+
 	area: number;
 	title?: string;
+	
+	// Общие данные
+	product?: Product;
+	tags?: string[];
+	
+	// Климатические данные
+	city: string;
+	useSeason?: UseSeason;
+
+	climate: ClimateItem;
+	requiredTemp: number;
+	freezeTemp: number;
+
 }
 
 export interface Equipment {
@@ -48,7 +62,7 @@ export interface CalculationResult {
 	equipmentCost: number;
 
 	averagePower: number;
-	averageExpenses: number;	
+	averageExpenses: number;
 
 	equipment?: Equipment[];
 

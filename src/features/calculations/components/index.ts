@@ -4,3 +4,5 @@ export { default as CalculationResult } from "./CalculationResult.vue";
 export { default as ClientDetails } from "./ClientDetails.vue";
 export { default as Status } from "./Status.vue";
 export { default as Calculation } from "./Calculation.vue";
+export { default as SectionProduct } from "./SectionProduct.vue";
+export { default as SectionClimat } from "./SectionClimat.vue";

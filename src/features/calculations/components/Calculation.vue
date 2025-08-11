@@ -1,145 +1,56 @@
 <template>
 	<div class="calculation-editor">
-		<div class="bg-white rounded-xl border border-gray-300 p-6">
-			<div class="mb-6">
-				<h2 class="text-xl font-semibold text-gray-900">
-					Редактирование расчета
-				</h2>
-			</div>
+		<div class="rounded-xl border border-gray-300 p-6">
+			<!-- Секция: Общие данные -->
+			<SectionProduct
+				v-model="modelValueProxy"
+				:isEditingTitle="!!modelValue?.title"
+			/>
 
-			<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-				<!-- Основная информация -->
-				<div class="space-y-4">
-					<div>
-						<label
-							class="block text-sm font-medium text-gray-700 mb-2"
-						>
-							Название расчета
-						</label>
-						<BaseInput
-							v-model="modelValue.title"
-							placeholder="Введите название расчета"
-							class="w-full"
-						/>
-					</div>
+			<!-- Секция: Климат -->
+			<div class="my-6 border-t border-gray-200" ref="climateRef"></div>
+			<SectionClimat v-model="modelValueProxy" />
 
-					<div>
-						<label
-							class="block text-sm font-medium text-gray-700 mb-2"
-						>
-							Город
-						</label>
-						<BaseInput
-							v-model="modelValue.city"
-							placeholder="Введите город"
-							class="w-full"
-						/>
-					</div>
-
-					<div class="grid grid-cols-2 gap-4">
-						<div>
-							<label
-								class="block text-sm font-medium text-gray-700 mb-2"
-							>
-								Дата создания
-							</label>
-							<BaseInput
-								v-model="modelValue.date"
-								type="date"
-								class="w-full"
-							/>
-						</div>
-						<div>
-							<label
-								class="block text-sm font-medium text-gray-700 mb-2"
-							>
-								Статус
-							</label>
-							<BaseDropdown
-								v-model="modelValue.status"
-								:options="statusOptions"
-								optionLabel="label"
-								optionValue="value"
-								placeholder="Выберите статус"
-								class="w-full"
-							/>
-						</div>
-					</div>
-				</div>
-
-				<!-- Дополнительные параметры -->
-				<div class="space-y-4">
-					<div>
-						<label
-							class="block text-sm font-medium text-gray-700 mb-2"
-						>
-							Площадь (м²)
-						</label>
-						<BaseInput
-							v-model="modelValue.area"
-							type="number"
-							placeholder="Введите площадь"
-							class="w-full"
-						/>
-					</div>
-
-					<div>
-						<label
-							class="block text-sm font-medium text-gray-700 mb-2"
-						>
-							ID заявки
-						</label>
-						<BaseInput
-							v-model="modelValue.requestId"
-							type="number"
-							placeholder="ID заявки"
-							class="w-full"
-						/>
-					</div>
-				</div>
-			</div>
+			<div class="my-6 border-t border-gray-200" ref="constructionsRef"></div>
+			<div class="my-6 border-t border-gray-200" ref="roomsRef"></div>
+			<div class="my-6 border-t border-gray-200" ref="equipmentsRef"></div>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
-import {
-	BaseInputText as BaseInput,
-	BaseSelectButton as BaseDropdown,
-} from "@/shared/components";
-
-interface Calculation {
-	id?: number;
-	date: string;
-	status: string;
-	requestId?: number;
-	city: string;
-	area: number;
-	title?: string;
-}
+import { computed, useTemplateRef } from "vue";
+import type { CalculationDetails } from "../types/calculation";
+import SectionProduct from "@/features/calculations/components/SectionProduct.vue";
+import SectionClimat from "@/features/calculations/components/SectionClimat.vue";
 
 interface Props {
-	modelValue: Calculation;
+	modelValue: CalculationDetails;
 }
 
 const props = defineProps<Props>();
 
 const emit = defineEmits<{
-	"update:modelValue": [value: Calculation];
+	"update:modelValue": [value: CalculationDetails];
 }>();
 
-// Вычисляемое свойство для v-model
-const modelValue = computed({
+const modelValueProxy = computed<CalculationDetails>({
 	get: () => props.modelValue,
 	set: (value) => emit("update:modelValue", value),
 });
 
-// Опции для выпадающих списков
-const statusOptions = [
-	{ label: "Опубликован", value: "published" },
-	{ label: "В работе", value: "working" },
-	{ label: "Кейс", value: "case" },
-	{ label: "Скрыт", value: "hide" },
-];
+const sections = {
+	climate: useTemplateRef("climateRef"),
+	constructions: useTemplateRef("constructionsRef"),
+	rooms: useTemplateRef("roomsRef"),
+	equipments: useTemplateRef("equipmentsRef"),
+};
+
+const scrollTo = (scrollTo: "climate" | "constructions" | "rooms" | "equipments") => {	
+	sections[scrollTo]?.value?.scrollIntoView({ behavior: "smooth" });
+};
+
+defineExpose({
+	scrollTo,
+});
 </script>

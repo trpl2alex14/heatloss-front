@@ -4,22 +4,30 @@
 			<template #actions>
 				<Status :calculation="calculation" />
 			</template>
+			<template #title-actions>
+				<BaseButton 
+					v-if="calculation.title !== title"
+					icon="pencil" class="w-full" text @click="calculation.title = title"
+				/>
+			</template>
 		</Head>
-		<div class="flex gap-6">
+		<div class="flex gap-6 w-full">
 			<div class="w-80 flex-shrink-0">
-				<SubMenu :items="subMenuItems" />
-				<div class="flex flex-col gap-2">
-					<BaseButton icon="save" class="w-full" label="Сохранить" />
-					<BaseButton
-						icon="eye"
-						class="w-full"
-						label="Опубликовать"
-						outlined
-					/>
+				<div class="sticky top-6">
+					<SubMenu :items="subMenuItems"/>
+					<div class="flex flex-col gap-2">
+						<BaseButton icon="save" class="w-full" label="Сохранить" />
+						<BaseButton
+							icon="eye"
+							class="w-full"
+							label="Опубликовать"
+							outlined
+						/>
+					</div>
 				</div>
 			</div>
-			<div class="flex-1">
-				<Calculation v-model="calculation" />
+			<div class="w-full min-w-0">
+				<Calculation v-if="!isLoading" v-model="calculation" ref="calculationRef"/>
 			</div>
 			<div
 				class="w-140 flex-shrink-0 border border-gray-300 p-3 rounded-xl"
@@ -55,7 +63,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, onMounted, watch } from "vue";
+import { computed, ref, onMounted, watch, useTemplateRef } from "vue";
 import {
 	BaseSelectButton,
 	BaseButton,
@@ -99,7 +107,7 @@ watch(requestId, (newId) => {
 // TODO: взять из route params
 const calculationId = 111;
 
-const { /*isLoading, error,*/ loadCalculationData } = useFetchCalculation(
+const { isLoading, /* error,*/ loadCalculationData } = useFetchCalculation(
 	calculationId,
 	calculation
 );
@@ -141,26 +149,32 @@ const rightBoxTabs = computed<SelectButtonOption[]>(() => {
 	];
 });
 
+const calculationRef = useTemplateRef("calculationRef");
+
 const subMenuItems: SubMenuItem[] = [
 	{
 		path: "#climate",
 		title: "Климат",
 		icon: "map-pinned.svg",
+		action: () => calculationRef.value?.scrollTo("climate"),
 	},
 	{
 		path: "#materials",
 		title: "Огр. конструкции",
 		icon: "brick-wall.svg",
+		action: () => calculationRef.value?.scrollTo("constructions"),
 	},
 	{
 		path: "#rooms",
 		title: "Помещения",
 		icon: "house.svg",
+		action: () => calculationRef.value?.scrollTo("rooms"),
 	},
 	{
 		path: "#equipments",
 		title: "Оборудование",
 		icon: "heater.svg",
+		action: () => calculationRef.value?.scrollTo("equipments"),
 	},
 ];
 </script>
