@@ -115,6 +115,8 @@ const computedClass = computed(() =>
 <style lang="scss">
 .p-iftalabel .p-multiselect-label:has(.p-chip) {
 	padding-block-start: calc(var(--p-iftalabel-input-padding-top) - 0.2rem);
+	display: flex;
+	flex-wrap: wrap;
 }
 
 .p-multiselect {
