@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<InputGroup class="w-auto">
-			<IftaLabel class="space-y-1">
+			<IftaLabel class="">
 				<label v-if="label" class="block text-sm font-medium text-gray-700">{{
 					label
 				}}</label>
