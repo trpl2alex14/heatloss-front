@@ -1,5 +1,5 @@
 <template>
-	<IftaLabel class="space-y-1">
+	<IftaLabel>
 		<InputNumber
 			v-bind="inputAttrs"
 			v-model="modelValueProxy"
