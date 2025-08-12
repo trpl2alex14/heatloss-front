@@ -29,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, onMounted } from "vue";
 import Head from "@/shared/components/SubHead.vue";
 import BaseButton from "@/shared/components/ui/BaseButton.vue";
 import RowCounter from "@/shared/components/RowCounter.vue";
@@ -41,7 +41,7 @@ import { plural } from "@/shared/utils/text";
 import { dropdownActions } from "@/features/directories/composables/useClimateDropdownMenu";
 import type { ClimateItem } from "@/features/directories/types/climate";
 
-const { climateData, isLoading, columns } = useClimateData();
+const { climateData, isLoading, columns, loadClimateData } = useClimateData();
 
 const { searchValue, pagination, tableData, onPageChange, onSortChange } =
 	useTable<ClimateItem>(climateData, {
@@ -54,5 +54,9 @@ const pagedDataTransformed = computed(() => {
 		...row,
 		heatingSeason: plural(row.heatingSeason, ["день", "дня", "дней"], true),
 	}));
+});
+
+onMounted(() => {
+	loadClimateData();
 });
 </script>

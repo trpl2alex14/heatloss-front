@@ -153,7 +153,7 @@ const seasonOptiopns: (SelectButtonOption & { value: UseSeason })[] = [
 ];
 
 // Опции для выбора региона
-const { climateData, isLoading: isLoadingClimate } = useClimateData();
+const { climateData, isLoading: isLoadingClimate } = useClimateData(true);
 
 const citiesOptions = computed(() => {
 	return climateData.value.map((item: ClimateItem) => ({

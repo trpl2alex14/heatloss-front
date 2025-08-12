@@ -63,7 +63,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, onMounted, watch, useTemplateRef } from "vue";
+import { computed, ref, watch, useTemplateRef } from "vue";
 import {
 	BaseSelectButton,
 	BaseButton,
@@ -111,9 +111,7 @@ const { isLoading, /* error,*/ loadCalculationData } = useFetchCalculation(
 	calculation
 );
 
-onMounted(() => {
-	loadCalculationData();
-});
+loadCalculationData();
 
 const copyAll = () => {
 	console.log("copyAll");

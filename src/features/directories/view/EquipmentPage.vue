@@ -58,7 +58,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import Head from "@/shared/components/SubHead.vue";
 import BaseButton from "@/shared/components/ui/BaseButton.vue";
 import RowCounter from "@/shared/components/RowCounter.vue";
@@ -110,5 +110,9 @@ const pagedDataTransformed = computed(() => {
 		...row,
 		price: row.price.toLocaleString("ru-RU"),
 	}));
+});
+
+onMounted(() => {
+	loadEquipmentData();
 });
 </script>

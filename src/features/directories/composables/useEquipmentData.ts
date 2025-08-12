@@ -84,7 +84,7 @@ export const useEquipmentData = () => {
 		error,
 		loadData,
 		clearError,
-	} = useFetchCollection<EquipmentItem>(route("directories.equipment"));
+	} = useFetchCollection<EquipmentItem>(route("directories.equipment"), false);
 
 	const loadEquipmentData = (filterValue?: string) => {
 		const params: RequestDataOptions<EquipmentItem> = {};

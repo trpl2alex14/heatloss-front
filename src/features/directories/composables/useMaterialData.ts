@@ -60,7 +60,7 @@ export const useMaterialData = () => {
 		error,
 		loadData,
 		clearError,
-	} = useFetchCollection<MaterialItem>(route("directories.materials"));
+	} = useFetchCollection<MaterialItem>(route("directories.materials"), false);
 
 	const loadMaterialData = (filterValue?: string) => {
 		const params: RequestDataOptions<MaterialItem> = {};

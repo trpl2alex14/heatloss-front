@@ -2,6 +2,7 @@ import type { ClimateItem } from "@features/directories/types/climate";
 import { route } from "@/shared/utils/router";
 import type { ColumnDef } from "@/shared/types/table";
 import { useFetchCollection } from "@/shared/composables/useFetchCollection";
+import { onMounted } from "vue";
 
 const columns: ColumnDef[] = [
 	{ key: "id", label: "ID", sortable: true, sort: 1, style: "width: 60px;" },
@@ -66,18 +67,24 @@ const columns: ColumnDef[] = [
 	},
 ];
 
-export const useClimateData = () => {
+export const useClimateData = (autoLoad = false) => {
 	const {
 		data: climateData,
 		isLoading,
 		error,
 		loadData,
 		clearError,
-	} = useFetchCollection<ClimateItem>(route("directories.climate"));
+	} = useFetchCollection<ClimateItem>(route("directories.climate"), false);
 
 	const loadClimateData = () => {
 		loadData();
 	};
+
+	onMounted(() => {
+		if (autoLoad) {
+			loadClimateData();
+		}
+	});
 
 	return {
 		columns,
