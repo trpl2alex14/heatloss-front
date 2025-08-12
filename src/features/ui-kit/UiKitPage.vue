@@ -94,6 +94,67 @@
 
 		<section class="mb-8">
 			<h2 class="text-md font-normal mt-3">
+				ConstructionLayer ({{
+					constructionLayer.enabled ? "Включен" : "Выключен"
+				}})
+			</h2>
+			<div class="space-y-4">
+				<ConstructionLayer
+					v-model="constructionLayer"
+					:materials="materials"
+					humidity="A"
+					@remove="handleRemoveLayer"
+				/>
+				<div class="mt-4 p-4 bg-gray-50 rounded-lg">
+					<h3 class="font-medium mb-2">Текущее состояние слоя:</h3>
+					<pre class="text-sm">{{
+						JSON.stringify(constructionLayer, null, 2)
+					}}</pre>
+				</div>
+			</div>
+		</section>
+
+		<section class="mb-8">
+			<h2 class="text-md font-normal mt-3">
+				Construction ({{ construction.name || "Без названия" }})
+			</h2>
+			<div class="space-y-4">
+				<Construction
+					v-model="construction"
+					:materials="materials"
+					:climate="climate"
+					:surfaces="surfaces"
+					@remove="handleRemoveConstruction"
+					@duplicate="handleDuplicateConstruction"
+				/>
+				<div class="mt-4 p-4 bg-gray-50 rounded-lg">
+					<h3 class="font-medium mb-2">
+						Текущее состояние конструкции:
+					</h3>
+					<pre class="text-sm">{{
+						JSON.stringify(construction, null, 2)
+					}}</pre>
+				</div>
+			</div>
+		</section>
+
+		<section class="mb-8">
+			<h2 class="text-md font-normal mt-3">
+				SectionConstructions ({{ calculationDetails.calculateMethod }})
+			</h2>
+			<div class="space-y-4">
+				<SectionConstructions v-model="calculationDetails" />
+				<div class="mt-4 p-4 bg-gray-50 rounded-lg">
+					<h3 class="font-medium mb-2">Текущее состояние расчета:</h3>
+					<pre class="text-sm">{{
+						JSON.stringify(calculationDetails, null, 2)
+					}}</pre>
+				</div>
+			</div>
+		</section>
+
+		<section class="mb-8">
+			<h2 class="text-md font-normal mt-3">
 				BaseDataTable {{ searchValue }}
 			</h2>
 			<BaseDataTable
@@ -165,7 +226,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import Head from "@/shared/components/Head.vue";
 import BaseButton from "@/shared/components/ui/BaseButton.vue";
 import BaseDataTable from "@/shared/components/ui/BaseDataTable.vue";
@@ -181,9 +242,19 @@ import CalculationBtn from "@/shared/components/CalculationBtn.vue";
 import RowCounter from "@/shared/components/RowCounter.vue";
 import type { ColumnDef, TypeLabelDef } from "@/shared/types/table";
 import type { ActionDef } from "@/shared/types/menu";
+import type {
+	ConstructionLayer as ConstructionLayerType,
+	Construction as ConstructionType,
+	CalculationDetails,
+} from "@/features/calculations/types/calculation";
+import type { ClimateItem } from "@/features/directories/types/climate";
 import BaseChip from "@/shared/components/ui/BaseChip.vue";
 import TypeColumn from "@/shared/components/TypeColumn.vue";
+import ConstructionLayer from "@/features/calculations/components/ConstructionLayer.vue";
+import Construction from "@/features/calculations/components/Construction.vue";
+import SectionConstructions from "@/features/calculations/components/SectionConstructions.vue";
 import { useTypes } from "@/shared/composables/useTypes";
+import { useMaterialData } from "@/features/directories/composables/useMaterialData";
 
 const { productCategory } = useTypes();
 
@@ -372,4 +443,102 @@ const cities = [
 const toggleValue = ref(false);
 const toggleValue2 = ref(true);
 const toggleValue3 = ref(false);
+
+// Данные для ConstructionLayer
+// Загрузка материалов
+const { materialData: materials, loadMaterialData } = useMaterialData();
+
+onMounted(() => {
+	loadMaterialData();
+});
+
+const constructionLayer = ref<ConstructionLayerType>({
+	enabled: true,
+	name: "Раствор цементно-песчаный, 1800 кг/м³",
+	materialId: 1,
+	thickness: 150,
+	type: 1,
+});
+
+const handleRemoveLayer = () => {
+	console.log("Слой удален");
+};
+
+// Данные для Construction
+const climate = ref<ClimateItem>({
+	id: 1,
+	region: "Центральный",
+	city: "Москва",
+	humidity: "А",
+	minTemp: -36,
+	avgTemp: -3.1,
+	heatingSeason: 214,
+	roofNorm: 4.5,
+	wallNorm: 3.2,
+	floorNorm: 4.2,
+});
+
+const surfaces = ref([
+	{ id: 1, name: "наружная", type: "wall" as const },
+	{ id: 2, name: "внутренняя", type: "wall" as const },
+	{ id: 3, name: "крыша", type: "roof" as const },
+	{ id: 4, name: "пол", type: "floor" as const },
+]);
+
+const construction = ref<ConstructionType>({
+	name: "Крыша утепленная наклонная",
+	area: 145,
+	layers: [
+		{
+			enabled: true,
+			name: "Раствор цементно-песчаный, 1800 кг/м³",
+			materialId: 1,
+			thickness: 150,
+			type: 1,
+		},
+		{
+			enabled: true,
+			name: "СИП панель 174мм",
+			materialId: 3,
+			type: 2,
+		},
+	],
+	snipResistance: 3.83,
+	calculatedResistance: 6.83,
+});
+
+const handleRemoveConstruction = () => {
+	console.log("Конструкция удалена");
+};
+
+const handleDuplicateConstruction = () => {
+	console.log("Конструкция дублирована");
+};
+
+// Данные для SectionConstructions
+const calculationDetails = ref<CalculationDetails>({
+	id: 1,
+	date: "2024-01-01",
+	status: "working",
+	area: 150,
+	title: "Тестовый расчет",
+	city: "Москва",
+	useSeason: "permanent",
+	climate: {
+		id: 1,
+		city: "Москва",
+		region: "Центральный",
+		humidity: "80",
+		minTemp: -25,
+		avgTemp: 5,
+		heatingSeason: 220,
+		wallNorm: 3.2,
+		roofNorm: 4.2,
+		floorNorm: 4.2,
+	},
+	requiredTemp: 20,
+	freezeTemp: -36,
+	calculateMethod: "detailed",
+	constructions: [],
+});
 </script>
