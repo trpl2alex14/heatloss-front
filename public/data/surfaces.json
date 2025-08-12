@@ -1,0 +1,50 @@
+{
+	"data": [
+		{
+			"id": 1,
+			"name": "Стена наружная",
+			"type": "wall"
+		},
+		{
+			"id": 2,
+			"name": "Стена внутренняя",
+			"type": "wall",
+			"multiplier": 0.7
+		},
+		{
+			"id": 3,
+			"name": "Крыша утепленная наклонная",
+			"type": "roof",
+			"multiplier": 1.3
+		},
+		{
+			"id": 4,
+			"name": "Крыша плоская",
+			"type": "roof"
+		},
+		{
+			"id": 5,
+			"name": "Пол по грунту",
+			"type": "floor",
+			"baseResistance": 1.5
+		},
+		{
+			"id": 6,
+			"name": "Пол над подвалом",
+			"type": "floor",
+			"multiplier": 1.2
+		},
+		{
+			"id": 7,
+			"name": "Окно",
+			"type": "window"
+		},
+		{
+			"id": 11,
+			"name": "Цоколь",
+			"type": "wall",
+			"baseResistance": 2
+		}
+	],
+	"status": "success"
+}

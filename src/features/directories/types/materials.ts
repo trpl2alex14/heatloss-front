@@ -5,7 +5,6 @@ export const MaterialType = {
 
 export type MaterialType = (typeof MaterialType)[keyof typeof MaterialType];
 
-
 export interface MaterialItem {
 	id: number;
 	name: string;
@@ -15,5 +14,15 @@ export interface MaterialItem {
 	a?: number;
 	b?: number;
 	r?: number;
-	surface: string[];
+	surface: SurfaceType[];
+}
+
+export type SurfaceType = 'wall' | 'roof' | 'floor' | 'window' | 'other';
+
+export interface Surface {
+	id?: number;
+	name: string;
+	type: SurfaceType;
+	baseResistance?: number;
+	multiplier?: number;
 }

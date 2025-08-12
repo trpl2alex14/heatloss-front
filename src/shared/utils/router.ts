@@ -6,6 +6,8 @@ export function route(name: string, id? :number) {
 			return "/data/materials.json";
 		case "directories.climate":
 			return "/data/climate.json";
+		case "directories.surfaces":
+			return "/data/surfaces.json";			
 		case "calculations":
 			return "/data/calculations.lazy.json";
 		case "requests":

@@ -22,10 +22,7 @@
 		</div>
 
 		<!-- Список конструкций -->
-		<div 
-			v-if="calculateMethod === 'detailed'"
-			class="flex flex-col gap-4" 
-		>
+		<div v-if="calculateMethod === 'detailed'" class="flex flex-col gap-4">
 			<Construction
 				v-for="({}, index) in modelValue.constructions"
 				:key="index"
@@ -41,7 +38,7 @@
 			<BaseButton
 				icon="plus"
 				label="Добавить поверхность"
-				severity="primary"				
+				severity="primary"
 				@click="addConstruction"
 				class="self-end"
 			/>
@@ -55,11 +52,11 @@ import BaseSelectButton from "@/shared/components/ui/BaseSelectButton.vue";
 import BaseButton from "@/shared/components/ui/BaseButton.vue";
 import Construction from "./Construction.vue";
 import { useMaterialData } from "@/features/directories/composables/useMaterialData";
+import { useSurfaceData } from "@/features/directories/composables/useSurfaceData";
 import type {
 	CalculationDetails,
 	Construction as ConstructionType,
 } from "../types/calculation";
-import type { Surface } from "@/features/directories/types/materials";
 
 interface Props {
 	modelValue: CalculationDetails;
@@ -75,14 +72,8 @@ const emit = defineEmits<Emits>();
 // Загрузка материалов
 const { materialData, loadMaterialData } = useMaterialData();
 
-// Демо данные для поверхностей
-const surfaces: Surface[] = [
-	{ name: "Стена наружная", type: "wall" },
-	{ name: "Крыша утепленная наклонная", type: "roof" },
-	{ name: "Пол по грунту", type: "floor" },
-	{ name: "Окно", type: "window" },
-	{ name: "стены", type: "wall" },
-];
+// Загрузка поверхностей
+const { surfaces, loadSurfaceData } = useSurfaceData();
 
 // Опции для метода расчета
 const calculateMethodOptions = [
@@ -106,12 +97,14 @@ const calculateMethod = computed({
 const addConstruction = () => {
 	const newConstruction: ConstructionType = {
 		name: "",
-		layers: [{
-			enabled: true,
-			name: "",
-			materialId: 0,
-			type: 1,
-		}],
+		layers: [
+			{
+				enabled: true,
+				name: "",
+				materialId: 0,
+				type: 1,
+			},
+		],
 		snipResistance: 0,
 	};
 
@@ -147,8 +140,9 @@ const duplicateConstruction = (index: number) => {
 	});
 };
 
-// Загрузка материалов при монтировании компонента
+// Загрузка данных при монтировании компонента
 onMounted(() => {
 	loadMaterialData();
+	loadSurfaceData();
 });
 </script>
