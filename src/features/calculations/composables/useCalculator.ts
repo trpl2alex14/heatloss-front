@@ -63,24 +63,28 @@ export const useCalculator = () => {
 					heatLoss: 1022,
 					snipResistance: 3.7,
 					calculatedResistance: 2.7,
+					layers: []
 				},
 				{
 					name: "Пристрой к дому (47 м2)",
 					heatLoss: 325,
 					snipResistance: 4.7,
 					calculatedResistance: 4.5,
+					layers: []
 				},
 				{
 					name: "Стена наружная",
 					heatLoss: 2224,
 					snipResistance: 3.2,
 					calculatedResistance: 3,
+					layers: []
 				},
 				{
 					name: "Пол над техподпольем, расп. выше уровня земли",
 					heatLoss: 538,
 					snipResistance: 2.7,
 					calculatedResistance: 4.8,
+					layers: []
 				},
 			],
 		}

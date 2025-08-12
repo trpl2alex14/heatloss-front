@@ -90,8 +90,7 @@ const {
 	subTitle,
 } = useCalculator();
 
-const requestId = computed(() => {
-	// TODO: взять из route params
+const requestId = computed(() => {	
 	return calculation.value.requestId;
 });
 

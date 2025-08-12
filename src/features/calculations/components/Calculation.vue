@@ -1,6 +1,6 @@
 <template>
 	<div class="calculation-editor">
-		<div class="rounded-xl border border-gray-300 p-6">
+		<div class="">
 			<!-- Секция: Общие данные -->
 			<SectionProduct
 				v-model="modelValueProxy"
@@ -11,18 +11,27 @@
 			<div class="my-6 border-t border-gray-200" ref="climateRef"></div>
 			<SectionClimat v-model="modelValueProxy" />
 
-			<div class="my-6 border-t border-gray-200" ref="constructionsRef"></div>
+			<div
+				class="my-6 border-t border-gray-200"
+				ref="constructionsRef"
+			></div>
+			<SectionConstructions v-model="modelValueProxy" />
+
 			<div class="my-6 border-t border-gray-200" ref="roomsRef"></div>
-			<div class="my-6 border-t border-gray-200" ref="equipmentsRef"></div>
+			<div
+				class="my-6 border-t border-gray-200"
+				ref="equipmentsRef"
+			></div>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { computed, useTemplateRef } from "vue";
+import { computed, useTemplateRef, watch } from "vue";
 import type { CalculationDetails } from "../types/calculation";
 import SectionProduct from "@/features/calculations/components/SectionProduct.vue";
 import SectionClimat from "@/features/calculations/components/SectionClimat.vue";
+import SectionConstructions from "@/features/calculations/components/SectionConstructions.vue";
 
 interface Props {
 	modelValue: CalculationDetails;
@@ -35,8 +44,26 @@ const emit = defineEmits<{
 }>();
 
 const modelValueProxy = computed<CalculationDetails>({
-	get: () => props.modelValue,
+	get: () => {
+		if (props.modelValue.constructions === undefined) {
+			props.modelValue.constructions = [];
+		}
+		if (props.modelValue.calculateMethod === undefined) {
+			props.modelValue.calculateMethod = "detailed";
+		}
+
+		return props.modelValue;
+	},
 	set: (value) => emit("update:modelValue", value),
+});
+
+watch(modelValueProxy, (value) => {
+	if (
+		modelValueProxy.value.calculateMethod !== value.calculateMethod ||
+		modelValueProxy.value.constructions !== value.constructions
+	) {
+		emit("update:modelValue", value);
+	}
 });
 
 const sections = {
@@ -46,7 +73,9 @@ const sections = {
 	equipments: useTemplateRef("equipmentsRef"),
 };
 
-const scrollTo = (scrollTo: "climate" | "constructions" | "rooms" | "equipments") => {	
+const scrollTo = (
+	scrollTo: "climate" | "constructions" | "rooms" | "equipments"
+) => {
 	sections[scrollTo]?.value?.scrollIntoView({ behavior: "smooth" });
 };
 
