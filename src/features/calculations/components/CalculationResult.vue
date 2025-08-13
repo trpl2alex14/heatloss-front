@@ -181,11 +181,12 @@
 				autoResize
 				style="resize: none"
 			/>
-			<BaseInputText
-				:model-value="`${constr.heatLoss} Вт*ч`"
+			<BaseInputNumber
+				:model-value="constr.heatLoss"
 				:label="`Теплопотери в ${result.minTemp} С°`"
 				class="w-35"
 				disabled
+				suffix=" Вт*ч"
 				:style="getStyleHeatLoss(constr)"
 			/>
 		</div>
@@ -211,8 +212,8 @@ defineProps<Props>();
 const getStyleHeatLoss = (c: Construction) => {
 	return {
 		"--p-inputtext-border-color":
-			c.snipResistance - c.calculatedResistance < 0.3
-				? c.calculatedResistance - c.snipResistance < 0.3
+			c.snipResistance - (c.calculatedResistance || 0) < 0.3
+				? (c.calculatedResistance || 0) - c.snipResistance < 0.3
 					? "var(--p-surface-300)"
 					: "var(--color-green-500)"
 				: "var(--color-red-500)",
