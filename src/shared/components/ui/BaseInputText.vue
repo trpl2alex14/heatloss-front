@@ -2,9 +2,6 @@
 	<div>
 		<InputGroup class="w-auto">
 			<IftaLabel class="">
-				<label v-if="label" class="block text-sm font-medium text-gray-700">{{
-					label
-				}}</label>
 				<InputText
 					v-bind="inputAttrs"
 					v-model="modelValueProxy"
@@ -14,6 +11,9 @@
 					variant="filled"
 					:disabled="disabled"
 				/>
+				<label v-if="label" class="block text-sm font-medium text-gray-700">{{
+					label
+				}}</label>
 			</IftaLabel>
 			<InputGroupAddon v-if="clearable">
         		<Button icon="pi pi-times" class="h-full" text @click="modelValueProxy = ''"/>
