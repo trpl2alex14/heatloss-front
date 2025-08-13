@@ -94,8 +94,11 @@ const calculateMethod = computed({
 });
 
 // Методы для работы с конструкциями
+let constructionId = 0;
+
 const addConstruction = () => {
 	const newConstruction: ConstructionType = {
+		id: constructionId++,
 		name: "",
 		layers: [
 			{
