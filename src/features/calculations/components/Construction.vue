@@ -151,9 +151,13 @@ const showArea = ref(!!props.modelValue.area);
 const selectedSurface = computed({
 	get: () => props.modelValue.name || "",
 	set: (value: string) => {
+		const selectedSurfaceData = props.surfaces.find(
+			(surface) => surface.name === value
+		);
 		emit("update:modelValue", {
 			...props.modelValue,
 			name: value,
+			surface: selectedSurfaceData,
 		});
 	},
 });
@@ -183,8 +187,12 @@ const filteredMaterials = computed(() => {
 		return props.materials;
 	}
 
+	const surfaceType =
+		selectedSurfaceData.value?.type ||
+		props.modelValue.surface?.type ||
+		"other";
 	return props.materials.filter((material) =>
-		material.surface.includes(selectedSurfaceData.value?.type || "other")
+		material.surface.includes(surfaceType)
 	);
 });
 
@@ -196,10 +204,12 @@ const selectedSurfaceData = computed(() => {
 
 // Нормативное сопротивление на основе типа поверхности
 const snipResistance = computed(() => {
-	if (!selectedSurfaceData.value) return 0;
+	const surfaceType =
+		selectedSurfaceData.value?.type || props.modelValue.surface?.type;
+	if (!surfaceType) return 0;
 
 	// Возвращаем соответствующую норму в зависимости от типа поверхности
-	switch (selectedSurfaceData.value?.type) {
+	switch (surfaceType) {
 		case "wall":
 			return props.climate.wallNorm;
 		case "roof":
@@ -217,14 +227,23 @@ const snipResistanceText = computed(() => {
 
 // Расчетное сопротивление как сумма resistance всех слоев
 const calculatedResistance = computed(() => {
+	const baseResistance =
+		selectedSurfaceData.value?.baseResistance ||
+		props.modelValue.surface?.baseResistance ||
+		0;
+	const multiplier =
+		selectedSurfaceData.value?.multiplier ||
+		props.modelValue.surface?.multiplier ||
+		1;
+
 	return (
 		+props.modelValue.layers
 			.filter((layer) => layer.enabled)
 			.reduce(
 				(sum, layer) => sum + (layer.resistance || 0),
-				selectedSurfaceData.value?.baseResistance || 0
+				baseResistance
 			)
-			.toFixed(3) * (selectedSurfaceData.value?.multiplier || 1)
+			.toFixed(3) * multiplier
 	);
 });
 
@@ -269,6 +288,17 @@ const syncArea = () => {
 
 // Наблюдение за изменением showArea
 watch(showArea, syncArea);
+
+// Синхронизация surface при изменении props.modelValue.surface
+watch(
+	() => props.modelValue.surface,
+	(newSurface) => {
+		if (newSurface && newSurface.name !== selectedSurface.value) {
+			selectedSurface.value = newSurface.name;
+		}
+	},
+	{ immediate: true }
+);
 
 // Автоматическое обновление calculatedResistance при изменении слоев
 watch(calculatedResistance, (newValue) => {
