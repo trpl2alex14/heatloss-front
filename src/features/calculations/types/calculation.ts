@@ -1,4 +1,4 @@
-import type { ClimateItem, MaterialType } from "@/features/directories/types";
+import type { ClimateItem, MaterialType, Surface } from "@/features/directories/types";
 import type { Product } from "@/shared/types/produtcs";
 
 export type CalculationStatus = "published" | "working" | "case" | "hide";
@@ -46,6 +46,7 @@ export interface CalculationDetails {
 }
 
 export interface Equipment {
+	id: number;
 	name: string;
 	quantity: number;
 	price: number;
@@ -61,12 +62,40 @@ export interface ConstructionLayer {
 }
 
 export interface Construction {
+	id: number;
 	area?: number;
 	layers: ConstructionLayer[];
 	name: string;
+	surface?: Surface;
 	heatLoss?: number;
 	snipResistance: number;
 	calculatedResistance?: number;
+}
+
+export interface RoomConstruction {
+	id: number;
+	enabled: boolean;
+	area: number;
+	count?: number;
+	heatLoss: number;
+}
+
+export interface Room {
+	id: number;
+	name: string;
+	area: number;
+	floor: number;
+	width?: number;
+	length?: number;
+	height?: number;
+	minHeight?: number;
+	isMansard?: boolean;
+
+	heatLoss: number;
+	baseHeat?: number;
+
+	roomConstructions: RoomConstruction[];
+	equipment: Equipment[];
 }
 
 export interface CalculationResult {

@@ -155,6 +155,52 @@
 
 		<section class="mb-8">
 			<h2 class="text-md font-normal mt-3">
+				RoomConstruction ({{
+					roomConstruction.enabled ? "Включен" : "Выключен"
+				}})
+			</h2>
+			<div class="space-y-4">
+				<RoomConstruction
+					v-model="roomConstruction"
+					:construction="windowConstruction"
+					:min-temp="-36"
+					:required-temp="20"
+					@remove="handleRemoveRoomConstruction"
+				/>
+				<div class="mt-4 p-4 bg-gray-50 rounded-lg">
+					<h3 class="font-medium mb-2">
+						Текущее состояние конструкции помещения:
+					</h3>
+					<pre class="text-sm">{{
+						JSON.stringify(roomConstruction, null, 2)
+					}}</pre>
+				</div>
+			</div>
+		</section>
+
+		<section class="mb-8">
+			<h2 class="text-md font-normal mt-3">
+				RoomEquipment ({{ equipment.name || "Без названия" }})
+			</h2>
+			<div class="space-y-4">
+				<RoomEquipment
+					v-model="equipment"
+					:index="0"
+					@remove="handleRemoveEquipment"
+				/>
+				<div class="mt-4 p-4 bg-gray-50 rounded-lg">
+					<h3 class="font-medium mb-2">
+						Текущее состояние оборудования:
+					</h3>
+					<pre class="text-sm">{{
+						JSON.stringify(equipment, null, 2)
+					}}</pre>
+				</div>
+			</div>
+		</section>
+
+		<section class="mb-8">
+			<h2 class="text-md font-normal mt-3">
 				BaseDataTable {{ searchValue }}
 			</h2>
 			<BaseDataTable
@@ -246,6 +292,8 @@ import type {
 	ConstructionLayer as ConstructionLayerType,
 	Construction as ConstructionType,
 	CalculationDetails,
+	RoomConstruction as RoomConstructionType,
+	Equipment,
 } from "@/features/calculations/types/calculation";
 import type { ClimateItem } from "@/features/directories/types/climate";
 import BaseChip from "@/shared/components/ui/BaseChip.vue";
@@ -253,6 +301,8 @@ import TypeColumn from "@/shared/components/TypeColumn.vue";
 import ConstructionLayer from "@/features/calculations/components/ConstructionLayer.vue";
 import Construction from "@/features/calculations/components/Construction.vue";
 import SectionConstructions from "@/features/calculations/components/SectionConstructions.vue";
+import RoomConstruction from "@/features/calculations/components/RoomConstruction.vue";
+import RoomEquipment from "@/features/calculations/components/RoomEquipment.vue";
 import { useTypes } from "@/shared/composables/useTypes";
 import { useMaterialData } from "@/features/directories/composables/useMaterialData";
 
@@ -486,6 +536,7 @@ const surfaces = ref([
 ]);
 
 const construction = ref<ConstructionType>({
+	id: 1,
 	name: "Крыша утепленная наклонная",
 	area: 145,
 	layers: [
@@ -541,4 +592,50 @@ const calculationDetails = ref<CalculationDetails>({
 	calculateMethod: "detailed",
 	constructions: [],
 });
+
+// Данные для RoomConstruction
+const roomConstruction = ref<RoomConstructionType>({
+	id: 1,
+	enabled: true,
+	area: 15,
+	count: 2,
+	heatLoss: 0,
+});
+
+const windowConstruction = ref<ConstructionType>({
+	id: 1,
+	name: "Окно ПВХ двухкамерное",
+	area: 15,
+	layers: [
+		{
+			enabled: true,
+			name: "Стеклопакет",
+			materialId: 1,
+			type: 2,
+		},
+	],
+	surface: {
+		id: 1,
+		name: "Окно",
+		type: "window",
+	},
+	snipResistance: 0.5,
+	calculatedResistance: 0.5,
+});
+
+const handleRemoveRoomConstruction = () => {
+	console.log("Конструкция помещения удалена");
+};
+
+// Данные для RoomEquipment
+const equipment = ref<Equipment>({
+	id: 1,
+	name: "Флэйт 50 - 500 Вт белый",
+	quantity: 3,
+	price: 12500,
+});
+
+const handleRemoveEquipment = () => {
+	console.log("Оборудование удалено");
+};
 </script>

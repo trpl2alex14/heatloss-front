@@ -7,5 +7,6 @@ export { default as Calculation } from "./Calculation.vue";
 export { default as SectionProduct } from "./SectionProduct.vue";
 export { default as SectionClimat } from "./SectionClimat.vue";
 export { default as ConstructionLayer } from "./ConstructionLayer.vue";
+export { default as RoomConstruction } from "./RoomConstruction.vue";
 export { default as Construction } from "./Construction.vue";
 export { default as SectionConstructions } from "./SectionConstructions.vue";

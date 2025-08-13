@@ -1,0 +1,157 @@
+<template>
+	<div class="flex items-center gap-2 p-2 bg-gray-200 rounded-xl">
+		<!-- Переключатель включения/выключения -->
+		<div class="flex items-center gap-2.5">
+			<BaseToggleSwitch v-model="enabledValue" :disabled="false" />
+		</div>
+
+		<!-- Название конструкции (только для чтения) -->
+		<div class="flex-1">
+			<BaseInputText
+				:model-value="construction.name"
+				label="Конструкция"
+				:disabled="true"
+				:readonly="true"
+			/>
+		</div>
+
+		<!-- Поле количества (только для окон) -->
+		<div class="w-28" v-if="isWindowType">
+			<BaseInputNumber
+				v-model="countValue"
+				label="Количество"
+				placeholder="0"
+				:disabled="!modelValue.enabled"
+				:allowEmpty="false"
+				:min="0"
+			/>
+		</div>
+
+		<!-- Поле площади -->
+		<div class="w-28">
+			<BaseInputNumber
+				v-model="areaValue"
+				label="Площадь"
+				placeholder="0"
+				:disabled="!modelValue.enabled"
+				:allowEmpty="false"
+				:min="0"
+				:suffix="' м²'"
+			/>
+		</div>
+
+		<!-- Теплопотери (только для чтения) -->
+		<div class="w-40">
+			<BaseInputNumber
+				:model-value="calculatedHeatLoss"
+				:label="`Теплопотери в ${minTemp}°C`"
+				:disabled="true"
+				:suffix="' Вт'"
+				:readonly="true"
+			/>
+		</div>
+
+		<!-- Кнопка удаления -->
+		<BaseButton
+			icon="trash"
+			variant="text"
+			severity="secondary"
+			text
+			@click="$emit('remove')"
+		/>
+	</div>
+</template>
+
+<script setup lang="ts">
+import { computed, watch } from "vue";
+import {
+	BaseToggleSwitch,
+	BaseInputNumber,
+	BaseInputText,
+	BaseButton,
+} from "@/shared/components";
+import type { RoomConstruction, Construction } from "../types/calculation";
+
+interface Props {
+	modelValue: RoomConstruction;
+	construction: Construction;
+	minTemp: number;
+	requiredTemp: number;
+}
+
+interface Emits {
+	(e: "update:modelValue", value: RoomConstruction): void;
+	(e: "remove"): void;
+}
+
+const props = defineProps<Props>();
+const emit = defineEmits<Emits>();
+
+// Проверяем, является ли конструкция окном
+const isWindowType = computed(() => {
+	return props.construction.surface?.type === "window";
+});
+
+// Вычисляемое свойство для enabled состояния
+const enabledValue = computed({
+	get: () => props.modelValue.enabled,
+	set: (value: boolean) => {
+		emit("update:modelValue", {
+			...props.modelValue,
+			enabled: value,
+		});
+	},
+});
+
+// Вычисляемое свойство для площади
+const areaValue = computed({
+	get: () => props.modelValue.area,
+	set: (value: number) => {
+		emit("update:modelValue", {
+			...props.modelValue,
+			area: value,
+		});
+	},
+});
+
+// Вычисляемое свойство для количества
+const countValue = computed({
+	get: () => props.modelValue.count || 0,
+	set: (value: number) => {
+		emit("update:modelValue", {
+			...props.modelValue,
+			count: value,
+		});
+	},
+});
+
+// Рассчитываем теплопотери
+const calculatedHeatLoss = computed(() => {
+	if (!props.modelValue.enabled || !props.construction.calculatedResistance) {
+		return 0;
+	}
+
+	const temperatureDifference = props.requiredTemp - props.minTemp;
+	const area = props.modelValue.area;
+	const resistance = props.construction.calculatedResistance;
+
+	// Формула: Q = (tвнутр - tнаруж) * S / R
+	const heatLoss = (temperatureDifference * area) / resistance;
+
+	return Math.round(heatLoss);
+});
+
+// Синхронизируем теплопотери при изменении параметров
+watch(
+	[calculatedHeatLoss, () => props.modelValue.enabled],
+	([heatLoss, enabled]) => {
+		if (enabled) {
+			emit("update:modelValue", {
+				...props.modelValue,
+				heatLoss: heatLoss,
+			});
+		}
+	},
+	{ immediate: true }
+);
+</script>
