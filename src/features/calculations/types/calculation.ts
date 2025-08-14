@@ -43,6 +43,8 @@ export interface CalculationDetails {
 	// Конструкции
 	calculateMethod: "detailed" | "simple" | "snip";
 	constructions: Construction[];
+
+	rooms: Room[];
 }
 
 export interface Equipment {
@@ -50,6 +52,7 @@ export interface Equipment {
 	name: string;
 	quantity: number;
 	price: number;
+	power?: number;
 }
 
 export interface ConstructionLayer {

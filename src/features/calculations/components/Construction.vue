@@ -24,6 +24,7 @@
 						placeholder="0"
 						:allowEmpty="false"
 						:min="0"
+						:minFractionDigits="1"
 						:suffix="' м²'"
 					/>
 				</div>
