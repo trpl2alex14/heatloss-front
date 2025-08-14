@@ -16,7 +16,7 @@
 		</div>
 
 		<!-- Поле количества (только для окон) -->
-		<div class="w-28" v-if="isWindowType">
+		<div class="w-24" v-if="isWindowType">
 			<BaseInputNumber
 				v-model="countValue"
 				label="Количество"
@@ -28,20 +28,21 @@
 		</div>
 
 		<!-- Поле площади -->
-		<div class="w-28">
+		<div class="w-26">
 			<BaseInputNumber
 				v-model="areaValue"
 				label="Площадь"
 				placeholder="0"
 				:disabled="!modelValue.enabled"
 				:allowEmpty="false"
+				:minFractionDigits="1"
 				:min="0"
 				:suffix="' м²'"
 			/>
 		</div>
 
 		<!-- Теплопотери (только для чтения) -->
-		<div class="w-40">
+		<div class="w-36">
 			<BaseInputNumber
 				:model-value="calculatedHeatLoss"
 				:label="`Теплопотери в ${minTemp}°C`"

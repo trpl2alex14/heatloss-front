@@ -10,3 +10,5 @@ export { default as ConstructionLayer } from "./ConstructionLayer.vue";
 export { default as RoomConstruction } from "./RoomConstruction.vue";
 export { default as Construction } from "./Construction.vue";
 export { default as SectionConstructions } from "./SectionConstructions.vue";
+export { default as Room } from "./Room.vue";
+export { default as RoomEquipment } from "./RoomEquipment.vue";

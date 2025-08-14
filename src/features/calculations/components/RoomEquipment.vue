@@ -19,7 +19,7 @@
 		</div>
 
 		<!-- Количество -->
-		<div class="w-32">
+		<div class="w-24">
 			<BaseInputNumber
 				v-model="quantityValue"
 				label="Количество"
@@ -32,18 +32,19 @@
 
 		<!-- Разделитель -->
 		<div
-			class="flex items-center justify-center w-4 h-6 text-sm font-normal text-black"
+			class="flex items-center justify-center w-2 h-6 text-sm font-normal text-black"
 		>
 			х
 		</div>
 
 		<!-- Стоимость за единицу -->
-		<div class="w-32">
+		<div class="w-34">
 			<BaseInputNumber
 				v-model="priceValue"
 				label="Стоимость"
 				placeholder="0"
 				:min="0"
+				:minFractionDigits="2"
 				:suffix="' ₽'"
 				class="w-full"
 			/>
@@ -51,18 +52,19 @@
 
 		<!-- Разделитель -->
 		<div
-			class="flex items-center justify-center w-4 h-6 text-sm font-normal text-black"
+			class="flex items-center justify-center w-2 h-6 text-sm font-normal text-black"
 		>
 			=
 		</div>
 
 		<!-- Общая сумма (только для чтения) -->
-		<div class="w-32">
+		<div class="w-38">
 			<BaseInputNumber
 				:model-value="totalCost"
 				label="Сумма"
 				:disabled="true"
 				:suffix="' ₽'"
+				:minFractionDigits="2"
 				:readonly="true"
 				class="w-full"
 			/>
