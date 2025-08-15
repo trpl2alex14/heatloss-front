@@ -28,7 +28,7 @@
 
 			<!-- Кнопка добавления помещения -->
 			<BaseButton
-				icon="house"
+				icon="home"
 				label="Добавить помещение"
 				severity="primary"
 				@click="addRoom"

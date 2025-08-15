@@ -36,7 +36,7 @@
 
 			<!-- Кнопка добавления конструкции -->
 			<BaseButton
-				icon="plus"
+				icon="hammer"
 				label="Добавить поверхность"
 				severity="primary"
 				@click="addConstruction"
