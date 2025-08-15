@@ -45,6 +45,7 @@ export interface CalculationDetails {
 	constructions: Construction[];
 
 	rooms: Room[];
+	equipment?: Equipment[];
 }
 
 export interface Equipment {

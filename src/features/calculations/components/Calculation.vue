@@ -24,6 +24,7 @@
 				class="my-6 border-t border-gray-200"
 				ref="equipmentsRef"
 			></div>
+			<SectionEquipments v-model="modelValueProxy" />
 		</div>
 	</div>
 </template>
@@ -35,6 +36,7 @@ import SectionProduct from "@/features/calculations/components/SectionProduct.vu
 import SectionClimat from "@/features/calculations/components/SectionClimat.vue";
 import SectionConstructions from "@/features/calculations/components/SectionConstructions.vue";
 import SectionRooms from "@/features/calculations/components/SectionRooms.vue";
+import SectionEquipments from "@/features/calculations/components/SectionEquipments.vue";
 
 interface Props {
 	modelValue: CalculationDetails;
@@ -57,6 +59,9 @@ const modelValueProxy = computed<CalculationDetails>({
 		if (props.modelValue.rooms === undefined) {
 			props.modelValue.rooms = [];
 		}
+		if (props.modelValue.equipment === undefined) {
+			props.modelValue.equipment = [];
+		}
 
 		return props.modelValue;
 	},
@@ -67,7 +72,8 @@ watch(modelValueProxy, (value) => {
 	if (
 		modelValueProxy.value.calculateMethod !== value.calculateMethod ||
 		modelValueProxy.value.constructions !== value.constructions ||
-		modelValueProxy.value.rooms !== value.rooms
+		modelValueProxy.value.rooms !== value.rooms ||
+		modelValueProxy.value.equipment !== value.equipment
 	) {
 		emit("update:modelValue", value);
 	}
