@@ -1,5 +1,7 @@
 <template>
-	<div class="flex flex-col gap-3 rounded-xl relative bg-gray-50">
+	<div
+		class="flex flex-col gap-3 rounded-xl relative bg-gray-50 border border-gray-300"
+	>
 		<div class="p-4">
 			<!-- Заголовок с основными полями -->
 			<div class="flex items-center gap-3.5">
@@ -14,7 +16,13 @@
 				</div>
 
 				<!-- Кнопка добавления этажа -->
-				<BaseButton icon="plus" label="Этаж" text severity="primary" />
+				<BaseButton
+					icon="plus"
+					label="Этаж"
+					text
+					severity="primary"
+					@click="addFloor"
+				/>
 
 				<!-- Переключатель мансарды -->
 				<div class="flex items-center gap-2.5">
@@ -107,112 +115,118 @@
 			</div>
 		</div>
 
-		<!-- Заголовок секции конструкций -->
-		<h3 class="px-4">Ограждающей конструкции помещения</h3>
-
-		<!-- Переключатели режимов -->
-		<div class="px-4">
-			<BaseSelectButton
-				v-model="constructionMode"
-				:options="constructionModeOptions"
-				option-label="label"
-				option-value="value"
-			/>
-		</div>
-
-		<!-- Список конструкций помещения -->
-		<div class="flex flex-col gap-2 px-4">
-			<RoomConstruction
-				v-for="(
-					roomConstruction, index
-				) in modelValue.roomConstructions"
-				:key="roomConstruction.id"
-				v-model="modelValue.roomConstructions[index]"
-				:construction="getConstructionById(roomConstruction.id)"
-				:min-temp="minTemp"
-				:required-temp="requiredTemp"
-				@remove="removeRoomConstruction(index)"
-			/>
-
-			<!-- Кнопка выбора конструкций -->
-			<div class="flex justify-end">
-				<BaseButton
-					icon="bars"
-					label="Выбрать"
-					text
-					severity="primary"
-					@click="toggleConstructionPopover"
+		<div class="px-4 flex flex-col gap-3" v-if="isShow">
+			
+			<div class="flex flex-col gap-2" v-if="props.constructions.length > 0">
+				<!-- Заголовок секции конструкций -->
+				<h3>Ограждающей конструкции помещения</h3>
+	
+				<div class="flex">
+					<!-- Переключатели режимов -->
+					<BaseSelectButton
+					v-model="constructionMode"
+					:options="constructionModeOptions"
+					option-label="label"
+					option-value="value"
+					/>
+					<!-- Кнопка выбора конструкций -->
+					<BaseButton
+						icon="bars"
+						label="Выбрать"
+						text
+						severity="primary"
+						@click="toggleConstructionPopover"
+					/>
+				</div>
+				<!-- Список конструкций помещения -->
+				<RoomConstruction
+					v-for="(
+						roomConstruction, index
+					) in modelValue.roomConstructions"
+					:key="roomConstruction.id"
+					v-model="modelValue.roomConstructions[index]"
+					:construction="getConstructionById(roomConstruction.id)"
+					:min-temp="minTemp"
+					:required-temp="requiredTemp"
+					@remove="removeRoomConstruction(index)"
 				/>
-			</div>
 
-			<!-- Popover для выбора конструкций -->
-			<Popover ref="constructionPopoverRef">
-				<div class="px-2 pb-2 min-w-80">
-					<h4 class="font-medium mb-3">Конструкции</h4>
-					<div class="flex flex-col gap-2">
-						<div
-							v-for="construction in constructions"
-							:key="construction.id"
-							class="flex items-center gap-2"
-						>
-							<BaseToggleSwitch
-								v-model="selectedConstructions[construction.id]"
-								:label="construction.name"
-								@update:model-value="
-									(value) =>
-										toggleConstruction(
-											construction.id,
-											value
-										)
-								"
-							/>
+
+				<!-- Popover для выбора конструкций -->
+				<Popover ref="constructionPopoverRef">
+					<div class="px-2 pb-2 min-w-80">
+						<h4 class="font-medium mb-3">Конструкции</h4>
+						<div class="flex flex-col gap-2">
+							<div
+								v-for="construction in constructions"
+								:key="construction.id"
+								class="flex items-center gap-2"
+							>
+								<BaseToggleSwitch
+									v-model="
+										selectedConstructions[construction.id]
+									"
+									:label="construction.name"
+									@update:model-value="
+										(value) =>
+											toggleConstruction(
+												construction.id,
+												value
+											)
+									"
+								/>
+							</div>
 						</div>
 					</div>
+				</Popover>
+			</div>
+
+			<!-- Заголовок секции оборудования -->
+			<div>
+				<h3>Отопительное оборудование</h3>
+				<p class="text-sm text-gray-600">
+					Перечень оборудования рекомендованного к установке
+				</p>
+			</div>
+
+			<!-- Список оборудования -->
+			<div class="flex flex-col gap-2">
+				<RoomEquipment
+					v-for="(equipment, index) in modelValue.equipment"
+					:key="equipment.id"
+					v-model="modelValue.equipment[index]"
+					:index="index"
+					@remove="removeEquipment(index)"
+				/>
+
+				<!-- Кнопки действий для оборудования -->
+				<div class="flex gap-5 self-end">
+					<BaseButton
+						icon="calculator"
+						label="Авто"
+						text
+						severity="primary"
+						@click="$emit('auto')"
+					/>
+					<BaseButton
+						icon="plus"
+						label="Добавить оборудование"
+						text
+						severity="primary"
+						@click="$emit('addEquipment')"
+					/>
 				</div>
-			</Popover>
-		</div>
-
-		<!-- Заголовок секции оборудования -->
-		<div class="px-4">
-			<h3>Отопительное оборудование</h3>
-			<p class="text-sm text-gray-600">
-				Перечень оборудования рекомендованного к установке
-			</p>
-		</div>
-
-		<!-- Список оборудования -->
-		<div class="flex flex-col gap-2 px-4">
-			<RoomEquipment
-				v-for="(equipment, index) in modelValue.equipment"
-				:key="equipment.id"
-				v-model="modelValue.equipment[index]"
-				:index="index"
-				@remove="removeEquipment(index)"
-			/>
-
-			<!-- Кнопки действий для оборудования -->
-			<div class="flex gap-5 self-end">
-				<BaseButton
-					icon="calculator"
-					label="Авто"
-					text
-					severity="primary"
-					@click="$emit('auto')"
-				/>
-				<BaseButton
-					icon="plus"
-					label="Добавить оборудование"
-					text
-					severity="primary"
-					@click="$emit('addEquipment')"
-				/>
 			</div>
 		</div>
-
-
 
 		<!-- Кнопки действий -->
 		<div class="absolute top-0 right-0 flex gap-1">
+			<BaseButton
+				:icon="isShow ? 'eye-slash' : 'eye'"
+				text
+				severity="secondary"
+				@click="isShow = !isShow"
+			/>
 			<BaseButton
 				icon="arrow-up"
 				text
@@ -230,12 +244,6 @@
 				text
 				severity="secondary"
 				@click="$emit('duplicate')"
-			/>
-			<BaseButton
-				icon="eye-slash"
-				text
-				severity="secondary"
-				@click="$emit('hide')"
 			/>
 			<BaseButton
 				icon="trash"
@@ -264,16 +272,16 @@
 					v-model="additionalHeatSource"
 					label="Дополнительный источник тепла"
 				/>
-			</div>		
+			</div>
 			<div class="flex-1"></div>
-			
+
 			<div class="w-42">
 				<BaseInputNumber
 					:model-value="totalHeatLoss"
 					:label="`Теплопотери в ${minTemp}°C`"
 					:disabled="true"
 					:readonly="true"
-					:suffix="' Вт'"					
+					:suffix="' Вт'"
 				/>
 			</div>
 			<div class="w-42">
@@ -286,7 +294,6 @@
 					:style="getStyleHeatLoss()"
 				/>
 			</div>
-
 		</div>
 	</div>
 </template>
@@ -320,8 +327,8 @@ interface Emits {
 	(e: "moveUp"): void;
 	(e: "moveDown"): void;
 	(e: "duplicate"): void;
-	(e: "hide"): void;
 	(e: "remove"): void;
+	(e: "addFloor"): void;
 }
 
 const props = defineProps<Props>();
@@ -329,6 +336,7 @@ const emit = defineEmits<Emits>();
 
 // Refs
 const constructionPopoverRef = ref();
+const isShow = ref(true);
 const selectedConstructions = ref<Record<number, boolean>>({});
 const additionalHeatSource = ref(false);
 const additionalHeatPower = ref(0);
@@ -458,6 +466,33 @@ watch(heightValue, (newHeight) => {
 	}
 });
 
+// Отслеживание изменений в props.constructions
+watch(
+	() => props.constructions,
+	(newConstructions, oldConstructions) => {
+		if (!oldConstructions) return;
+
+		// Получаем ID удаленных конструкций
+		const oldConstructionIds = new Set(oldConstructions.map((c) => c.id));
+		const newConstructionIds = new Set(newConstructions.map((c) => c.id));
+		const removedConstructionIds = [...oldConstructionIds].filter(
+			(id) => !newConstructionIds.has(id)
+		);
+
+		// Удаляем конструкции из roomConstructions, если они были удалены из props.constructions
+		if (removedConstructionIds.length > 0) {
+			removedConstructionIds.forEach((id) => {
+				removeRoomConstruction(
+					props.modelValue.roomConstructions.findIndex(
+						(rc) => rc.id === id
+					)
+				);
+			});
+		}
+	},
+	{ deep: true }
+);
+
 // Опции для выбора этажа
 const floorOptions = computed(() => {
 	return Array.from({ length: props.floors }, (_, i) => ({
@@ -475,10 +510,8 @@ const constructionModeOptions = [
 ];
 
 // Методы для работы с конструкциями
-const getConstructionById = (id: number): Construction => {
-	return (
-		props.constructions.find((c) => c.id === id) || props.constructions[0]
-	);
+const getConstructionById = (id: number): Construction | undefined => {
+	return props.constructions.find((c) => c.id === id);
 };
 
 const removeRoomConstruction = (index: number) => {
@@ -594,5 +627,10 @@ const getStyleHeatLoss = () => {
 					: "var(--color-green-500)"
 				: "var(--color-red-500)",
 	};
+};
+
+// Метод для добавления этажа
+const addFloor = () => {
+	emit("addFloor");
 };
 </script>

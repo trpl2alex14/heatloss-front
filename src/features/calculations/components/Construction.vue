@@ -1,5 +1,7 @@
 <template>
-	<div class="flex flex-col gap-3 rounded-xl relative bg-gray-100">
+	<div
+		class="flex flex-col gap-3 rounded-xl relative bg-gray-100 border border-gray-300"
+	>
 		<div class="p-4">
 			<!-- Заголовок с основными полями -->
 			<div class="flex items-center gap-3.5">
@@ -38,29 +40,31 @@
 				</div>
 			</div>
 
-			<!-- Заголовок секции слоев -->
-			<h3 class="mt-4 mb-2">Слои ограждающей конструкции</h3>
+			<div v-if="selectedSurface">
+				<!-- Заголовок секции слоев -->
+				<h3 class="mt-4 mb-2">Слои ограждающей конструкции</h3>
 
-			<!-- Список слоев -->
-			<div class="flex flex-col gap-2">
-				<ConstructionLayer
-					v-for="({}, index) in modelValue.layers"
-					:key="index"
-					v-model="modelValue.layers[index]"
-					:materials="filteredMaterials"
-					:humidity="climate.humidity"
-					@remove="removeLayer(index)"
-				/>
+				<!-- Список слоев -->
+				<div class="flex flex-col gap-2">
+					<ConstructionLayer
+						v-for="({}, index) in modelValue.layers"
+						:key="index"
+						v-model="modelValue.layers[index]"
+						:materials="filteredMaterials"
+						:humidity="climate.humidity"
+						@remove="removeLayer(index)"
+					/>
 
-				<!-- Кнопка добавления слоя -->
-				<BaseButton
-					icon="bars"
-					label="Добавить слой"
-					text
-					severity="primary"
-					@click="addLayer"
-					class="self-end"
-				/>
+					<!-- Кнопка добавления слоя -->
+					<BaseButton
+						icon="bars"
+						label="Добавить слой"
+						text
+						severity="primary"
+						@click="addLayer"
+						class="self-end"
+					/>
+				</div>
 			</div>
 
 			<!-- Кнопки действий -->
@@ -112,7 +116,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
+import { computed, nextTick, ref, watch } from "vue";
 import BaseSelect from "@/shared/components/ui/BaseSelect.vue";
 import BaseInputNumber from "@/shared/components/ui/BaseInputNumber.vue";
 import BaseInputText from "@/shared/components/ui/BaseInputText.vue";
@@ -286,6 +290,22 @@ const syncArea = () => {
 		});
 	}
 };
+
+watch(
+	filteredMaterials,
+	(materials) => {
+		const exsistingLayers = props.modelValue.layers
+		.filter((layer) => materials.find((m) => m.id === layer.materialId));			
+		
+		nextTick(() => {
+			emit("update:modelValue", {
+				...props.modelValue,
+				layers: [...exsistingLayers],
+			});
+		});
+	},
+	{ immediate: true, deep: true }
+);
 
 // Наблюдение за изменением showArea
 watch(showArea, syncArea);

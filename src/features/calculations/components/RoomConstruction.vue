@@ -8,7 +8,7 @@
 		<!-- Название конструкции (только для чтения) -->
 		<div class="flex-1">
 			<BaseInputText
-				:model-value="construction.name"
+				:model-value="construction?.name || ''"
 				label="Конструкция"
 				:disabled="true"
 				:readonly="true"
@@ -75,7 +75,7 @@ import type { RoomConstruction, Construction } from "../types/calculation";
 
 interface Props {
 	modelValue: RoomConstruction;
-	construction: Construction;
+	construction?: Construction;
 	minTemp: number;
 	requiredTemp: number;
 }
@@ -90,7 +90,7 @@ const emit = defineEmits<Emits>();
 
 // Проверяем, является ли конструкция окном
 const isWindowType = computed(() => {
-	return props.construction.surface?.type === "window";
+	return props.construction?.surface?.type === "window";
 });
 
 // Вычисляемое свойство для enabled состояния
@@ -128,7 +128,7 @@ const countValue = computed({
 
 // Рассчитываем теплопотери
 const calculatedHeatLoss = computed(() => {
-	if (!props.modelValue.enabled || !props.construction.calculatedResistance) {
+	if (!props.modelValue.enabled || !props.construction?.calculatedResistance) {
 		return 0;
 	}
 
