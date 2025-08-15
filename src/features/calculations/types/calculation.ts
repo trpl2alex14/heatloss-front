@@ -46,6 +46,10 @@ export interface CalculationDetails {
 
 	rooms: Room[];
 	equipment?: Equipment[];
+
+	powerPrice?: number;
+	comment?: string;
+	promoCode?: string;
 }
 
 export interface Equipment {

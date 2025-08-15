@@ -25,6 +25,9 @@
 				ref="equipmentsRef"
 			></div>
 			<SectionEquipments v-model="modelValueProxy" />
+
+			<div class="my-6 border-t border-gray-200" ref="otherRef"></div>
+			<SectionOther v-model="modelValueProxy" />
 		</div>
 	</div>
 </template>
@@ -37,6 +40,7 @@ import SectionClimat from "@/features/calculations/components/SectionClimat.vue"
 import SectionConstructions from "@/features/calculations/components/SectionConstructions.vue";
 import SectionRooms from "@/features/calculations/components/SectionRooms.vue";
 import SectionEquipments from "@/features/calculations/components/SectionEquipments.vue";
+import SectionOther from "@/features/calculations/components/SectionOther.vue";
 
 interface Props {
 	modelValue: CalculationDetails;
@@ -84,10 +88,11 @@ const sections = {
 	constructions: useTemplateRef("constructionsRef"),
 	rooms: useTemplateRef("roomsRef"),
 	equipments: useTemplateRef("equipmentsRef"),
+	other: useTemplateRef("otherRef"),
 };
 
 const scrollTo = (
-	scrollTo: "climate" | "constructions" | "rooms" | "equipments"
+	scrollTo: "climate" | "constructions" | "rooms" | "equipments" | "other"
 ) => {
 	sections[scrollTo]?.value?.scrollIntoView({ behavior: "smooth" });
 };

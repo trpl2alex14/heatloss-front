@@ -1,4 +1,4 @@
-export function route(name: string, id? :number) {
+export function route(name: string, id?: number) {
 	switch (name) {
 		case "directories.equipment":
 			return "/data/equipment.json";
@@ -7,7 +7,7 @@ export function route(name: string, id? :number) {
 		case "directories.climate":
 			return "/data/climate.json";
 		case "directories.surfaces":
-			return "/data/surfaces.json";			
+			return "/data/surfaces.json";
 		case "calculations":
 			return "/data/calculations.lazy.json";
 		case "requests":
@@ -24,11 +24,12 @@ export function route(name: string, id? :number) {
 			return `https://kouzi.bitrix24.ru/crm/deal/details/${id}/`;
 		case "/api/tags":
 			return "/data/tags.json";
+		case "/api/promos":
+			return "/data/promos.json";
 		case "calculations.view":
 			return `/calculations/view/${id}`;
 		case "calculations.pdf":
-			return `/calculations/pdf/${id}`;			
-
+			return `/calculations/pdf/${id}`;
 	}
 	return "";
 }

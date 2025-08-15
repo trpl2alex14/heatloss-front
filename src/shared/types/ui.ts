@@ -15,3 +15,8 @@ export interface Tag {
 	icon?: string;
 	label: string;
 }
+
+export interface PromoCode {
+	code: string;
+	description: string;
+}

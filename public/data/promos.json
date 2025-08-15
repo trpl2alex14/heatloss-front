@@ -1,0 +1,25 @@
+{
+	"data": [
+		{
+			"code": "WELCOME10",
+			"description": "Скидка 10% для новых клиентов"
+		},
+		{
+			"code": "SUMMER20",
+			"description": "Летняя скидка 20% на все расчеты"
+		},
+		{
+			"code": "WINTER15",
+			"description": "Зимняя скидка 15% на отопление"
+		},
+		{
+			"code": "VIP25",
+			"description": "VIP скидка 25% для постоянных клиентов"
+		},
+		{
+			"code": "BULK30",
+			"description": "Скидка 30% при заказе от 5 расчетов"
+		}
+	],
+	"status": "success"
+}
