@@ -48,7 +48,7 @@
 			/>
 			<BaseInputNumber
 				v-model="result.averageExpenses"
-				label="Расходы в месяц"
+				:label="`Расходы в месяц (${result.powerPrice || powerPrice} ₽/кВт*ч)`"
 				class="flex-1"
 				disabled
 				suffix=" ₽"
@@ -56,16 +56,17 @@
 		</div>
 
 		<!-- Секция оборудования -->
-		<div class="font-medium border-b border-gray-300 mt-2">
-			Суммарное количество оборудования
-		</div>
+		<div v-if="result.equipment?.length" class="flex flex-col gap-2">
+			<div class="font-medium border-b border-gray-300 mt-2">
+				Суммарное количество оборудования
+			</div>
 
-		<div
+			<div
 			v-for="(equipment, index) in result.equipment"
 			:key="index"
 			class="flex gap-x-2"
-		>
-			<BaseTextArea
+			>
+				<BaseTextArea
 				v-model="equipment.name"
 				label="Наименование"
 				class="flex-1"
@@ -73,44 +74,45 @@
 				autoResize
 				style="resize: none"
 				disabled
-			/>
-			<BaseInputNumber
+				/>
+				<BaseInputNumber
 				v-model="equipment.quantity"
-				label="Количество"
-				class="w-22"
-				suffix=" шт."
-				disabled
-			/>
-			<BaseInputNumber
-				v-model="equipment.price"
-				label="Цена"
-				class="w-26"
-				suffix=" ₽"
-				disabled
-			/>
-		</div>
-
-		<div class="flex justify-end">
-			<BaseInputNumber
-				v-model="result.totalEquipmentCost"
+					label="Количество"
+					class="w-22"
+					suffix=" шт."
+					disabled
+				/>
+				<BaseInputNumber
+					v-model="equipment.price"
+					label="Цена"
+					class="w-26"
+					suffix=" ₽"
+					disabled
+					/>
+			</div>
+			
+			<div class="flex justify-end">
+				<BaseInputNumber
+				v-model="result.equipmentCost"
 				label="Стоимость оборудования"
 				class="w-50"
 				disabled
 				suffix=" ₽"
-			/>
-		</div>
-
-		<div v-if="result.totalEquipmentCost" class="flex justify-end">
-			<BaseInputNumber
+				/>
+			</div>
+		
+			<div v-if="result.deliveryCost" class="flex justify-end">
+				<BaseInputNumber
 				v-model="result.deliveryCost"
 				label="Стоимость доставки"
 				class="w-50"
 				disabled
-				suffix=" ₽"
-			/>
+					suffix=" ₽"
+				/>
+			</div>
 		</div>
-
-		<!-- Секция теплопотерь -->
+		
+		<!-- Секция теплопотерь -->		 
 		<div class="font-medium border-b border-gray-300 mt-2">Теплопотери</div>
 
 		<div class="flex gap-x-2">
@@ -155,9 +157,7 @@
 				disabled
 			/>
 			<BaseInputText
-				:model-value="`${result.totalHeatLoss} кВт*ч (${(
-					result.totalHeatLoss / result.volume
-				).toFixed(2)} Вт/м³)`"
+				:model-value="totalHeatLoss"
 				label="Общие теплопотери объекта"
 				class="flex-1"
 				disabled
@@ -165,30 +165,32 @@
 		</div>
 
 		<!-- Секция конструкций -->
-		<div class="font-medium border-b border-gray-300 mt-2">Конструкции</div>
+		<div v-if="result.constructions?.length" class="flex flex-col gap-2">
+			<div class="font-medium border-b border-gray-300 mt-2">Конструкции</div>
 
-		<div
-			v-for="(constr, index) in result.constructions"
-			:key="index"
-			class="flex gap-x-2"
-		>
-			<BaseTextArea
-				v-model="constr.name"
-				label="Конструкция"
-				class="flex-1"
-				disabled
-				rows="1"
-				autoResize
-				style="resize: none"
-			/>
-			<BaseInputNumber
-				:model-value="constr.heatLoss"
-				:label="`Теплопотери в ${result.minTemp} С°`"
-				class="w-35"
-				disabled
-				suffix=" Вт*ч"
-				:style="getStyleHeatLoss(constr)"
-			/>
+			<div
+				v-for="(constr, index) in result.constructions"
+				:key="index"
+				class="flex gap-x-2"
+			>
+				<BaseTextArea
+					v-model="constr.name"
+					label="Конструкция"
+					class="flex-1"
+					disabled
+					rows="1"
+					autoResize
+					style="resize: none"
+				/>
+				<BaseInputNumber
+					:model-value="constr.heatLoss"
+					:label="`Теплопотери в ${result.minTemp} С°`"
+					class="w-35"
+					disabled
+					suffix=" Вт*ч"
+					:style="getStyleHeatLoss(constr)"
+				/>
+			</div>
 		</div>
 	</div>
 </template>
@@ -202,12 +204,22 @@ import { route } from "@/shared/utils/router";
 import BaseTextArea from "@/shared/components/ui/BaseTextArea.vue";
 import { plural } from "@/shared/utils/text";
 import type { Construction } from "@/features/calculations/types/calculation.ts";
+import { computed } from "vue";
+import { useSettings } from "@/features/settings/composables/useSettings.ts";
 
 type Props = {
 	result: CalculationResult;
 };
 
-defineProps<Props>();
+const props = defineProps<Props>();
+
+const { powerPrice } = useSettings();
+
+const totalHeatLoss = computed(() => {
+	const heatLossInCube = props.result.volume ? props.result.totalHeatLoss / props.result.volume : 0;
+	return `${props.result.totalHeatLoss} кВт*ч` + 
+	(heatLossInCube ? ` (${heatLossInCube.toFixed(2)} Вт/м³)` : '');
+});
 
 const getStyleHeatLoss = (c: Construction) => {
 	return {

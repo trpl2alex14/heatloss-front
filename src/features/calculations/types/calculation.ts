@@ -24,8 +24,7 @@ export interface CalculationDetails {
 	status: CalculationStatus;
 
 	requestId?: number;
-
-	area: number;
+	
 	title?: string;
 	
 	// Общие данные
@@ -43,6 +42,7 @@ export interface CalculationDetails {
 	// Конструкции
 	calculateMethod: "detailed" | "simple" | "snip";
 	constructions: Construction[];
+	baseHeatLoss?: number;
 
 	rooms: Room[];
 	equipment?: Equipment[];
@@ -50,6 +50,7 @@ export interface CalculationDetails {
 	powerPrice?: number;
 	comment?: string;
 	promoCode?: string;
+	deliveryCost?: number;
 }
 
 export interface Equipment {
@@ -108,16 +109,13 @@ export interface Room {
 
 export interface CalculationResult {
 	id?: number;
-
-	power: number;
-	equipmentCost: number;
-
+	
 	averagePower: number;
 	averageExpenses: number;
-
+	
 	equipment?: Equipment[];
-
-	totalEquipmentCost?: number;
+	power: number;
+	equipmentCost: number;	
 	deliveryCost?: number;
 
 	city: string;
@@ -134,4 +132,6 @@ export interface CalculationResult {
 	totalHeatLoss: number;
 
 	constructions?: Construction[];
+
+	powerPrice?: number;
 }

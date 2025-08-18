@@ -1,99 +1,221 @@
 import { computed, ref } from "vue";
-import type { CalculationDetails, CalculationResult } from "@/features/calculations/types/calculation.ts";
+import type {
+	CalculationDetails,
+	CalculationResult,
+	Equipment,
+	Room,
+	Construction
+} from "@/features/calculations/types/calculation.ts";
+import { useSettings } from "@/features/settings/composables/useSettings.ts";
+
+const { powerPrice, tagsForTitle } = useSettings();
+const calculation = ref<CalculationDetails>({
+	useSeason: "permanent",
+} as CalculationDetails);
 
 export const useCalculator = () => {
-	const calculation = ref<CalculationDetails>({
-		useSeason: "permanent",
-	} as CalculationDetails);
+	const getTypeObject = computed(() => {
+		return tagsForTitle.find((item) => calculation.value.tags?.includes(item)) || '';
+	});
 
-
-	
 	const title = computed(() => {
 		return (
 			calculation.value?.title ||
-			(calculation.value?.city && calculation.value?.area ?
-			`${calculation.value.city} - Дом ${calculation.value.area} м²` :
-			'Новый расчёт')
+			(calculation.value?.city && totalArea.value
+				? `${calculation.value.city} - ${getTypeObject.value} ${totalArea.value} м²`
+				: "Новый расчёт")
 		);
 	});
-	
+
 	const subTitle = computed(() => {
-		return `объект ${calculation.value.id || ''} от ${calculation.value.date || new Date().toLocaleDateString()}`;
-	});	
-	
-    const result = computed<CalculationResult>(() => {
-        return {
-			id: 1222,
-			power: 5.25,
-			averagePower: 1230,
-			equipmentCost: 198500,
-			averageExpenses: 4500,
-			equipment: [
-				{
-					name: "Флэйт 3 секции 500Вт - 150 Черный Ral 0922, правый",
-					quantity: 5,
-					price: 155000,
-				},
-				{
-					name: "Флэйт 6 секции 250Вт - 30",
-					quantity: 2,
-					price: 10800,
-				},
-				{
-					name: "Welrok lis",
-					quantity: 3,
-					price: 2500,
-				},
-			],
-			totalEquipmentCost: 198500,
-			deliveryCost: 1722,
-		
-			city: "Санкт-Петербург",
-			humidity: "Б",
-			area: 268.3,
-			volume: 652.23,
-			minTemp: -28,
-			avgTemp: -1.3,
-			requiredTemp: 25,
-			heatingSeason: 213,
-			totalHeatLoss: 21210.32,
-			constructions: [
-				{
-					name: "Крыша утепленная наклонная",
-					heatLoss: 1022,
-					snipResistance: 3.7,
-					calculatedResistance: 2.7,
-					layers: []
-				},
-				{
-					name: "Пристрой к дому (47 м2)",
-					heatLoss: 325,
-					snipResistance: 4.7,
-					calculatedResistance: 4.5,
-					layers: []
-				},
-				{
-					name: "Стена наружная",
-					heatLoss: 2224,
-					snipResistance: 3.2,
-					calculatedResistance: 3,
-					layers: []
-				},
-				{
-					name: "Пол над техподпольем, расп. выше уровня земли",
-					heatLoss: 538,
-					snipResistance: 2.7,
-					calculatedResistance: 4.8,
-					layers: []
-				},
-			],
+		return `объект ${calculation.value.id || ""} от ${
+			calculation.value.date || new Date().toLocaleDateString()
+		}`;
+	});
+
+	const getAllEquipmentFromRooms = (
+		calculationData: CalculationDetails
+	): Equipment[] => {
+		const allEquipment: Equipment[] = [];
+
+		calculationData.rooms?.forEach((room) => {
+			room.equipment?.forEach((item) => {
+				allEquipment.push({ ...item });
+			});
+		});
+
+		return allEquipment;
+	};
+
+	const mergeEquipments = (equipment: Equipment[]): Equipment[] => {
+		const equipmentMap = new Map<number, Equipment>();
+
+		equipment.forEach((item) => {
+			if (equipmentMap.has(item.id)) {
+				const existing = equipmentMap.get(item.id)!;
+				existing.quantity += item.quantity;
+			} else {
+				equipmentMap.set(item.id, { ...item });
+			}
+		});
+
+		return Array.from(equipmentMap.values());
+	};
+
+	const calculatedHeatLoss = (
+		area?: number,
+		calculatedResistance?: number,
+		tempDiff?: number
+	) => {
+		if (!area || !calculatedResistance || !tempDiff) return 0;
+		return Math.round(((area * tempDiff) / calculatedResistance) * 10) / 10;
+	};
+
+	const totalEquipment = computed(() => {
+		return mergeEquipments([
+			...getAllEquipmentFromRooms(calculation.value),
+			...(calculation.value.equipment || []),
+		]);
+	});
+
+	const totalEquipmentCost = computed(() => {
+		return totalEquipment.value.reduce(
+			(acc, item) => acc + item.price * item.quantity,
+			0
+		);
+	});
+
+	const totalEquipmentPower = computed(() => {
+		return totalEquipment.value.reduce(
+			(acc, item) => acc + (item?.power || 0) * item.quantity,
+			0
+		);
+	});
+
+	const totalHeatLoss = computed(() => {
+		//todo: rooms heatloss or constructions heatloss
+		return (
+			Math.round(
+				constructions.value.reduce(
+					(acc, item) => acc + (item.heatLoss || 0),
+					0
+				) * 10
+			) / 10
+		);
+	});
+
+	const tempDiff = computed(() => {
+		return (
+			calculation.value.requiredTemp - calculation.value.climate?.minTemp
+		);
+	});
+
+	const averageHeatLoss = computed(() => {
+		return Math.round(
+			totalHeatLoss.value *
+				((calculation.value.requiredTemp -
+					calculation.value.climate?.avgTemp) /
+					tempDiff.value)
+		);
+	});
+
+	const averagePower = computed(() => {
+		return Math.round((averageHeatLoss.value * 24 * 30) / 100) / 10;
+	});
+
+	const constructionsDetailed = ()=> {
+		if (!calculation.value.constructions) return [];
+		return calculation.value.constructions.map((item) => ({
+			...item,
+			heatLoss: calculatedHeatLoss(
+				item.area,
+				item.calculatedResistance,
+				tempDiff.value
+			),
+		}));
+	}
+
+	const constructionsSnip = ()=> {
+		return constructionsDetailed();
+	}
+
+	const constructionsSimple = ():Construction[] => {
+		return [{
+			id: 0,
+			layers: [],
+			name: 'Ограждающие конструкции',
+			snipResistance: 0,
+			calculatedResistance: 0,
+			area: totalArea.value,
+			heatLoss: calculation.value.baseHeatLoss || 0,
+		}];
+	}
+
+	const constructions = computed(() => {
+		switch(calculation.value.calculateMethod) {
+			case 'simple':
+				return constructionsSimple();
+			case 'snip':
+				return constructionsSnip();
+			default:
+				return constructionsDetailed();
 		}
-    })
-	
+	});
+
+	const totalArea = computed(() => {
+		return (
+			calculation.value.rooms?.reduce(
+				(acc, item) => acc + item.area,
+				0
+			) || 0
+		);
+	});
+
+	const totalVolume = computed(() => {
+		const getHeight = (item: Room) => {
+            const height = item.height || 0;
+			return item.isMansard ? (height + (item.minHeight || 0)) / 2 : height;
+		};
+		return (
+			calculation.value.rooms?.reduce(
+				(acc, item) => acc + item.area * getHeight(item),
+				0
+			) || 0
+		);
+	});
+
+	const result = computed<CalculationResult>(() => {
+		return {
+			id: calculation.value.id || 0,
+			power: totalEquipmentPower.value / 1000,
+			equipmentCost: totalEquipmentCost.value,
+			equipment: totalEquipment.value,
+			averagePower: averagePower.value,
+			averageExpenses:
+				averagePower.value *
+				(calculation.value.powerPrice || powerPrice),
+			deliveryCost: calculation.value.deliveryCost || 0,
+
+			city: calculation.value.city,
+			humidity: calculation.value.climate?.humidity || "-",
+			minTemp: calculation.value.climate?.minTemp || 0,
+			avgTemp: calculation.value.climate?.avgTemp || 0,
+			requiredTemp: calculation.value.requiredTemp || 0,
+			heatingSeason: calculation.value.climate?.heatingSeason || 0,
+			area: totalArea.value,
+			volume: totalVolume.value,
+			totalHeatLoss: totalHeatLoss.value,
+			constructions: constructions.value,
+			powerPrice: calculation.value.powerPrice || powerPrice,
+		};
+	});
+
 	return {
 		calculation,
 		result,
 		title,
 		subTitle,
+		calculatedHeatLoss,
+		tempDiff: tempDiff.value,
 	};
 };

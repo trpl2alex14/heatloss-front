@@ -64,6 +64,11 @@
 			"id": 13,
 			"icon": "table",
 			"label": "окна в пол"
+		},
+		{
+			"id": 14,
+			"icon": "building",
+			"label": "квартира"
 		}
 	],
 	"status": "success"

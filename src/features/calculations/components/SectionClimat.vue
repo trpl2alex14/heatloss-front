@@ -168,31 +168,40 @@ const getRequiredTemp = (useSeason?: UseSeason) => {
 	return useSeason === "freeze" ? freezeTemp : comfortTemp;
 };
 
-const getCurrentClimate = (city: string) => {
-	return {
-		...climateData.value.find((item: ClimateItem) => item.city === city)
-	};
+const getCurrentClimate = (city: string, useSeason?: UseSeason) => {
+	const item = climateData.value.find((item: ClimateItem) => item.city === city);
+	return useSeason === "seasonal" ? {
+		...item,
+		minTemp: item.avgTemp || 0,
+		avgTemp: (props.modelValue.requiredTemp + item.avgTemp) / 2 || 0,
+	} : item;
 };
 
-const getDefaultLocalModel = (model: CalculationDetails) => {
-	model.useSeason = model?.useSeason ?? "permanent";
-	model.freezeTemp = model?.freezeTemp === undefined || model?.freezeTemp === null ? freezeTemp : model?.freezeTemp;
-	model.requiredTemp = model?.requiredTemp === undefined || model?.requiredTemp === null ? getRequiredTemp(model?.useSeason) : model?.requiredTemp;
-	model.climate = model?.climate || getCurrentClimate(model?.city);
+const localModel = computed({
+	get: () => props.modelValue,
+	set: (val) => {
+		emit("update:modelValue", val);
+	},
+});
 
-	return model;
-};
+watch( () => props.modelValue, (val) => {
+	if(!val.useSeason) {
+		val.useSeason = "permanent";
+	}
+	if(val.freezeTemp === undefined || val.freezeTemp === null) {
+		val.freezeTemp = freezeTemp;
+	}
+	if(val.requiredTemp === undefined || val.requiredTemp === null) {
+		val.requiredTemp = getRequiredTemp(val.useSeason);
+	}
+	if(val.climate === undefined || val.climate === null) {
+		val.climate = getCurrentClimate(val.city, val.useSeason);
+	}
 
-const localModel = ref<CalculationDetails>(
-	{...getDefaultLocalModel(props.modelValue)}
-);
+}, { immediate: true });
 
 watch(climateData, () => {
 	onCityChange(localModel.value.city);
-}, { deep: true });
-
-watch(localModel, (value) => {
-	emit("update:modelValue", value);
 }, { deep: true });
 
 watch(isEditingClimate, (value) => {
@@ -205,7 +214,7 @@ watch(isEditingClimate, (value) => {
 const climateProxy = computed({
 	get: () =>
 		localModel.value.climate ||
-		getCurrentClimate(localModel.value.city) ||
+		getCurrentClimate(localModel.value.city, localModel.value.useSeason) ||
 		{},
 	set: (val) => {
 		localModel.value = {
@@ -222,7 +231,7 @@ const onCityChange = (value: string) => {
 		city: value,
 		requiredTemp: getRequiredTemp(localModel.value?.useSeason),
 		freezeTemp: freezeTemp,
-		climate: getCurrentClimate(value) || {},
+		climate: getCurrentClimate(value, localModel.value.useSeason) || {},
 	};
 };
 </script>

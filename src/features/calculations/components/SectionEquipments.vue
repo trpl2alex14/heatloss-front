@@ -11,7 +11,7 @@
 		</div>
 
 		<!-- Список оборудования -->
-		<div class="flex flex-col gap-2">
+		<div class="flex flex-col gap-2" v-if="equipmentList">
 			<RoomEquipment
 				v-for="(equipment, index) in equipmentList"
 				:key="equipment.id"
@@ -50,9 +50,9 @@ const props = defineProps<Props>();
 const emit = defineEmits<Emits>();
 
 // Вычисляемое свойство для списка оборудования
-const equipmentList = computed<Equipment[]>({
+const equipmentList = computed({
 	get: () => {
-		return [...(props.modelValue.equipment || [])];
+		return props.modelValue.equipment;
 	},
 	set: (value: Equipment[]) => {
 		emit("update:modelValue", {

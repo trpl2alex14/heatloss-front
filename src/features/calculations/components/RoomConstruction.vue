@@ -72,6 +72,7 @@ import {
 	BaseButton,
 } from "@/shared/components";
 import type { RoomConstruction, Construction } from "../types/calculation";
+import { useCalculator } from "../composables/useCalculator";
 
 interface Props {
 	modelValue: RoomConstruction;
@@ -126,20 +127,18 @@ const countValue = computed({
 	},
 });
 
+const { calculatedHeatLoss: getHeatLoss, tempDiff } = useCalculator();
 // Рассчитываем теплопотери
 const calculatedHeatLoss = computed(() => {
+	
 	if (!props.modelValue.enabled || !props.construction?.calculatedResistance) {
 		return 0;
 	}
 
-	const temperatureDifference = props.requiredTemp - props.minTemp;
 	const area = props.modelValue.area;
 	const resistance = props.construction.calculatedResistance;
 
-	// Формула: Q = (tвнутр - tнаруж) * S / R
-	const heatLoss = (temperatureDifference * area) / resistance;
-
-	return Math.round(heatLoss);
+	return getHeatLoss(area, resistance, tempDiff);
 });
 
 // Синхронизируем теплопотери при изменении параметров

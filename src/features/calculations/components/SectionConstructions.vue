@@ -43,14 +43,38 @@
 				class="self-end"
 			/>
 		</div>
+
+		<!-- Список конструкций для SNIP режима -->
+		<div v-if="calculateMethod === 'snip'" class="flex flex-col gap-4">
+			<ConstructionSnip
+				v-for="({}, index) in modelValue.constructions"
+				:key="index"
+				v-model="modelValue.constructions[index]"
+				@remove="removeConstruction(index)"
+			/>
+		</div>
+
+		<div v-if="calculateMethod === 'simple'" class="flex flex-col gap-4">
+			<BaseInputNumber
+				class="w-45"
+				v-model="modelValue.baseHeatLoss"
+				label="Теплопотери"
+				placeholder="0"
+				:allowEmpty="false"
+				:min="0"
+				:suffix="' кВт*ч'"
+			/>
+		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import BaseSelectButton from "@/shared/components/ui/BaseSelectButton.vue";
 import BaseButton from "@/shared/components/ui/BaseButton.vue";
+import BaseInputNumber from "@/shared/components/ui/BaseInputNumber.vue";
 import Construction from "./Construction.vue";
+import ConstructionSnip from "./ConstructionSnip.vue";
 import { useMaterialData } from "@/features/directories/composables/useMaterialData";
 import { useSurfaceData } from "@/features/directories/composables/useSurfaceData";
 import type {
@@ -78,8 +102,8 @@ const { surfaces, loadSurfaceData } = useSurfaceData();
 // Опции для метода расчета
 const calculateMethodOptions = [
 	{ label: "Детальный расчёт", value: "detailed" },
-	{ label: "Считать упрощенно", value: "simple" },
-	{ label: "Указать теплопотери", value: "snip" },
+	{ label: "Считать упрощенно", value: "snip" },
+	{ label: "Указать теплопотери", value: "simple" },
 ];
 
 // Вычисляемое свойство для метода расчета
@@ -148,4 +172,65 @@ onMounted(() => {
 	loadMaterialData();
 	loadSurfaceData();
 });
+
+const oldConstructions = ref();
+
+watch(
+	() => calculateMethod.value,
+	(value, oldValue) => {
+		if (value === null) {
+			calculateMethod.value = "detailed";
+		}
+
+		if (
+			oldValue === "detailed" &&
+			props.modelValue.constructions.length > 0
+		) {
+			oldConstructions.value = props.modelValue.constructions;
+		}
+
+		if (value === "snip") {
+			props.modelValue.constructions = [
+				{
+					id: 1,
+					layers: [],
+					name: "Стены",
+					snipResistance: props.modelValue.climate.wallNorm,
+					calculatedResistance: props.modelValue.climate.wallNorm,
+					area: 0,
+					surface: {
+						name: "Стены",
+						type: "wall",
+					},
+				},
+				{
+					id: 2,
+					layers: [],
+					name: "Кровля",
+					snipResistance: props.modelValue.climate.roofNorm,
+					calculatedResistance: props.modelValue.climate.roofNorm,
+					area: 0,
+					surface: {
+						name: "Кровля",
+						type: "roof",
+					},
+				},
+				{
+					id: 3,
+					layers: [],
+					name: "Пол",
+					snipResistance: props.modelValue.climate.floorNorm,
+					calculatedResistance: props.modelValue.climate.floorNorm,
+					area: 0,
+					surface: {
+						name: "Пол",
+						type: "floor",
+					},
+				},
+			];
+		} else {
+			props.modelValue.constructions = oldConstructions.value || [];
+		}
+	}
+);
 </script>

@@ -51,19 +51,22 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted } from "vue";
+import { computed, onMounted, watch } from "vue";
 import type { CalculationDetails } from "../types/calculation";
 import { usePromos } from "../api/promos";
 import BaseSelect from "@/shared/components/ui/BaseSelect.vue";
 import BaseInputNumber from "@/shared/components/ui/BaseInputNumber.vue";
 import BaseTextArea from "@/shared/components/ui/BaseTextArea.vue";
 import type { PromoCode } from "@/shared/types/ui";
+import { useSettings } from "@/features/settings/composables/useSettings.ts";
 
 interface Props {
 	modelValue: CalculationDetails;
 }
 
 const props = defineProps<Props>();
+
+const { powerPrice } = useSettings();
 
 const emit = defineEmits<{
 	"update:modelValue": [value: CalculationDetails];
@@ -76,6 +79,12 @@ const modelValueProxy = computed<CalculationDetails>({
 
 // API для промокодов
 const { data: promosData, isLoading, loadData } = usePromos();
+
+watch(modelValueProxy, (value) => {
+	if(value.powerPrice === undefined || value.powerPrice === null) {
+		value.powerPrice = powerPrice;
+	}
+});
 
 // Опции для селекта промокодов
 const promoOptions = computed(() => {

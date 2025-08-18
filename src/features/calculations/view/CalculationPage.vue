@@ -5,18 +5,25 @@
 				<Status :calculation="calculation" />
 			</template>
 			<template #title-actions>
-				<BaseButton 
+				<BaseButton
 					v-if="calculation.title !== title"
-					icon="pencil" class="w-full" text @click="calculation.title = title"
+					icon="pencil"
+					class="w-full"
+					text
+					@click="calculation.title = title"
 				/>
 			</template>
 		</Head>
 		<div class="flex gap-6 w-full">
 			<div class="w-80 flex-shrink-0">
 				<div class="sticky top-6">
-					<SubMenu :items="subMenuItems"/>
+					<SubMenu :items="subMenuItems" />
 					<div class="flex flex-col gap-2">
-						<BaseButton icon="save" class="w-full" label="Сохранить" />
+						<BaseButton
+							icon="save"
+							class="w-full"
+							label="Сохранить"
+						/>
 						<BaseButton
 							icon="eye"
 							class="w-full"
@@ -27,35 +34,39 @@
 				</div>
 			</div>
 			<div class="w-full min-w-0">
-				<Calculation v-if="!isLoading" v-model="calculation" ref="calculationRef"/>
-			</div>
-			<div
-				class="w-140 flex-shrink-0 border border-gray-300 p-3 rounded-xl"
-			>
-				<BaseSelectButton
-					v-if="hasRequest"
-					:options="rightBoxTabs"
-					v-model="tab"
-					class="mb-2"
-					optionDisabled="disabled"
+				<Calculation
+					v-if="!isLoading"
+					v-model="calculation"
+					ref="calculationRef"
 				/>
-				<div v-if="tab == 'client'">
-					<ClientDetails
-						:client="client"
-						:attachments="attachments"
+			</div>
+			<div class="w-140 flex-shrink-0">
+				<div class="border border-gray-300 p-3 rounded-xl">
+					<BaseSelectButton
+						v-if="hasRequest"
+						:options="rightBoxTabs"
+						v-model="tab"
+						class="mb-2"
+						optionDisabled="disabled"
 					/>
-				</div>
-				<div v-else-if="tab == 'request'">
-					<RequestDetails
-						:request="requestData"
-						:attachments="attachments"
-						@copy-all="copyAll"
-						@copy-constructions="copyConstructions"
-						@copy-rooms="copyRooms"
-					/>
-				</div>
-				<div v-else>
-					<CalculationResult :result="calculationResult" />
+					<div v-if="tab == 'client'">
+						<ClientDetails
+							:client="client"
+							:attachments="attachments"
+						/>
+					</div>
+					<div v-else-if="tab == 'request'">
+						<RequestDetails
+							:request="requestData"
+							:attachments="attachments"
+							@copy-all="copyAll"
+							@copy-constructions="copyConstructions"
+							@copy-rooms="copyRooms"
+						/>
+					</div>
+					<div v-else>
+						<CalculationResult :result="calculationResult" />
+					</div>
 				</div>
 			</div>
 		</div>
@@ -90,7 +101,7 @@ const {
 	subTitle,
 } = useCalculator();
 
-const requestId = computed(() => {	
+const requestId = computed(() => {
 	return calculation.value.requestId;
 });
 
