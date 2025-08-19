@@ -34,6 +34,11 @@
 				@duplicate="duplicateConstruction(index)"
 			/>
 
+			<EmptyBox
+				v-if="modelValue.constructions.length === 0"
+				label="конструкции отсутствуют"
+			/>
+
 			<!-- Кнопка добавления конструкции -->
 			<BaseButton
 				icon="hammer"
@@ -73,6 +78,7 @@ import { computed, onMounted, ref, watch } from "vue";
 import BaseSelectButton from "@/shared/components/ui/BaseSelectButton.vue";
 import BaseButton from "@/shared/components/ui/BaseButton.vue";
 import BaseInputNumber from "@/shared/components/ui/BaseInputNumber.vue";
+import EmptyBox from "@/shared/components/EmptyBox.vue";
 import Construction from "./Construction.vue";
 import ConstructionSnip from "./ConstructionSnip.vue";
 import { useMaterialData } from "@/features/directories/composables/useMaterialData";

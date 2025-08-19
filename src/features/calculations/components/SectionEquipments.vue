@@ -20,6 +20,11 @@
 				@remove="removeEquipment(index)"
 			/>
 
+			<EmptyBox
+				v-if="equipmentList.length === 0"
+				label="оборудование отсутствует"
+			/>
+
 			<!-- Кнопка добавления оборудования -->
 			<BaseButton
 				icon="plus"
@@ -36,6 +41,7 @@
 import { computed } from "vue";
 import BaseButton from "@/shared/components/ui/BaseButton.vue";
 import RoomEquipment from "./RoomEquipment.vue";
+import EmptyBox from "@/shared/components/EmptyBox.vue";
 import type { CalculationDetails, Equipment } from "../types/calculation";
 
 interface Props {

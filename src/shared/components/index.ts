@@ -25,3 +25,4 @@ export { default as BaseSearch } from "./ui/BaseSearch.vue";
 export { default as BaseSelect } from "./ui/BaseSelect.vue";
 export { default as BaseMultiSelect } from "./ui/BaseMultiSelect.vue";
 export { default as BaseToggleSwitch } from "./ui/BaseToggleSwitch.vue";
+export { default as EmptyBox } from "./EmptyBox.vue";

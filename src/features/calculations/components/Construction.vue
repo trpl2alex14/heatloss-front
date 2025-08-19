@@ -1,6 +1,6 @@
 <template>
 	<div
-		class="flex flex-col gap-3 rounded-xl relative bg-gray-100 border border-gray-300"
+		class="flex flex-col gap-3 rounded-xl relative bg-gray-50 border border-gray-300"
 	>
 		<div class="p-4">
 			<!-- Заголовок с основными полями -->
@@ -53,6 +53,11 @@
 						:materials="filteredMaterials"
 						:humidity="climate.humidity"
 						@remove="removeLayer(index)"
+					/>
+
+					<EmptyBox
+						v-if="modelValue.layers.length === 0"
+						label="слои отсутствуют"
 					/>
 
 					<!-- Кнопка добавления слоя -->
@@ -122,6 +127,7 @@ import BaseInputNumber from "@/shared/components/ui/BaseInputNumber.vue";
 import BaseInputText from "@/shared/components/ui/BaseInputText.vue";
 import BaseToggleSwitch from "@/shared/components/ui/BaseToggleSwitch.vue";
 import BaseButton from "@/shared/components/ui/BaseButton.vue";
+import EmptyBox from "@/shared/components/EmptyBox.vue";
 import ConstructionLayer from "./ConstructionLayer.vue";
 import type {
 	Construction,
