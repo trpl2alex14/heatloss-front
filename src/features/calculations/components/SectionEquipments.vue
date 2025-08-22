@@ -11,7 +11,7 @@
 		</div>
 
 		<!-- Список оборудования -->
-		<div class="flex flex-col gap-2" v-if="equipmentList">
+		<div class="flex flex-col gap-4" v-if="equipmentList">
 			<RoomEquipment
 				v-for="(equipment, index) in equipmentList"
 				:key="equipment.id"

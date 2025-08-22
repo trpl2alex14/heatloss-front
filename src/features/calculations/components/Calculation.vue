@@ -8,25 +8,25 @@
 			/>
 
 			<!-- Секция: Климат -->
-			<div class="my-6 border-t border-gray-200" ref="climateRef"></div>
+			<div class="my-8 border-t border-gray-100" ref="climateRef"></div>
 			<SectionClimat v-model="modelValueProxy" />
 
 			<div
-				class="my-6 border-t border-gray-200"
+				class="my-8 border-t border-gray-100"
 				ref="constructionsRef"
 			></div>
 			<SectionConstructions v-model="modelValueProxy" />
 
-			<div class="my-6 border-t border-gray-200" ref="roomsRef"></div>
+			<div class="my-8 border-t border-gray-100" ref="roomsRef"></div>
 			<SectionRooms v-model="modelValueProxy" />
 
 			<div
-				class="my-6 border-t border-gray-200"
+				class="my-8 border-t border-gray-100"
 				ref="equipmentsRef"
 			></div>
 			<SectionEquipments v-model="modelValueProxy" />
 
-			<div class="my-6 border-t border-gray-200" ref="otherRef"></div>
+			<div class="my-8 border-t border-gray-100" ref="otherRef"></div>
 			<SectionOther v-model="modelValueProxy" />
 		</div>
 	</div>
@@ -65,6 +65,9 @@ const modelValueProxy = computed<CalculationDetails>({
 		}
 		if (props.modelValue.equipment === undefined) {
 			props.modelValue.equipment = [];
+		}
+		if (props.modelValue.roomConstructionMethod === undefined) {
+			props.modelValue.roomConstructionMethod = "auto";
 		}
 
 		return props.modelValue;

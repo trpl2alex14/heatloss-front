@@ -41,11 +41,12 @@
 				/>
 			</div>
 			<div class="w-140 flex-shrink-0">
-				<div class="border border-gray-300 p-3 rounded-xl">
+				<div class="border border-gray-300 p-3 rounded-xl sticky top-4">
 					<BaseSelectButton
 						v-if="hasRequest"
 						:options="rightBoxTabs"
 						v-model="tab"
+						:allow-empty="false"
 						class="mb-2"
 						optionDisabled="disabled"
 					/>
