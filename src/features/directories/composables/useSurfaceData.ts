@@ -15,7 +15,7 @@ export const useSurfaceData = () => {
 
 	return {
 		surfaces: computed(() => data.value?.data || []),
-		isLoading,
+		isLoading: computed(() => isLoading.value || data.value.length === 0),
 		error,
 		loadSurfaceData,
 		clearSurfaceError: clearError,

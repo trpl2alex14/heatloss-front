@@ -3,6 +3,7 @@ import { useFetchCollection, type RequestDataOptions } from "@/shared/composable
 import { route } from "@/shared/utils/router";
 import type { ColumnDef } from "@/shared/types/table";
 import { MaterialType } from "@features/directories/types/materials";
+import { computed } from "vue";
 
 const columns: ColumnDef[] = [
 	{ key: "name", label: "Название", sortable: true, sort: 2 },
@@ -77,7 +78,7 @@ export const useMaterialData = () => {
 		columns,
 		filterOptions,
 		materialData,
-		isLoading,
+		isLoading: computed(() => isLoading.value || materialData.value.length === 0),
 		error,
 		loadMaterialData,
 		clearMaterialError: clearError,
