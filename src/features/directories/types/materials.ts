@@ -20,7 +20,7 @@ export interface MaterialItem {
 export type SurfaceType = 'wall' | 'roof' | 'floor' | 'window' | 'other';
 
 export interface Surface {
-	id?: number;
+	id: number;
 	name: string;
 	type: SurfaceType;
 	baseResistance?: number;

@@ -3,6 +3,7 @@ import type { Product } from "@/shared/types/produtcs";
 
 export type CalculationStatus = "published" | "working" | "case" | "hide";
 export type UseSeason = "permanent" | "seasonal" | "freeze";
+export type RoomConstructionMethod = "auto" | "windows" | "manual";
 
 export interface CalculationItem {
 	id: number;
@@ -45,6 +46,7 @@ export interface CalculationDetails {
 	baseHeatLoss?: number;
 
 	rooms: Room[];
+	roomConstructionMethod: RoomConstructionMethod;
 	equipment?: Equipment[];
 
 	powerPrice?: number;
@@ -52,6 +54,7 @@ export interface CalculationDetails {
 	promoCode?: string;
 	deliveryCost?: number;
 }
+
 
 export interface Equipment {
 	id: number;
