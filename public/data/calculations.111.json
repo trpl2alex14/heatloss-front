@@ -5,7 +5,30 @@
 		"status": "working",
 		"area": 133,
 		"city": "Москва",
-		"requestId": 1222		
+		"requestId": 1222,
+		"constructions": [
+			{
+				"id": 1,
+				"name": "Стена наружная",
+				"area": 100,
+				"surface": {
+					"id": 1,
+					"type": "wall",
+					"name": "Стена наружная"
+				},
+				"layers": [
+					{
+						"id": 1,
+						"enabled": true,
+						"name": "Газоблок Д500",
+						"materialId": 4,
+						"type": 1,
+						"resistance": 1,
+						"thickness": 400
+					}
+				]
+			}
+		]		
 	},
 	"status": "success"
 }
