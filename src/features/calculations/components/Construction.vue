@@ -121,7 +121,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import BaseSelect from "@/shared/components/ui/BaseSelect.vue";
 import BaseInputNumber from "@/shared/components/ui/BaseInputNumber.vue";
 import BaseInputText from "@/shared/components/ui/BaseInputText.vue";
@@ -138,6 +138,7 @@ import type {
 	Surface,
 } from "@/features/directories/types/materials";
 import type { ClimateItem } from "@/features/directories/types/climate";
+import { useCalculator } from "../composables/useCalculator";
 
 interface Props {
 	modelValue: Construction;
@@ -160,15 +161,22 @@ const showArea = ref(!!props.modelValue.area);
 
 // Вычисляемое свойство для выбранной поверхности
 const selectedSurface = computed({
-	get: () => props.modelValue.name || "",
-	set: (value: string) => {
-		const selectedSurfaceData = props.surfaces.find(
-			(surface) => surface.name === value
-		);
+	get: () => props.modelValue.surface?.id || 0,
+	set: (value: number) => {
+		const selectedSurfaceData = getSurface(value);
+		const materials = getFilteredMaterials(value);
+
+		const exsistingLayers =
+			props.modelValue?.layers?.filter((layer) =>
+				materials.find((m) => m.id === layer.materialId)
+			) || [];
+
 		emit("update:modelValue", {
 			...props.modelValue,
-			name: value,
+			name: selectedSurfaceData?.name || "",
 			surface: selectedSurfaceData,
+			snipResistance: getSnipResistance(selectedSurfaceData?.type || "other"),
+			layers: [...exsistingLayers],
 		});
 	},
 });
@@ -187,49 +195,41 @@ const areaValue = computed({
 // Преобразуем Surface в формат для BaseSelect
 const surfaceOptions = computed(() =>
 	props.surfaces.map((surface) => ({
-		value: surface.name,
+		value: surface.id,
 		label: surface.name,
 	}))
 );
 
 // Отфильтрованные материалы по выбранному типу поверхности
 const filteredMaterials = computed(() => {
-	if (!selectedSurface.value || surfaceOptions.value.length === 0) {
-		return props.materials;
-	}
-
-	const surfaceType =
-		selectedSurfaceData.value?.type ||
-		props.modelValue.surface?.type ||
-		"other";
-	return props.materials.filter((material) =>
-		material.surface.includes(surfaceType)
-	);
+	return getFilteredMaterials(selectedSurface.value);
 });
 
 const selectedSurfaceData = computed(() => {
-	return props.surfaces.find(
-		(surface) => surface.name === selectedSurface.value
-	);
+	return getSurface(selectedSurface.value);
 });
 
-// Нормативное сопротивление на основе типа поверхности
-const snipResistance = computed(() => {
-	const surfaceType =
-		selectedSurfaceData.value?.type || props.modelValue.surface?.type;
-	if (!surfaceType) return 0;
+const getSurface = (id: number) => {
+	return props.surfaces.find((surface) => surface.id === id);
+};
 
-	// Возвращаем соответствующую норму в зависимости от типа поверхности
-	switch (surfaceType) {
-		case "wall":
-			return props.climate.wallNorm;
-		case "roof":
-			return props.climate.roofNorm;
-		case "floor":
-			return props.climate.floorNorm;
-		default:
-			return 0;
+const getFilteredMaterials = (surfaceId: number) => {
+	if (!surfaceId || surfaceOptions.value.length === 0) {
+		return props.materials;
 	}
+
+	const surfaceType = getSurface(surfaceId)?.type || "other";
+
+	return props.materials.filter((m) => m.surface.includes(surfaceType));
+};
+
+// Нормативное сопротивление на основе типа поверхности
+const { getSnipResistance } = useCalculator();
+
+const snipResistance = computed(() => {
+	const surfaceType = getSurface(selectedSurface.value)?.type || "other";
+
+	return getSnipResistance(surfaceType);
 });
 
 const snipResistanceText = computed(() => {
@@ -297,22 +297,6 @@ const syncArea = () => {
 	}
 };
 
-watch(
-	filteredMaterials,
-	(materials) => {
-		const exsistingLayers = props.modelValue.layers
-		.filter((layer) => materials.find((m) => m.id === layer.materialId));			
-		
-		nextTick(() => {
-			emit("update:modelValue", {
-				...props.modelValue,
-				layers: [...exsistingLayers],
-			});
-		});
-	},
-	{ immediate: true, deep: true }
-);
-
 // Наблюдение за изменением showArea
 watch(showArea, syncArea);
 
@@ -320,8 +304,8 @@ watch(showArea, syncArea);
 watch(
 	() => props.modelValue.surface,
 	(newSurface) => {
-		if (newSurface && newSurface.name !== selectedSurface.value) {
-			selectedSurface.value = newSurface.name;
+		if (newSurface && newSurface.id !== selectedSurface.value) {
+			selectedSurface.value = newSurface.id;
 		}
 	},
 	{ immediate: true }

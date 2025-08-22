@@ -33,6 +33,19 @@ export const useCalculator = () => {
 		}`;
 	});
 
+	const getSnipResistance = (surfaceType: string) => {
+		switch (surfaceType) {
+			case "wall":
+				return calculation.value.climate?.wallNorm || 0;
+			case "roof":
+				return calculation.value.climate?.roofNorm || 0;
+			case "floor":
+				return calculation.value.climate?.floorNorm || 0;
+			default:
+				return 0;
+		}
+	};
+
 	const getAllEquipmentFromRooms = (
 		calculationData: CalculationDetails
 	): Equipment[] => {
@@ -140,14 +153,10 @@ export const useCalculator = () => {
 	}
 
 	const constructionsSimple = ():Construction[] => {
-		return [{
-			id: 0,
-			layers: [],
-			name: 'Ограждающие конструкции',
-			snipResistance: 0,
-			calculatedResistance: 0,
+		return [			
+			{
+			...calculation.value.constructions[0],
 			area: totalArea.value,
-			heatLoss: calculation.value.baseHeatLoss || 0,
 		}];
 	}
 
@@ -170,15 +179,16 @@ export const useCalculator = () => {
 			) || 0
 		);
 	});
+	
+	const getRoomHeight = (item: Room) => {
+		const height = item.height || 0;
+		return item.isMansard ? (height + (item.minHeight || 0)) / 2 : height;
+	};
 
 	const totalVolume = computed(() => {
-		const getHeight = (item: Room) => {
-            const height = item.height || 0;
-			return item.isMansard ? (height + (item.minHeight || 0)) / 2 : height;
-		};
 		return (
 			calculation.value.rooms?.reduce(
-				(acc, item) => acc + item.area * getHeight(item),
+				(acc, item) => acc + item.area * getRoomHeight(item),
 				0
 			) || 0
 		);
@@ -216,6 +226,9 @@ export const useCalculator = () => {
 		title,
 		subTitle,
 		calculatedHeatLoss,
+		getSnipResistance,
+		getRoomHeight,
+		computedTempDiff: tempDiff,
 		tempDiff: tempDiff.value,
 	};
 };

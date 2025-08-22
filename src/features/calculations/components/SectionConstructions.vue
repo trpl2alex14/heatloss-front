@@ -1,5 +1,8 @@
 <template>
-	<div class="flex flex-col gap-3.5">
+	<div
+		class="flex flex-col gap-3.5"
+		v-if="!isLoadingMaterial && !isLoadingSurface"
+	>
 		<!-- Заголовок секции -->
 		<div class="flex flex-col gap-1.5">
 			<h3 class="text-xl font-normal text-gray-900">
@@ -18,11 +21,15 @@
 				:options="calculateMethodOptions"
 				option-label="label"
 				option-value="value"
+				:allow-empty="false"
 			/>
 		</div>
 
 		<!-- Список конструкций -->
-		<div v-if="calculateMethod === 'detailed'" class="flex flex-col gap-4">
+		<div
+			v-if="calculateMethod === 'detailed' && modelValue.climate"
+			class="flex flex-col gap-4"
+		>
 			<Construction
 				v-for="({}, index) in modelValue.constructions"
 				:key="index"
@@ -59,7 +66,7 @@
 			/>
 		</div>
 
-		<div v-if="calculateMethod === 'simple'" class="flex flex-col gap-4">
+		<div v-if="calculateMethod === 'simple'" class="flex gap-4">
 			<BaseInputNumber
 				class="w-45"
 				v-model="modelValue.baseHeatLoss"
@@ -68,6 +75,15 @@
 				:allowEmpty="false"
 				:min="0"
 				:suffix="' кВт*ч'"
+			/>
+			<BaseInputNumber
+				class="w-45"
+				v-model="area"
+				label="Площадь объекта"
+				placeholder="0"
+				:allowEmpty="false"
+				:min="1"
+				:suffix="' м²'"
 			/>
 		</div>
 	</div>
@@ -87,6 +103,7 @@ import type {
 	CalculationDetails,
 	Construction as ConstructionType,
 } from "../types/calculation";
+import { useCalculator } from "../composables/useCalculator";
 
 interface Props {
 	modelValue: CalculationDetails;
@@ -99,11 +116,21 @@ interface Emits {
 const props = defineProps<Props>();
 const emit = defineEmits<Emits>();
 
+const area = ref(1);
+
 // Загрузка материалов
-const { materialData, loadMaterialData } = useMaterialData();
+const {
+	materialData,
+	loadMaterialData,
+	isLoading: isLoadingMaterial,
+} = useMaterialData();
 
 // Загрузка поверхностей
-const { surfaces, loadSurfaceData } = useSurfaceData();
+const {
+	surfaces,
+	loadSurfaceData,
+	isLoading: isLoadingSurface,
+} = useSurfaceData();
 
 // Опции для метода расчета
 const calculateMethodOptions = [
@@ -124,7 +151,11 @@ const calculateMethod = computed({
 });
 
 // Методы для работы с конструкциями
-let constructionId = 0;
+let constructionId =
+	props.modelValue.constructions.reduce(
+		(max, construction) => Math.max(max, construction.id),
+		0
+	) + 1;
 
 const addConstruction = () => {
 	const newConstruction: ConstructionType = {
@@ -205,6 +236,7 @@ watch(
 					calculatedResistance: props.modelValue.climate.wallNorm,
 					area: 0,
 					surface: {
+						id: 1,
 						name: "Стены",
 						type: "wall",
 					},
@@ -217,6 +249,7 @@ watch(
 					calculatedResistance: props.modelValue.climate.roofNorm,
 					area: 0,
 					surface: {
+						id: 2,
 						name: "Кровля",
 						type: "roof",
 					},
@@ -229,13 +262,53 @@ watch(
 					calculatedResistance: props.modelValue.climate.floorNorm,
 					area: 0,
 					surface: {
+						id: 3,
 						name: "Пол",
 						type: "floor",
 					},
 				},
 			];
+		} else if (value == "simple") {
+			props.modelValue.constructions = [
+				{
+					id: 0,
+					layers: [],
+					name: "Ограждающие конструкции",
+					snipResistance: 0,
+					calculatedResistance: 0,
+					area: 0,
+					surface: {
+						id: 0,
+						name: "Ограждающие конструкции",
+						type: "wall",
+					},
+					heatLoss: props.modelValue.baseHeatLoss,
+				},
+			];
 		} else {
 			props.modelValue.constructions = oldConstructions.value || [];
+		}
+	}
+);
+
+const { computedTempDiff } = useCalculator();
+
+watch(
+	[
+		() => props.modelValue.baseHeatLoss,
+		() => area.value,
+		() => computedTempDiff.value,
+	],
+	([baseHeatLoss = 0, volume = 1, tempDiff = 0]) => {
+		if (calculateMethod.value !== "simple") {
+			return;
+		}
+
+		if (props.modelValue.constructions.length > 0 && baseHeatLoss > 0) {
+			props.modelValue.constructions[0].heatLoss = baseHeatLoss;
+			props.modelValue.constructions[0].area = volume;
+			props.modelValue.constructions[0].calculatedResistance =
+				(volume * tempDiff) / baseHeatLoss;
 		}
 	}
 );
