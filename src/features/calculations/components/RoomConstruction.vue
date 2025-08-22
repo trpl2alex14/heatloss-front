@@ -2,7 +2,7 @@
 	<div class="flex items-center gap-2 p-2 bg-gray-200 rounded-xl">
 		<!-- Переключатель включения/выключения -->
 		<div class="flex items-center gap-2.5">
-			<BaseToggleSwitch v-model="enabledValue" :disabled="false" />
+			<BaseToggleSwitch v-model="enabledValue" :disabled="isAutoMode" />
 		</div>
 
 		<!-- Название конструкции (только для чтения) -->
@@ -33,7 +33,7 @@
 				v-model="areaValue"
 				label="Площадь"
 				placeholder="0"
-				:disabled="!modelValue.enabled"
+				:disabled="!modelValue.enabled || isAutoMode"
 				:allowEmpty="false"
 				:minFractionDigits="1"
 				:min="0"
@@ -79,6 +79,7 @@ interface Props {
 	construction?: Construction;
 	minTemp: number;
 	requiredTemp: number;
+	isAutoMode?: boolean;
 }
 
 interface Emits {
@@ -130,8 +131,10 @@ const countValue = computed({
 const { calculatedHeatLoss: getHeatLoss, tempDiff } = useCalculator();
 // Рассчитываем теплопотери
 const calculatedHeatLoss = computed(() => {
-	
-	if (!props.modelValue.enabled || !props.construction?.calculatedResistance) {
+	if (
+		!props.modelValue.enabled ||
+		!props.construction?.calculatedResistance
+	) {
 		return 0;
 	}
 
@@ -143,15 +146,25 @@ const calculatedHeatLoss = computed(() => {
 
 // Синхронизируем теплопотери при изменении параметров
 watch(
-	[calculatedHeatLoss, () => props.modelValue.enabled],
-	([heatLoss, enabled]) => {
-		if (enabled) {
-			emit("update:modelValue", {
-				...props.modelValue,
-				heatLoss: heatLoss,
-			});
-		}
+	[
+		calculatedHeatLoss,
+		() => props.modelValue.enabled,
+		() => props.modelValue.heatLoss,
+	],
+	([heatLoss, enabled, value], [oldHeatLoss, oldEnabled, oldValue]) => {
+		if (
+			(oldHeatLoss === heatLoss &&
+				oldEnabled === enabled &&
+				oldValue === value) ||
+			!enabled
+		)
+			return;
+
+		emit("update:modelValue", {
+			...props.modelValue,
+			heatLoss: heatLoss,
+		});
 	},
-	{ immediate: true }
+	{ immediate: true, deep: true }
 );
 </script>

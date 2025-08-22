@@ -12,6 +12,7 @@
 						:options="floorOptions"
 						option-label="label"
 						option-value="value"
+						:allow-empty="false"
 					/>
 				</div>
 
@@ -116,19 +117,14 @@
 		</div>
 
 		<div class="px-4 flex flex-col gap-3" v-if="isShow">
-			
-			<div class="flex flex-col gap-2" v-if="props.constructions.length > 0">
-				<!-- Заголовок секции конструкций -->
-				<h3>Ограждающей конструкции помещения</h3>
-	
-				<div class="flex">
-					<!-- Переключатели режимов -->
-					<BaseSelectButton
-					v-model="constructionMode"
-					:options="constructionModeOptions"
-					option-label="label"
-					option-value="value"
-					/>
+			<div
+				class="flex flex-col gap-2"
+				v-if="props.constructions.length > 0"
+			>
+				<div class="flex items-center">
+					<!-- Заголовок секции конструкций -->
+					<h3>Ограждающие конструкции помещения</h3>
+
 					<!-- Кнопка выбора конструкций -->
 					<BaseButton
 						icon="bars"
@@ -136,6 +132,7 @@
 						text
 						severity="primary"
 						@click="toggleConstructionPopover"
+						:disabled="modelValue.area === 0"
 					/>
 				</div>
 				<!-- Список конструкций помещения -->
@@ -148,9 +145,9 @@
 					:construction="getConstructionById(roomConstruction.id)"
 					:min-temp="minTemp"
 					:required-temp="requiredTemp"
+					:is-auto-mode="isAutoMode(roomConstruction)"
 					@remove="removeRoomConstruction(index)"
 				/>
-
 
 				<!-- Popover для выбора конструкций -->
 				<Popover ref="constructionPopoverRef">
@@ -199,6 +196,11 @@
 					@remove="removeEquipment(index)"
 				/>
 
+				<EmptyBox
+					v-if="modelValue.equipment.length === 0"
+					label="оборудование отсутствует"
+				/>
+
 				<!-- Кнопки действий для оборудования -->
 				<div class="flex gap-5 self-end">
 					<BaseButton
@@ -207,6 +209,7 @@
 						text
 						severity="primary"
 						@click="$emit('auto')"
+						:disabled="totalHeatLoss === 0"
 					/>
 					<BaseButton
 						icon="plus"
@@ -232,12 +235,14 @@
 				text
 				severity="secondary"
 				@click="$emit('moveUp')"
+				:disabled="isFirst"
 			/>
 			<BaseButton
 				icon="arrow-down"
 				text
 				severity="secondary"
 				@click="$emit('moveDown')"
+				:disabled="isLast"
 			/>
 			<BaseButton
 				icon="copy"
@@ -306,11 +311,17 @@ import {
 	BaseInputNumber,
 	BaseButton,
 	BaseToggleSwitch,
+	EmptyBox,
 } from "@/shared/components";
 import Popover from "primevue/popover";
 import RoomConstruction from "./RoomConstruction.vue";
 import RoomEquipment from "./RoomEquipment.vue";
-import type { Room, Construction } from "../types/calculation";
+import type {
+	Room,
+	Construction,
+	RoomConstruction as RoomConstructionType,
+	RoomConstructionMethod,
+} from "../types/calculation";
 
 interface Props {
 	modelValue: Room;
@@ -318,6 +329,9 @@ interface Props {
 	minTemp: number;
 	requiredTemp: number;
 	floors: number;
+	roomConstructionMethod: RoomConstructionMethod;
+	isFirst?: boolean;
+	isLast?: boolean;
 }
 
 interface Emits {
@@ -340,7 +354,16 @@ const isShow = ref(true);
 const selectedConstructions = ref<Record<number, boolean>>({});
 const additionalHeatSource = ref(false);
 const additionalHeatPower = ref(0);
-const useDirectArea = ref(false);
+const useDirectArea = ref(true);
+
+const isAutoMode = (roomConstruction: RoomConstructionType) => {
+	return (
+		constructionMode.value === "auto" ||
+		(constructionMode.value === "windows" &&
+			props.constructions.find((c) => c.id === roomConstruction.id)
+				?.surface?.type !== "window")
+	);
+};
 
 // Вычисляемые свойства для v-model
 const nameValue = computed({
@@ -445,8 +468,8 @@ watch([widthValue, lengthValue], () => {
 
 // Синхронизация размеров при изменении площади напрямую
 watch(directAreaValue, (newArea) => {
-	if (useDirectArea.value && newArea > 0) {
-		const sideLength = Math.sqrt(newArea);
+	if (useDirectArea.value ) {
+		const sideLength = Math.round(Math.sqrt(newArea)*10) / 10 ;
 		emit("update:modelValue", {
 			...props.modelValue,
 			area: newArea,
@@ -502,12 +525,7 @@ const floorOptions = computed(() => {
 });
 
 // Режим выбора конструкций
-const constructionMode = ref("auto");
-const constructionModeOptions = [
-	{ value: "auto", label: "Авто" },
-	{ value: "windows", label: "Витражи" },
-	{ value: "manual", label: "Указать размеры" },
-];
+const constructionMode = computed(() => props.roomConstructionMethod);
 
 // Методы для работы с конструкциями
 const getConstructionById = (id: number): Construction | undefined => {
@@ -532,14 +550,12 @@ const removeRoomConstruction = (index: number) => {
 
 const toggleConstructionPopover = (event: Event) => {
 	// Инициализируем selectedConstructions при открытии popover
-	if (!selectedConstructions.value[props.constructions[0]?.id]) {
-		props.constructions.forEach((construction) => {
-			const isSelected = props.modelValue.roomConstructions.some(
+	props.constructions.forEach((construction) => {
+		const isSelected = props.modelValue.roomConstructions.some(
 				(rc) => rc.id === construction.id
-			);
-			selectedConstructions.value[construction.id] = isSelected;
-		});
-	}
+		);
+		selectedConstructions.value[construction.id] = isSelected;
+	});
 	constructionPopoverRef.value.toggle(event);
 };
 
