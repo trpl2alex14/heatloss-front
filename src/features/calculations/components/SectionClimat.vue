@@ -36,6 +36,7 @@
 				optionLabel="label"
 				optionValue="value"
 				class="w-auto"
+				:allow-empty="false"
 				@change="onCityChange(localModel.city)"
 			/>
 		</div>
