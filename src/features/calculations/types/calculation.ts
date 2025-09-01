@@ -87,6 +87,7 @@ export interface Construction {
 export interface RoomConstruction {
 	id: number;
 	enabled: boolean;
+	unlocked?: boolean;
 	area: number;
 	count?: number;
 	heatLoss: number;

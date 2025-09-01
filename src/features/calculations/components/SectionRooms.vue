@@ -72,6 +72,7 @@ import type {
 	Room as RoomType,
 	RoomConstructionMethod,
 	RoomConstruction,
+	Construction,
 } from "../types/calculation";
 import type { SurfaceType } from "@/features/directories/types/materials";
 import { useCalculator } from "../composables/useCalculator";
@@ -120,15 +121,21 @@ const constructionModeOptions = computed(() => {
 				construction.area !== undefined && construction.area > 0
 		);
 
-	if (allConstructionsHaveArea || props.modelValue.calculateMethod === 'simple') {
+	if (
+		allConstructionsHaveArea ||
+		props.modelValue.calculateMethod === "simple"
+	) {
 		options.push({ value: "auto", label: "Авто" });
 	}
 
-	if (nonWindowConstructionsHaveArea && props.modelValue.calculateMethod !== 'simple') {
+	if (
+		nonWindowConstructionsHaveArea &&
+		props.modelValue.calculateMethod === "detailed"
+	) {
 		options.push({ value: "windows", label: "Витражи" });
 	}
 
-	if (props.modelValue.calculateMethod !== 'simple') {
+	if (props.modelValue.calculateMethod !== "simple") {
 		options.push({ value: "manual", label: "Указать размеры" });
 	}
 
@@ -205,7 +212,7 @@ const moveRoomUp = (index: number) => {
 
 	let newRooms = [...props.modelValue.rooms];
 	newRooms[index] = newRooms.splice(index - 1, 1, newRooms[index])[0];
-		
+
 	emit("update:modelValue", {
 		...props.modelValue,
 		rooms: newRooms,
@@ -251,6 +258,74 @@ watch(
 	{ deep: true }
 );
 
+const getRoomConstructionsById = (
+	room: RoomType,
+	ids: number[]
+): RoomConstruction[] => {
+	const newRoomConstructions: RoomConstruction[] = [];
+
+	room.roomConstructions.forEach((construction) => {
+		if (ids.includes(construction.id)) {
+			newRoomConstructions.push(construction);
+		}
+	});
+
+	return newRoomConstructions;
+};
+
+const getWindowConstructions = (room: RoomType): RoomConstruction[] => {
+	const idsWindowConstructions = props.modelValue.constructions
+		.filter((construction) => construction.surface?.type === "window")
+		.map((construction) => construction.id);
+
+	return getRoomConstructionsById(room, idsWindowConstructions);
+};
+
+const getUnlockedConstructions = (room: RoomType): RoomConstruction[] => {
+	const idsUnlockedConstructions = room.roomConstructions
+		.filter((c) => c.unlocked)
+		.map((construction) => construction.id);
+
+	return getRoomConstructionsById(room, idsUnlockedConstructions);
+};
+
+const getAreaMultiplier = (
+	room: RoomType,
+	construction?: Construction
+): number => {
+	if (!construction) return 0;
+
+	const maxFloor = getMaxFloor();
+	const totalAreaFirstFloor = getTotalAreaByFloor(1);
+	const totalAreaLastFloor = getTotalAreaByFloor(maxFloor);
+	const totalVolume = getTotalVolume();
+
+	const surfaceType = (construction.surface?.type as SurfaceType) || "other";
+	let areaMultiplier = 0;
+
+	if (
+		surfaceType === "floor" &&
+		room.floor === 1 &&
+		totalAreaFirstFloor > 0
+	) {
+		areaMultiplier = room.area / totalAreaFirstFloor;
+	} else if (
+		surfaceType === "roof" &&
+		room.floor === maxFloor &&
+		totalAreaLastFloor > 0
+	) {
+		areaMultiplier = room.area / totalAreaLastFloor;
+	} else if (
+		["wall", "window", "other"].includes(surfaceType) &&
+		totalVolume > 0
+	) {
+		const roomVolume = room.area * getRoomHeight(room);
+		areaMultiplier = roomVolume / totalVolume;
+	}
+
+	return areaMultiplier;
+};
+
 // Функция автоматического распределения конструкций
 const distributeConstructionsAutomatically = (
 	mode: RoomConstructionMethod = "auto"
@@ -263,61 +338,74 @@ const distributeConstructionsAutomatically = (
 		return;
 	}
 
-	const maxFloor = getMaxFloor();
+	const decreaseAreaForConstructions = props.modelValue.rooms
+		.map((room) =>
+			room.roomConstructions
+				.filter((c) => c.unlocked)
+				.map((c) => ({
+					id: c.id,
+					area: c.area,
+					areaMultiplier: getAreaMultiplier(
+						room,
+						props.modelValue.constructions.find(
+							(construction) => construction.id === c.id
+						)
+					),
+				}))
+		)
+		.flat()
+		.reduce((acc, curr) => {
+			acc[curr.id] = {
+				area: (acc[curr.id]?.area || 0) + curr.area,
+				areaMultiplier:
+					(acc[curr.id]?.areaMultiplier || 0) + curr.areaMultiplier,
+			};
+			return acc;
+		}, {} as Record<number, { area: number; areaMultiplier: number }>);
+
 	const updatedRooms = props.modelValue.rooms.map((room) => {
 		// Очищаем существующие конструкции
-		const newRoomConstructions: RoomConstruction[] = [];
+		const newRoomConstructions: RoomConstruction[] =
+			mode === "windows" ? getWindowConstructions(room) : [];
 
-		if (mode === "windows") {
-			const idsWindowConstructions = props.modelValue.constructions
-				.filter(
-					(construction) => construction.surface?.type === "window"
-				)
-				.map((construction) => construction.id);
-
-			room.roomConstructions.forEach((construction) => {
-				if (idsWindowConstructions.includes(construction.id)) {
-					newRoomConstructions.push(construction);
-				}
-			});
-		}
+		newRoomConstructions.push(...getUnlockedConstructions(room));
 
 		// Получаем все конструкции
 		props.modelValue.constructions.forEach((construction) => {
-			if (!construction.surface?.type || !construction.area) return;
-
-			const surfaceType = construction.surface.type as SurfaceType;
-			let shouldAdd = false;
-			let areaMultiplier = 0;
-
-			if (mode === "windows" && surfaceType === "window") {
+			if (
+				!construction.surface?.type ||
+				!construction.area ||
+				newRoomConstructions.find((rC) => rC.id === construction.id) ||
+				(construction.surface.type === "window" && mode === "windows")
+			) {
 				return;
 			}
 
-			// Определяем, нужно ли добавлять конструкцию для данного помещения
-			if (surfaceType === "floor" && room.floor === 1) {
-				// Пол для помещений первого этажа
-				shouldAdd = true;
-				const totalArea = getTotalAreaByFloor(1);
-				areaMultiplier = totalArea > 0 ? room.area / totalArea : 0;
-			} else if (surfaceType === "roof" && room.floor === maxFloor) {
-				// Крыша для помещений последнего этажа
-				shouldAdd = true;
-				const totalArea = getTotalAreaByFloor(maxFloor);
-				areaMultiplier = totalArea > 0 ? room.area / totalArea : 0;
-			} else if (["wall", "window", "other"].includes(surfaceType)) {
-				// Стены, окна и другие конструкции для всех помещений
-				shouldAdd = true;
-				const roomVolume = room.area * getRoomHeight(room);
-				areaMultiplier = roomVolume / getTotalVolume();
-			}
+			const areaMultiplier = getAreaMultiplier(room, construction);
 
-			if (shouldAdd && areaMultiplier > 0) {
+			if (areaMultiplier > 0) {
+				const area =
+					decreaseAreaForConstructions[construction.id]?.area || 0;
+				const decreaseAreaMultiplier =
+					decreaseAreaForConstructions[construction.id]
+						?.areaMultiplier || 0;
+				let deltaArea =
+					((construction.area * decreaseAreaMultiplier - area) *
+						areaMultiplier) /
+					(1 - decreaseAreaMultiplier);
+				let calcArea = construction.area * areaMultiplier;
+
+				if (calcArea + deltaArea < 0) {
+					deltaArea = -calcArea;
+					//TODO: alert!					
+				}
+
 				const newRoomConstruction: RoomConstruction = {
 					id: construction.id,
 					enabled: true,
-					area: construction.area * areaMultiplier,
-					count: surfaceType === "window" ? 1 : undefined,
+					area: Math.round((calcArea + deltaArea) * 10) / 10,
+					count:
+						construction.surface?.type === "window" ? 1 : undefined,
 					heatLoss: 0,
 				};
 				newRoomConstructions.push(newRoomConstruction);
@@ -357,39 +445,40 @@ const getTotalVolume = (): number => {
 const hasRoomsChanges = (
 	updatedRooms: RoomType[],
 	oldRooms: RoomType[]
-): boolean => {	
-	return updatedRooms		
-		.some((updatedRoom, index) => {
-			const currentRoom = oldRooms[index];
-			if (!currentRoom) return true;
+): boolean => {
+	return updatedRooms.some((updatedRoom, index) => {
+		const currentRoom = oldRooms[index];
+		if (!currentRoom) return true;
 
-			// Сравниваем roomConstructions
-			if (
-				updatedRoom.roomConstructions.length !==
-				currentRoom.roomConstructions.length
-			) {
-				return true;
-			}
+		// Сравниваем roomConstructions
+		if (
+			updatedRoom.roomConstructions.length !==
+			currentRoom.roomConstructions.length
+		) {
+			return true;
+		}
 
-			const sortedCurrentRoomConstructions = currentRoom.roomConstructions.sort((a, b) => a.id - b.id);
+		const sortedCurrentRoomConstructions =
+			currentRoom.roomConstructions.sort((a, b) => a.id - b.id);
 
-			// Сравниваем содержимое roomConstructions
-			return updatedRoom.roomConstructions
+		// Сравниваем содержимое roomConstructions
+		return updatedRoom.roomConstructions
 			.sort((a, b) => a.id - b.id)
-			.some(
-				(updatedConstruction, constIndex) => {
-					const currentConstruction = sortedCurrentRoomConstructions[constIndex];
-					if (!currentConstruction) return true;
+			.some((updatedConstruction, constIndex) => {
+				const currentConstruction =
+					sortedCurrentRoomConstructions[constIndex];
+				if (!currentConstruction) return true;
 
-					return (
-						updatedConstruction.id !== currentConstruction.id ||
-						updatedConstruction.area !== currentConstruction.area ||
-						updatedConstruction.enabled !==
-							currentConstruction.enabled ||
-						updatedConstruction.count !== currentConstruction.count
-					);
-				}
-			);
-		});
+				return (
+					updatedConstruction.id !== currentConstruction.id ||
+					updatedConstruction.area !== currentConstruction.area ||
+					updatedConstruction.enabled !==
+						currentConstruction.enabled ||
+					updatedConstruction.count !== currentConstruction.count ||
+					updatedConstruction.unlocked !==
+						currentConstruction.unlocked
+				);
+			});
+	});
 };
 </script>

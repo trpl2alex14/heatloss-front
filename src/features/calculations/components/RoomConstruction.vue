@@ -33,7 +33,7 @@
 				v-model="areaValue"
 				label="Площадь"
 				placeholder="0"
-				:disabled="!modelValue.enabled || isAutoMode"
+				:disabled="!modelValue.enabled || (isAutoMode && !modelValue.unlocked)"
 				:allowEmpty="false"
 				:minFractionDigits="1"
 				:min="0"
@@ -54,12 +54,22 @@
 
 		<!-- Кнопка удаления -->
 		<BaseButton
+			v-if="!isAutoMode"
 			icon="trash"
 			variant="text"
 			severity="secondary"
 			text
 			@click="$emit('remove')"
 		/>
+
+		<BaseButton
+			v-if="isAutoMode"
+			:icon="!modelValue.unlocked ? 'lock' : 'unlock'"
+			variant="text"
+			severity="secondary"
+			text
+			@click="toggleUnlock"
+		/>		
 	</div>
 </template>
 
@@ -167,4 +177,11 @@ watch(
 	},
 	{ immediate: true, deep: true }
 );
+
+const toggleUnlock = () => {
+	emit("update:modelValue", {
+		...props.modelValue,
+		unlocked: !props.modelValue.unlocked,
+	});
+};
 </script>
