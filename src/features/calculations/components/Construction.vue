@@ -327,6 +327,18 @@ watch(snipResistance, (newValue) => {
 	});
 });
 
+watch(selectedSurface, (newSurface, oldSurface) => {
+	if (newSurface !== oldSurface) {
+		const selectedSurfaceData = getSurface(newSurface);
+		emit("update:modelValue", {
+			...props.modelValue,
+			snipResistance: getSnipResistance(selectedSurfaceData?.type || "other"),
+			});
+		}
+	},
+	{ immediate: true }
+);
+
 // Функция для стилизации поля расчетного сопротивления
 const getStyleResistance = () => {
 	return {
