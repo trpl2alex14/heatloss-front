@@ -140,7 +140,7 @@ const countValue = computed({
 	},
 });
 
-const { calculatedHeatLoss: getHeatLoss, tempDiff } = useCalculator();
+const { calculatedHeatLoss: getHeatLoss, computedTempDiff: tempDiff } = useCalculator();
 // Рассчитываем теплопотери
 const calculatedHeatLoss = computed(() => {
 	if (
@@ -153,7 +153,7 @@ const calculatedHeatLoss = computed(() => {
 	const area = props.modelValue.area;
 	const resistance = props.construction.calculatedResistance;
 
-	return getHeatLoss(area, resistance, tempDiff);
+	return getHeatLoss(area, resistance, tempDiff.value);
 });
 
 // Синхронизируем теплопотери при изменении параметров
@@ -163,7 +163,7 @@ watch(
 		() => props.modelValue.enabled,
 		() => props.modelValue.heatLoss,
 	],
-	([heatLoss, enabled, value], [oldHeatLoss, oldEnabled, oldValue]) => {
+	([heatLoss, enabled, value], [oldHeatLoss, oldEnabled, oldValue]) => {		
 		if (
 			(oldHeatLoss === heatLoss &&
 				oldEnabled === enabled &&
