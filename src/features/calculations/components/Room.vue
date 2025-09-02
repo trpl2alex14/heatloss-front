@@ -197,7 +197,7 @@
 				/>
 
 				<EmptyBox
-					v-if="modelValue.equipment.length === 0"
+					v-if="!modelValue.equipment || modelValue.equipment.length === 0"
 					label="оборудование отсутствует"
 				/>
 
@@ -607,17 +607,17 @@ const removeEquipment = (index: number) => {
 
 // Вычисляемые итоговые значения
 const totalEquipmentPower = computed(() => {
-	return props.modelValue.equipment.reduce(
+	return props.modelValue?.equipment?.reduce(
 		(sum, eq) => sum + eq.quantity * (eq.power || 0),
 		additionalHeatSource.value ? additionalHeatPower.value || 0 : 0
-	);
+	) || 0;
 });
 
 const totalHeatLoss = computed(() => {
-	return props.modelValue.roomConstructions.reduce(
+	return props.modelValue?.roomConstructions?.reduce(
 		(sum, rc) => sum + (rc.enabled ? rc.heatLoss : 0),
 		0
-	);
+	) || 0;
 });
 
 // Методы переключения режимов ввода площади

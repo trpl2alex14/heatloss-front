@@ -30,7 +30,7 @@
 				:key="room.id"
 				v-model="modelValue.rooms[index]"
 				:constructions="modelValue.constructions"
-				:min-temp="modelValue.climate.minTemp"
+				:min-temp="modelValue?.climate?.minTemp || 0"
 				:required-temp="modelValue.requiredTemp"
 				:floors="getMaxFloor()"
 				:room-construction-method="constructionMode"
@@ -265,7 +265,7 @@ const getRoomConstructionsById = (
 ): RoomConstruction[] => {
 	const newRoomConstructions: RoomConstruction[] = [];
 
-	room.roomConstructions.forEach((construction) => {
+	room.roomConstructions?.forEach((construction) => {
 		if (ids.includes(construction.id)) {
 			newRoomConstructions.push(construction);
 		}
@@ -276,16 +276,16 @@ const getRoomConstructionsById = (
 
 const getWindowConstructions = (room: RoomType): RoomConstruction[] => {
 	const idsWindowConstructions = props.modelValue.constructions
-		.filter((construction) => construction.surface?.type === "window")
-		.map((construction) => construction.id);
+		?.filter((construction) => construction.surface?.type === "window")
+		.map((construction) => construction.id) || [];
 
 	return getRoomConstructionsById(room, idsWindowConstructions);
 };
 
 const getUnlockedConstructions = (room: RoomType): RoomConstruction[] => {
 	const idsUnlockedConstructions = room.roomConstructions
-		.filter((c) => c.unlocked)
-		.map((construction) => construction.id);
+		?.filter((c) => c.unlocked)
+		.map((construction) => construction.id) || [];
 
 	return getRoomConstructionsById(room, idsUnlockedConstructions);
 };
@@ -342,7 +342,7 @@ const distributeConstructionsAutomatically = (
 	const decreaseAreaForConstructions = props.modelValue.rooms
 		.map((room) =>
 			room.roomConstructions
-				.filter((c) => c.unlocked)
+				?.filter((c) => c.unlocked)
 				.map((c) => ({
 					id: c.id,
 					area: c.area,
@@ -352,7 +352,7 @@ const distributeConstructionsAutomatically = (
 							(construction) => construction.id === c.id
 						)
 					),
-				}))
+				})) || []
 		)
 		.flat()
 		.reduce((acc, curr) => {
