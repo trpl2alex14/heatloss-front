@@ -7,5 +7,9 @@ export const useMessage = () => {
 		toast.add({ severity: "error", summary: "Ошибка", detail: message, life: 3000 });
 	};
 
-	return { error };
+	const warning = (message: string) => {
+		toast.add({ severity: "warn", summary: "Внимание", detail: message, life: 3000 });
+	};
+
+	return { error, warning };
 };
