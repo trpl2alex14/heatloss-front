@@ -321,7 +321,7 @@ import type {
 	Construction,
 	RoomConstruction as RoomConstructionType,
 	RoomConstructionMethod,
-} from "../types/calculation";
+} from "../types";
 
 interface Props {
 	modelValue: Room;
@@ -468,8 +468,8 @@ watch([widthValue, lengthValue], () => {
 
 // Синхронизация размеров при изменении площади напрямую
 watch(directAreaValue, (newArea) => {
-	if (useDirectArea.value ) {
-		const sideLength = Math.round(Math.sqrt(newArea)*10) / 10 ;
+	if (useDirectArea.value) {
+		const sideLength = Math.round(Math.sqrt(newArea) * 10) / 10;
 		emit("update:modelValue", {
 			...props.modelValue,
 			area: newArea,
@@ -552,7 +552,7 @@ const toggleConstructionPopover = (event: Event) => {
 	// Инициализируем selectedConstructions при открытии popover
 	props.constructions.forEach((construction) => {
 		const isSelected = props.modelValue.roomConstructions.some(
-				(rc) => rc.id === construction.id
+			(rc) => rc.id === construction.id
 		);
 		selectedConstructions.value[construction.id] = isSelected;
 	});

@@ -48,7 +48,9 @@
 			/>
 			<BaseInputNumber
 				v-model="result.averageExpenses"
-				:label="`Расходы в месяц (${result.powerPrice || powerPrice} ₽/кВт*ч)`"
+				:label="`Расходы в месяц (${
+					result.powerPrice || powerPrice
+				} ₽/кВт*ч)`"
 				class="flex-1"
 				disabled
 				suffix=" ₽"
@@ -62,21 +64,21 @@
 			</div>
 
 			<div
-			v-for="(equipment, index) in result.equipment"
-			:key="index"
-			class="flex gap-x-2"
+				v-for="(equipment, index) in result.equipment"
+				:key="index"
+				class="flex gap-x-2"
 			>
 				<BaseTextArea
-				v-model="equipment.name"
-				label="Наименование"
-				class="flex-1"
-				rows="1"
-				autoResize
-				style="resize: none"
-				disabled
+					v-model="equipment.name"
+					label="Наименование"
+					class="flex-1"
+					rows="1"
+					autoResize
+					style="resize: none"
+					disabled
 				/>
 				<BaseInputNumber
-				v-model="equipment.quantity"
+					v-model="equipment.quantity"
 					label="Количество"
 					class="w-22"
 					suffix=" шт."
@@ -88,31 +90,31 @@
 					class="w-26"
 					suffix=" ₽"
 					disabled
-					/>
-			</div>
-			
-			<div class="flex justify-end">
-				<BaseInputNumber
-				v-model="result.equipmentCost"
-				label="Стоимость оборудования"
-				class="w-50"
-				disabled
-				suffix=" ₽"
 				/>
 			</div>
-		
+
+			<div class="flex justify-end">
+				<BaseInputNumber
+					v-model="result.equipmentCost"
+					label="Стоимость оборудования"
+					class="w-50"
+					disabled
+					suffix=" ₽"
+				/>
+			</div>
+
 			<div v-if="result.deliveryCost" class="flex justify-end">
 				<BaseInputNumber
-				v-model="result.deliveryCost"
-				label="Стоимость доставки"
-				class="w-50"
-				disabled
+					v-model="result.deliveryCost"
+					label="Стоимость доставки"
+					class="w-50"
+					disabled
 					suffix=" ₽"
 				/>
 			</div>
 		</div>
-		
-		<!-- Секция теплопотерь -->		 
+
+		<!-- Секция теплопотерь -->
 		<div class="font-medium border-b border-gray-300 mt-2">Теплопотери</div>
 
 		<div class="flex gap-x-2">
@@ -166,7 +168,9 @@
 
 		<!-- Секция конструкций -->
 		<div v-if="result.constructions?.length" class="flex flex-col gap-2">
-			<div class="font-medium border-b border-gray-300 mt-2">Конструкции</div>
+			<div class="font-medium border-b border-gray-300 mt-2">
+				Конструкции
+			</div>
 
 			<div
 				v-for="(constr, index) in result.constructions"
@@ -199,11 +203,10 @@
 import BaseButton from "@shared/components/ui/BaseButton.vue";
 import BaseInputText from "@shared/components/ui/BaseInputText.vue";
 import BaseInputNumber from "@shared/components/ui/BaseInputNumber.vue";
-import type { CalculationResult } from "@features/calculations/types/calculation.ts";
+import type { CalculationResult, Construction } from "../types";
 import { route } from "@/shared/utils/router";
 import BaseTextArea from "@/shared/components/ui/BaseTextArea.vue";
 import { plural } from "@/shared/utils/text";
-import type { Construction } from "@/features/calculations/types/calculation.ts";
 import { computed } from "vue";
 import { useSettings } from "@/features/settings/composables/useSettings.ts";
 
@@ -216,9 +219,13 @@ const props = defineProps<Props>();
 const { powerPrice } = useSettings();
 
 const totalHeatLoss = computed(() => {
-	const heatLossInCube = props.result.volume ? props.result.totalHeatLoss / props.result.volume : 0;
-	return `${props.result.totalHeatLoss} кВт*ч` + 
-	(heatLossInCube ? ` (${heatLossInCube.toFixed(2)} Вт/м³)` : '');
+	const heatLossInCube = props.result.volume
+		? props.result.totalHeatLoss / props.result.volume
+		: 0;
+	return (
+		`${props.result.totalHeatLoss} кВт*ч` +
+		(heatLossInCube ? ` (${heatLossInCube.toFixed(2)} Вт/м³)` : "")
+	);
 });
 
 const getStyleHeatLoss = (c: Construction) => {

@@ -42,10 +42,10 @@ import {
 	BaseMultiSelect,
 	BaseInputText,
 } from "@/shared/components";
-import type { CalculationDetails } from "@/features/calculations/types/calculation";
+import type { CalculationDetails } from "../types";
 import { useTypes } from "@/shared/composables/useTypes";
 import type { SelectOption } from "@/shared/types/ui";
-import { useTagsApi } from "@/features/calculations/api/tags";
+import { useTagsApi } from "../api/tags";
 import type { Tag } from "@/shared/types/ui";
 
 interface Props {

@@ -33,7 +33,9 @@
 				v-model="areaValue"
 				label="Площадь"
 				placeholder="0"
-				:disabled="!modelValue.enabled || (isAutoMode && !modelValue.unlocked)"
+				:disabled="
+					!modelValue.enabled || (isAutoMode && !modelValue.unlocked)
+				"
 				:allowEmpty="false"
 				:minFractionDigits="1"
 				:min="0"
@@ -69,7 +71,7 @@
 			severity="secondary"
 			text
 			@click="toggleUnlock"
-		/>		
+		/>
 	</div>
 </template>
 
@@ -81,7 +83,7 @@ import {
 	BaseInputText,
 	BaseButton,
 } from "@/shared/components";
-import type { RoomConstruction, Construction } from "../types/calculation";
+import type { RoomConstruction, Construction } from "../types";
 import { useCalculator } from "../composables/useCalculator";
 
 interface Props {

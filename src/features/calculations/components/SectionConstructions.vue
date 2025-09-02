@@ -102,7 +102,7 @@ import { useSurfaceData } from "@/features/directories/composables/useSurfaceDat
 import type {
 	CalculationDetails,
 	Construction as ConstructionType,
-} from "../types/calculation";
+} from "../types";
 import { useCalculator } from "../composables/useCalculator";
 
 interface Props {

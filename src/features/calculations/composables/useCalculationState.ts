@@ -1,5 +1,5 @@
-import type {TypeLabelDef} from "@shared/types/table.ts";
-import type {CalculationStatus} from "@features/calculations/types/calculation.ts";
+import type { TypeLabelDef } from "@shared/types/table.ts";
+import type { CalculationStatus } from "../types";
 
 export const statuses: TypeLabelDef[] & { key: CalculationStatus }[] = [
 	{ key: "published", label: "Опубликован", type: "success" },

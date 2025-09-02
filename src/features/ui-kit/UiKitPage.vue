@@ -240,6 +240,7 @@
 					:min-temp="-36"
 					:required-temp="20"
 					:floors="3"
+					roomConstructionMethod="auto"
 					@auto="handleRoomAuto"
 					@addEquipment="handleRoomAddEquipment"
 					@moveUp="handleRoomMoveUp"
@@ -356,7 +357,7 @@ import type {
 	RoomConstruction as RoomConstructionType,
 	Equipment,
 	Room,
-} from "@/features/calculations/types/calculation";
+} from "@/features/calculations/types";
 import type { ClimateItem } from "@/features/directories/types/climate";
 import BaseChip from "@/shared/components/ui/BaseChip.vue";
 import TypeColumn from "@/shared/components/TypeColumn.vue";
@@ -633,8 +634,7 @@ const handleDuplicateConstruction = () => {
 const calculationDetails = ref<CalculationDetails>({
 	id: 1,
 	date: "2024-01-01",
-	status: "working",
-	area: 150,
+	status: "working",	
 	title: "Тестовый расчет",
 	city: "Москва",
 	useSeason: "permanent",
@@ -655,6 +655,7 @@ const calculationDetails = ref<CalculationDetails>({
 	calculateMethod: "detailed",
 	constructions: [],
 	rooms: [],
+	roomConstructionMethod: "auto",
 });
 
 // Данные для RoomConstruction

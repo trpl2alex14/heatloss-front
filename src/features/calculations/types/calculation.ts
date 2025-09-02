@@ -1,5 +1,8 @@
-import type { ClimateItem, MaterialType, Surface } from "@/features/directories/types";
 import type { Product } from "@/shared/types/produtcs";
+import type { ClimateItem } from "@/features/directories/types";
+import type { Construction } from "./construction";
+import type { Room } from "./room";
+import type { Equipment } from "./equipment";
 
 export type CalculationStatus = "published" | "working" | "case" | "hide";
 export type UseSeason = "permanent" | "seasonal" | "freeze";
@@ -25,13 +28,13 @@ export interface CalculationDetails {
 	status: CalculationStatus;
 
 	requestId?: number;
-	
+
 	title?: string;
-	
+
 	// Общие данные
 	product?: Product;
 	tags?: string[];
-	
+
 	// Климатические данные
 	city: string;
 	useSeason?: UseSeason;
@@ -55,71 +58,15 @@ export interface CalculationDetails {
 	deliveryCost?: number;
 }
 
-
-export interface Equipment {
-	id: number;
-	name: string;
-	quantity: number;
-	price: number;
-	power?: number;
-}
-
-export interface ConstructionLayer {
-	enabled: boolean;
-	name: string;
-	materialId: number;
-	thickness?: number;
-	type: MaterialType;
-	resistance?: number;
-}
-
-export interface Construction {
-	id: number;
-	area?: number;
-	layers: ConstructionLayer[];
-	name: string;
-	surface?: Surface;
-	heatLoss?: number;
-	snipResistance: number;
-	calculatedResistance?: number;
-}
-
-export interface RoomConstruction {
-	id: number;
-	enabled: boolean;
-	unlocked?: boolean;
-	area: number;
-	count?: number;
-	heatLoss: number;
-}
-
-export interface Room {
-	id: number;
-	name: string;
-	area: number;
-	floor: number;
-	width?: number;
-	length?: number;
-	height?: number;
-	minHeight?: number;
-	isMansard?: boolean;
-
-	heatLoss: number;
-	baseHeat?: number;
-
-	roomConstructions: RoomConstruction[];
-	equipment: Equipment[];
-}
-
 export interface CalculationResult {
 	id?: number;
-	
+
 	averagePower: number;
 	averageExpenses: number;
-	
+
 	equipment?: Equipment[];
 	power: number;
-	equipmentCost: number;	
+	equipmentCost: number;
 	deliveryCost?: number;
 
 	city: string;

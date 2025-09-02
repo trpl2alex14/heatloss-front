@@ -4,8 +4,8 @@ import type {
 	CalculationResult,
 	Equipment,
 	Room,
-	Construction
-} from "@/features/calculations/types/calculation.ts";
+	Construction,
+} from "../types";
 import { useSettings } from "@/features/settings/composables/useSettings.ts";
 
 const { powerPrice, tagsForTitle } = useSettings();
@@ -15,7 +15,11 @@ const calculation = ref<CalculationDetails>({
 
 export const useCalculator = () => {
 	const getTypeObject = computed(() => {
-		return tagsForTitle.find((item) => calculation.value.tags?.includes(item)) || '';
+		return (
+			tagsForTitle.find((item) =>
+				calculation.value.tags?.includes(item)
+			) || ""
+		);
 	});
 
 	const title = computed(() => {
@@ -136,7 +140,7 @@ export const useCalculator = () => {
 		return Math.round((averageHeatLoss.value * 24 * 30) / 100) / 10;
 	});
 
-	const constructionsDetailed = ()=> {
+	const constructionsDetailed = () => {
 		if (!calculation.value.constructions) return [];
 		return calculation.value.constructions.map((item) => ({
 			...item,
@@ -146,25 +150,26 @@ export const useCalculator = () => {
 				tempDiff.value
 			),
 		}));
-	}
+	};
 
-	const constructionsSnip = ()=> {
+	const constructionsSnip = () => {
 		return constructionsDetailed();
-	}
+	};
 
-	const constructionsSimple = ():Construction[] => {
-		return [			
+	const constructionsSimple = (): Construction[] => {
+		return [
 			{
-			...calculation.value.constructions[0],
-			area: totalArea.value,
-		}];
-	}
+				...calculation.value.constructions[0],
+				area: totalArea.value,
+			},
+		];
+	};
 
 	const constructions = computed(() => {
-		switch(calculation.value.calculateMethod) {
-			case 'simple':
+		switch (calculation.value.calculateMethod) {
+			case "simple":
 				return constructionsSimple();
-			case 'snip':
+			case "snip":
 				return constructionsSnip();
 			default:
 				return constructionsDetailed();
@@ -179,7 +184,7 @@ export const useCalculator = () => {
 			) || 0
 		);
 	});
-	
+
 	const getRoomHeight = (item: Room) => {
 		const height = item.height || 0;
 		return item.isMansard ? (height + (item.minHeight || 0)) / 2 : height;

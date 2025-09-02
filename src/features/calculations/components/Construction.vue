@@ -132,7 +132,7 @@ import ConstructionLayer from "./ConstructionLayer.vue";
 import type {
 	Construction,
 	ConstructionLayer as ConstructionLayerType,
-} from "../types/calculation";
+} from "../types";
 import type {
 	MaterialItem,
 	Surface,
@@ -175,7 +175,9 @@ const selectedSurface = computed({
 			...props.modelValue,
 			name: selectedSurfaceData?.name || "",
 			surface: selectedSurfaceData,
-			snipResistance: getSnipResistance(selectedSurfaceData?.type || "other"),
+			snipResistance: getSnipResistance(
+				selectedSurfaceData?.type || "other"
+			),
 			layers: [...exsistingLayers],
 		});
 	},
@@ -327,12 +329,16 @@ watch(snipResistance, (newValue) => {
 	});
 });
 
-watch(selectedSurface, (newSurface, oldSurface) => {
-	if (newSurface !== oldSurface) {
-		const selectedSurfaceData = getSurface(newSurface);
-		emit("update:modelValue", {
-			...props.modelValue,
-			snipResistance: getSnipResistance(selectedSurfaceData?.type || "other"),
+watch(
+	selectedSurface,
+	(newSurface, oldSurface) => {
+		if (newSurface !== oldSurface) {
+			const selectedSurfaceData = getSurface(newSurface);
+			emit("update:modelValue", {
+				...props.modelValue,
+				snipResistance: getSnipResistance(
+					selectedSurfaceData?.type || "other"
+				),
 			});
 		}
 	},

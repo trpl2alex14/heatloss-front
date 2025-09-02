@@ -125,10 +125,7 @@ import {
 	BaseInputNumber,
 	BaseToggleSwitch,
 } from "@/shared/components";
-import type {
-	CalculationDetails,
-	UseSeason,
-} from "@/features/calculations/types/calculation";
+import type { CalculationDetails, UseSeason } from "../types";
 import type { SelectButtonOption } from "@/shared/types/ui";
 import { useClimateData } from "@/features/directories/composables/useClimateData";
 import type { ClimateItem } from "@/features/directories/types/climate";
@@ -170,12 +167,17 @@ const getRequiredTemp = (useSeason?: UseSeason) => {
 };
 
 const getCurrentClimate = (city: string, useSeason?: UseSeason) => {
-	const item = climateData.value.find((item: ClimateItem) => item.city === city);
-	return useSeason === "seasonal" ? {
-		...item,
-		minTemp: item.avgTemp || 0,
-		avgTemp: (props.modelValue.requiredTemp + item.avgTemp) / 2 || 0,
-	} : item;
+	const item = climateData.value.find(
+		(item: ClimateItem) => item.city === city
+	);
+	return useSeason === "seasonal"
+		? {
+				...item,
+				minTemp: item.avgTemp || 0,
+				avgTemp:
+					(props.modelValue.requiredTemp + item.avgTemp) / 2 || 0,
+		  }
+		: item;
 };
 
 const localModel = computed({
@@ -185,25 +187,32 @@ const localModel = computed({
 	},
 });
 
-watch( () => props.modelValue, (val) => {
-	if(!val.useSeason) {
-		val.useSeason = "permanent";
-	}
-	if(val.freezeTemp === undefined || val.freezeTemp === null) {
-		val.freezeTemp = freezeTemp;
-	}
-	if(val.requiredTemp === undefined || val.requiredTemp === null) {
-		val.requiredTemp = getRequiredTemp(val.useSeason);
-	}
-	if(val.climate === undefined || val.climate === null) {
-		val.climate = getCurrentClimate(val.city, val.useSeason);
-	}
+watch(
+	() => props.modelValue,
+	(val) => {
+		if (!val.useSeason) {
+			val.useSeason = "permanent";
+		}
+		if (val.freezeTemp === undefined || val.freezeTemp === null) {
+			val.freezeTemp = freezeTemp;
+		}
+		if (val.requiredTemp === undefined || val.requiredTemp === null) {
+			val.requiredTemp = getRequiredTemp(val.useSeason);
+		}
+		if (val.climate === undefined || val.climate === null) {
+			val.climate = getCurrentClimate(val.city, val.useSeason);
+		}
+	},
+	{ immediate: true }
+);
 
-}, { immediate: true });
-
-watch(climateData, () => {
-	onCityChange(localModel.value.city);
-}, { deep: true });
+watch(
+	climateData,
+	() => {
+		onCityChange(localModel.value.city);
+	},
+	{ deep: true }
+);
 
 watch(isEditingClimate, (value) => {
 	if (!value) {

@@ -1,7 +1,5 @@
 <template>
-	<div
-		class="flex items-center gap-2 p-2 rounded-xl bg-gray-100"
-	>
+	<div class="flex items-center gap-2 p-2 rounded-xl bg-gray-100">
 		<!-- Название конструкции (disabled) -->
 		<div class="flex-1">
 			<BaseInputText
@@ -43,7 +41,7 @@
 import { computed } from "vue";
 import BaseInputText from "@/shared/components/ui/BaseInputText.vue";
 import BaseInputNumber from "@/shared/components/ui/BaseInputNumber.vue";
-import type { Construction } from "../types/calculation";
+import type { Construction } from "../types";
 
 interface Props {
 	modelValue: Construction;

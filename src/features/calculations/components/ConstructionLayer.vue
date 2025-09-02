@@ -81,7 +81,7 @@ import BaseInputNumber from "@/shared/components/ui/BaseInputNumber.vue";
 import BaseButton from "@/shared/components/ui/BaseButton.vue";
 import TypeIcon from "@/shared/components/TypeColumn.vue";
 import { useTypes } from "@/shared/composables/useTypes";
-import type { ConstructionLayer } from "../types/calculation";
+import type { ConstructionLayer } from "../types";
 import type { MaterialItem } from "@/features/directories/types/materials";
 import { MaterialType } from "@/features/directories/types/materials";
 

@@ -42,7 +42,7 @@ import { computed } from "vue";
 import BaseButton from "@/shared/components/ui/BaseButton.vue";
 import RoomEquipment from "./RoomEquipment.vue";
 import EmptyBox from "@/shared/components/EmptyBox.vue";
-import type { CalculationDetails, Equipment } from "../types/calculation";
+import type { CalculationDetails, Equipment } from "../types";
 
 interface Props {
 	modelValue: CalculationDetails;

@@ -18,7 +18,10 @@
 			<SectionConstructions v-model="modelValueProxy" />
 
 			<div class="my-8 border-t border-gray-100" ref="roomsRef"></div>
-			<SectionRooms v-model="modelValueProxy" @alertConstructions="alertConstructions" />
+			<SectionRooms
+				v-model="modelValueProxy"
+				@alertConstructions="alertConstructions"
+			/>
 
 			<div
 				class="my-8 border-t border-gray-100"
@@ -34,13 +37,13 @@
 
 <script setup lang="ts">
 import { computed, useTemplateRef, watch } from "vue";
-import type { CalculationDetails } from "../types/calculation";
-import SectionProduct from "@/features/calculations/components/SectionProduct.vue";
-import SectionClimat from "@/features/calculations/components/SectionClimat.vue";
-import SectionConstructions from "@/features/calculations/components/SectionConstructions.vue";
-import SectionRooms from "@/features/calculations/components/SectionRooms.vue";
-import SectionEquipments from "@/features/calculations/components/SectionEquipments.vue";
-import SectionOther from "@/features/calculations/components/SectionOther.vue";
+import type { CalculationDetails } from "../types";
+import SectionProduct from "./SectionProduct.vue";
+import SectionClimat from "./SectionClimat.vue";
+import SectionConstructions from "./SectionConstructions.vue";
+import SectionRooms from "./SectionRooms.vue";
+import SectionEquipments from "./SectionEquipments.vue";
+import SectionOther from "./SectionOther.vue";
 import { useMessage } from "@/shared/composables/useMessage";
 import { useDebounce } from "@/shared/utils/debounce";
 

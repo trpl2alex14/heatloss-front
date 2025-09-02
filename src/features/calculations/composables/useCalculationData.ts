@@ -1,5 +1,8 @@
-import type { CalculationItem } from "@features/calculations/types/calculation";
-import { useFetchCollection, type RequestDataOptions } from "@/shared/composables/useFetchCollection";
+import type { CalculationItem } from "../types";
+import {
+	useFetchCollection,
+	type RequestDataOptions,
+} from "@/shared/composables/useFetchCollection";
 import { route } from "@/shared/utils/router";
 import type { ColumnDef } from "@/shared/types/table";
 
@@ -108,7 +111,9 @@ export const useCalculationData = () => {
 		pagination,
 	} = useFetchCollection<CalculationItem>(route("calculations"), false);
 
-	const loadCalculationData = (params?: RequestDataOptions<CalculationItem>) => {
+	const loadCalculationData = (
+		params?: RequestDataOptions<CalculationItem>
+	) => {
 		loadData(params);
 	};
 

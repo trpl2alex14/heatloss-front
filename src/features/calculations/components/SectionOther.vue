@@ -52,7 +52,7 @@
 
 <script setup lang="ts">
 import { computed, onMounted, watch } from "vue";
-import type { CalculationDetails } from "../types/calculation";
+import type { CalculationDetails } from "../types";
 import { usePromos } from "../api/promos";
 import BaseSelect from "@/shared/components/ui/BaseSelect.vue";
 import BaseInputNumber from "@/shared/components/ui/BaseInputNumber.vue";
@@ -81,7 +81,7 @@ const modelValueProxy = computed<CalculationDetails>({
 const { data: promosData, isLoading, loadData } = usePromos();
 
 watch(modelValueProxy, (value) => {
-	if(value.powerPrice === undefined || value.powerPrice === null) {
+	if (value.powerPrice === undefined || value.powerPrice === null) {
 		value.powerPrice = powerPrice;
 	}
 });
@@ -97,12 +97,10 @@ const promoOptions = computed(() => {
 
 	if (promosData.value?.data) {
 		options.push(
-			...promosData.value.data.map(
-				(promo: PromoCode) => ({
-					label: `${promo.code} - ${promo.description}`,
-					value: promo.code,
-				})
-			)
+			...promosData.value.data.map((promo: PromoCode) => ({
+				label: `${promo.code} - ${promo.description}`,
+				value: promo.code,
+			}))
 		);
 	}
 

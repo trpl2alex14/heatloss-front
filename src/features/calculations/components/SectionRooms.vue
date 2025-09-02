@@ -73,7 +73,7 @@ import type {
 	RoomConstructionMethod,
 	RoomConstruction,
 	Construction,
-} from "../types/calculation";
+} from "../types";
 import type { SurfaceType } from "@/features/directories/types/materials";
 import { useCalculator } from "../composables/useCalculator";
 
