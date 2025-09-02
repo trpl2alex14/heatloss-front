@@ -18,7 +18,7 @@
 			<SectionConstructions v-model="modelValueProxy" />
 
 			<div class="my-8 border-t border-gray-100" ref="roomsRef"></div>
-			<SectionRooms v-model="modelValueProxy" />
+			<SectionRooms v-model="modelValueProxy" @alertConstructions="alertConstructions" />
 
 			<div
 				class="my-8 border-t border-gray-100"
@@ -41,6 +41,8 @@ import SectionConstructions from "@/features/calculations/components/SectionCons
 import SectionRooms from "@/features/calculations/components/SectionRooms.vue";
 import SectionEquipments from "@/features/calculations/components/SectionEquipments.vue";
 import SectionOther from "@/features/calculations/components/SectionOther.vue";
+import { useMessage } from "@/shared/composables/useMessage";
+import { useDebounce } from "@/shared/utils/debounce";
 
 interface Props {
 	modelValue: CalculationDetails;
@@ -51,6 +53,15 @@ const props = defineProps<Props>();
 const emit = defineEmits<{
 	"update:modelValue": [value: CalculationDetails];
 }>();
+
+const { warning } = useMessage();
+const debounce = useDebounce();
+
+const alertConstructions = () => {
+	debounce(() => {
+		warning("Проверьте распределение конструкций по помещениям");
+	}, 500);
+};
 
 const modelValueProxy = computed<CalculationDetails>({
 	get: () => {

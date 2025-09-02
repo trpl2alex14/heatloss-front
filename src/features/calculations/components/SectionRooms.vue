@@ -83,6 +83,7 @@ interface Props {
 
 interface Emits {
 	(e: "update:modelValue", value: CalculationDetails): void;
+	(e: "alertConstructions"): void;
 }
 
 const props = defineProps<Props>();
@@ -397,7 +398,12 @@ const distributeConstructionsAutomatically = (
 
 				if (calcArea + deltaArea < 0) {
 					deltaArea = -calcArea;
-					//TODO: alert!					
+					emit("alertConstructions");
+				}
+
+				//отличие больше чем на 50% от расчетного
+				if (Math.abs(deltaArea) > 0.5 * Math.abs(calcArea)) {
+					emit("alertConstructions");
 				}
 
 				const newRoomConstruction: RoomConstruction = {
