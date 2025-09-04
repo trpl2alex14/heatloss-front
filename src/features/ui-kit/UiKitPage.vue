@@ -9,6 +9,42 @@
 
 		<section class="mb-8">
 			<h2 class="text-md font-normal mt-3">
+				EquipmentsPicker ({{ selectedProduct || "Не выбран" }})
+			</h2>
+			<div class="space-y-4">
+				<BaseSelect
+					v-model="selectedProduct"
+					:options="selectProductsOptions"
+					label="Продукт для EquipmentsPicker"
+					placeholder="Выберите продукт"
+					class="w-54 mb-4"
+				/>
+				<EquipmentsPicker
+					v-if="selectedProduct"
+					:product="selectedProduct"
+					:room-id="1"
+					room-name="Спальня"
+					:exclude="[1, 2]"
+					@add="handleEquipmentAdd"
+					@cancel="handleEquipmentCancel"
+					class="w-350 border border-gray-200 rounded-lg p-5"
+				/>
+				<div
+					v-if="addedEquipment"
+					class="mt-4 p-4 bg-green-50 rounded-lg"
+				>
+					<h3 class="font-medium mb-2 text-green-800">
+						Добавленное оборудование:
+					</h3>
+					<pre class="text-sm text-green-700">{{
+						JSON.stringify(addedEquipment, null, 2)
+					}}</pre>
+				</div>
+			</div>
+		</section>
+
+		<section class="mb-8">
+			<h2 class="text-md font-normal mt-3">
 				BaseSelectButton ({{ selectValue as string }})
 			</h2>
 			<BaseSelectButton v-model="selectValue" :options="selectOptions" />
@@ -367,6 +403,7 @@ import SectionConstructions from "@/features/calculations/components/SectionCons
 import RoomConstruction from "@/features/calculations/components/RoomConstruction.vue";
 import RoomEquipment from "@/features/calculations/components/RoomEquipment.vue";
 import RoomComponent from "@/features/calculations/components/Room.vue";
+import EquipmentsPicker from "@/features/calculations/components/EquipmentsPicker.vue";
 import { useTypes } from "@/shared/composables/useTypes";
 import { useMaterialData } from "@/features/directories/composables/useMaterialData";
 
@@ -634,7 +671,7 @@ const handleDuplicateConstruction = () => {
 const calculationDetails = ref<CalculationDetails>({
 	id: 1,
 	date: "2024-01-01",
-	status: "working",	
+	status: "working",
 	title: "Тестовый расчет",
 	city: "Москва",
 	useSeason: "permanent",
@@ -824,5 +861,18 @@ const handleRoomHide = () => {
 
 const handleRoomRemove = () => {
 	console.log("Удаление помещения");
+};
+
+// Данные для EquipmentsPicker
+const addedEquipment = ref<Equipment[] | null>(null);
+
+const handleEquipmentAdd = (equipment: Equipment[]) => {
+	addedEquipment.value = equipment;
+	console.log("Оборудование добавлено:", equipment);
+};
+
+const handleEquipmentCancel = () => {
+	addedEquipment.value = null;
+	console.log("Отменено добавление оборудования");
 };
 </script>

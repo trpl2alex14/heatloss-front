@@ -27,8 +27,57 @@
 						"thickness": 400
 					}
 				]
+			},
+			{
+				"id": 2,
+				"name": "Окно",
+				"layers": [
+					{
+						"enabled": true,
+						"name": "Окно с тройным остеклением",
+						"materialId": 23,
+						"type": 2,
+						"resistance": 0.9
+					}
+				],
+				"snipResistance": 0,
+				"surface": {
+					"id": 7,
+					"name": "Окно",
+					"type": "window"
+				},
+				"area": 20,
+				"calculatedResistance": 0.9
 			}
-		]		
+		],
+		"rooms": [
+			{
+				"id": 1,
+				"name": "Комната 1",
+				"area": 90,
+				"floor": 1,
+				"height": 2.7,
+				"roomConstructions": [
+					{
+						"id": 1,
+						"area": 100
+					}
+				]
+			},
+			{
+				"id": 2,
+				"name": "Комната 2",
+				"area": 10,
+				"floor": 1,
+				"height": 2.7,
+				"roomConstructions": [
+					{
+						"id": 1,
+						"area": 10
+					}
+				]
+			}
+		]
 	},
 	"status": "success"
 }

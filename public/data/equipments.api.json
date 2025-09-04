@@ -1,0 +1,397 @@
+{
+	"data": [
+		{
+			"id": 1,
+			"status": "published",
+			"photo": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=80&q=80",
+			"product": "fleyt",
+			"category": "Радиаторы",
+			"name": "Флэйт 500В - 50 Белый",
+			"article": "46747337722",
+			"price": 127012,
+			"characteristics": "Мощность - 500Вт",
+			"tags": ["белый", "каркасник"],
+			"properties": [
+				{
+					"key": "power",
+					"value": 500
+				}
+			]
+		},
+		{
+			"id": 2,
+			"status": "hidden",
+			"photo": "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=80&q=80",
+			"product": "fleyt",
+			"category": "Терморегулятор",
+			"name": "Welrok Ls",
+			"article": "46747332722",
+			"price": 12012,
+			"characteristics": "Мощность - 500Вт",
+			"tags": ["wi-Fi", "каркасник"],
+			"properties": [
+				{
+					"key": "temperature_range",
+					"value": "5-30°C"
+				},
+				{
+					"key": "accuracy",
+					"value": "±0.5°C"
+				}
+			]
+		},
+		{
+			"id": 3,
+			"status": "published",
+			"photo": "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=80&q=80",
+			"product": "kouzi",
+			"category": "Радиаторы",
+			"name": "Флэйт 500В - 50 Белый",
+			"article": "46747337722",
+			"price": 127012,
+			"characteristics": "Мощность - 500Вт",
+			"tags": ["каркасник"],
+			"properties": [
+				{
+					"key": "power",
+					"value": 500
+				}
+			]
+		},
+		{
+			"id": 4,
+			"status": "hidden",
+			"photo": "https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=80&q=80",
+			"product": "fleyt",
+			"category": "Терморегулятор",
+			"name": "Welrok Ls",
+			"article": "46747332722",
+			"price": 12012,
+			"characteristics": "Мощность - 500Вт",
+			"tags": ["каркасник"],
+			"properties": [
+				{
+					"key": "voltage",
+					"value": "220V"
+				},
+				{
+					"key": "current",
+					"value": "2A"
+				}
+			]
+		},
+		{
+			"id": 5,
+			"status": "published",
+			"photo": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=80&q=80",
+			"product": "fleyt",
+			"category": "Радиаторы",
+			"name": "Флэйт 500В - 50 Белый",
+			"article": "46747337722",
+			"price": 127012,
+			"characteristics": "Мощность - 500Вт",
+			"tags": ["каркасник"],
+			"properties": [
+				{
+					"key": "power",
+					"value": 500
+				}
+			]
+		},
+		{
+			"id": 6,
+			"status": "published",
+			"photo": "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=80&q=80",
+			"product": "all",
+			"category": "Терморегулятор",
+			"name": "Welrok Ls",
+			"article": "46747332722",
+			"price": 12012,
+			"characteristics": "Мощность - 500Вт",
+			"tags": ["каркасник"],
+			"properties": [
+				{
+					"key": "display_type",
+					"value": "LCD"
+				},
+				{
+					"key": "battery_life",
+					"value": "2 года"
+				}
+			]
+		},
+		{
+			"id": 7,
+			"status": "published",
+			"photo": "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=80&q=80",
+			"product": "kouzi",
+			"category": "Конвекторы",
+			"name": "Коузи 300В - 30 Серый",
+			"article": "46747337723",
+			"price": 89000,
+			"characteristics": "Мощность - 300Вт",
+			"tags": ["настенный", "серый", "компактный"],
+			"properties": [
+				{
+					"key": "power",
+					"value": 300
+				}
+			]
+		},
+		{
+			"id": 8,
+			"status": "published",
+			"photo": "https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=80&q=80",
+			"product": "fleyt",
+			"category": "Терморегулятор",
+			"name": "ThermoSmart Pro",
+			"article": "46747332723",
+			"price": 25000,
+			"characteristics": "Wi-Fi управление",
+			"tags": ["умный дом", "wi-Fi"],
+			"properties": [
+				{
+					"key": "protocol",
+					"value": "Wi-Fi 802.11n"
+				},
+				{
+					"key": "app_compatibility",
+					"value": "iOS/Android"
+				}
+			]
+		},
+		{
+			"id": 9,
+			"status": "hidden",
+			"photo": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=80&q=80",
+			"product": "kouzi",
+			"category": "Радиаторы",
+			"name": "Коузи 400В - 40 Черный",
+			"article": "46747337724",
+			"price": 95000,
+			"characteristics": "Мощность - 400Вт",
+			"tags": ["черный", "дизайнерский"],
+			"properties": [
+				{
+					"key": "power",
+					"value": 400
+				}
+			]
+		},
+		{
+			"id": 10,
+			"status": "published",
+			"photo": "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=80&q=80",
+			"product": "fleyt",
+			"category": "Конвекторы",
+			"name": "Флэйт 600В - 60 Белый",
+			"article": "46747337725",
+			"price": 145000,
+			"characteristics": "Мощность - 600Вт",
+			"tags": ["белый", "каркасник"],
+			"properties": [
+				{
+					"key": "power",
+					"value": 600
+				}
+			]
+		},
+		{
+			"id": 11,
+			"status": "published",
+			"photo": "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=80&q=80",
+			"product": "kouzi",
+			"category": "Терморегулятор",
+			"name": "Коузи Термо",
+			"article": "46747332724",
+			"price": 18000,
+			"characteristics": "Механическое управление",
+			"tags": ["простой", "каркасник"],
+			"properties": [
+				{
+					"key": "control_type",
+					"value": "механический"
+				},
+				{
+					"key": "response_time",
+					"value": "30 сек"
+				}
+			]
+		},
+		{
+			"id": 12,
+			"status": "hidden",
+			"photo": "https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=80&q=80",
+			"product": "fleyt",
+			"category": "Радиаторы",
+			"name": "Флэйт 350В - 35 Бежевый",
+			"article": "46747337726",
+			"price": 98000,
+			"characteristics": "Мощность - 350Вт",
+			"tags": ["белый", "каркасник"],
+			"properties": [
+				{
+					"key": "power",
+					"value": 350
+				}
+			]
+		},
+		{
+			"id": 13,
+			"status": "published",
+			"photo": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=80&q=80",
+			"product": "kouzi",
+			"category": "Конвекторы",
+			"name": "Коузи 250В - 25 Белый",
+			"article": "46747337727",
+			"price": 75000,
+			"characteristics": "Мощность - 250Вт",
+			"tags": ["компактный", "белый"],
+			"properties": [
+				{
+					"key": "power",
+					"value": 250
+				}
+			]
+		},
+		{
+			"id": 14,
+			"status": "published",
+			"photo": "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=80&q=80",
+			"product": "fleyt",
+			"category": "Терморегулятор",
+			"name": "SmartThermo Plus",
+			"article": "46747332725",
+			"price": 32000,
+			"characteristics": "Голосовое управление",
+			"tags": ["умный дом", "wi-Fi"],
+			"properties": [
+				{
+					"key": "voice_control",
+					"value": "есть"
+				},
+				{
+					"key": "language_support",
+					"value": "русский"
+				}
+			]
+		},
+		{
+			"id": 15,
+			"status": "hidden",
+			"photo": "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=80&q=80",
+			"product": "kouzi",
+			"category": "Радиаторы",
+			"name": "Коузи 450В - 45 Серебристый",
+			"article": "46747337728",
+			"price": 110000,
+			"characteristics": "Мощность - 450Вт",
+			"tags": ["серый", "дизайнерский"],
+			"properties": [
+				{
+					"key": "power",
+					"value": 450
+				}
+			]
+		},
+		{
+			"id": 16,
+			"status": "published",
+			"photo": "https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=80&q=80",
+			"product": "fleyt",
+			"category": "Конвекторы",
+			"name": "Флэйт 700В - 70 Белый",
+			"article": "46747337729",
+			"price": 165000,
+			"characteristics": "Мощность - 700Вт",
+			"tags": ["белый", "каркасник"],
+			"properties": [
+				{
+					"key": "power",
+					"value": 700
+				}
+			]
+		},
+		{
+			"id": 17,
+			"status": "published",
+			"photo": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=80&q=80",
+			"product": "kouzi",
+			"category": "Терморегулятор",
+			"name": "Коузи Эко",
+			"article": "46747332726",
+			"price": 15000,
+			"characteristics": "Энергосберегающий режим",
+			"tags": ["простой", "каркасник"],
+			"properties": [
+				{
+					"key": "energy_class",
+					"value": "A+"
+				},
+				{
+					"key": "standby_power",
+					"value": "0.5W"
+				}
+			]
+		},
+		{
+			"id": 18,
+			"status": "hidden",
+			"photo": "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=80&q=80",
+			"product": "fleyt",
+			"category": "Радиаторы",
+			"name": "Флэйт 400В - 40 Коричневый",
+			"article": "46747337730",
+			"price": 105000,
+			"characteristics": "Мощность - 400Вт",
+			"tags": ["черный", "каркасник"],
+			"properties": [
+				{
+					"key": "power",
+					"value": 400
+				}
+			]
+		},
+		{
+			"id": 19,
+			"status": "published",
+			"photo": "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=80&q=80",
+			"product": "kouzi",
+			"category": "Конвекторы",
+			"name": "Коузи 200В - 20 Белый",
+			"article": "46747337731",
+			"price": 65000,
+			"characteristics": "Мощность - 200Вт",
+			"tags": ["компактный", "белый"],
+			"properties": [
+				{
+					"key": "power",
+					"value": 200
+				}
+			]
+		},
+		{
+			"id": 20,
+			"status": "published",
+			"photo": "https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=80&q=80",
+			"product": "fleyt",
+			"category": "Терморегулятор",
+			"name": "ThermoGuard Pro",
+			"article": "46747332727",
+			"price": 28000,
+			"characteristics": "Защита от замерзания",
+			"tags": ["простой", "каркасник"],
+			"properties": [
+				{
+					"key": "freeze_protection",
+					"value": "есть"
+				},
+				{
+					"key": "min_temperature",
+					"value": "-10°C"
+				}
+			]
+		}
+	],
+	"status": "success"
+}

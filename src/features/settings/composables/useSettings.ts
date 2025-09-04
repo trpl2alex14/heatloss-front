@@ -4,6 +4,7 @@ export const useSettings = () => {
 		comfortTemp: 23,
 		freezeTemp: 5,
 		powerPrice: 3.6,
-		tagsForTitle: ['дом', 'квартира', 'ком. объект']
+		tagsForTitle: ['дом', 'квартира', 'ком. объект'],
+		powerProperty: 'power',
 	};
 }

@@ -1,4 +1,4 @@
-export function route(name: string, id?: number) {
+export function route(name: string, id?: number | string) {
 	switch (name) {
 		case "directories.equipment":
 			return "/data/equipment.json";
@@ -30,6 +30,8 @@ export function route(name: string, id?: number) {
 			return `/calculations/view/${id}`;
 		case "calculations.pdf":
 			return `/calculations/pdf/${id}`;
+		case "api.equipments":
+			return `/data/equipments.api.json`;
 	}
 	return "";
 }

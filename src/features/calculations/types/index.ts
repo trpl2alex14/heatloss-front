@@ -15,4 +15,4 @@ export type { ConstructionLayer, Construction } from "./construction";
 export type { RoomConstruction, Room } from "./room";
 
 // Типы оборудования
-export type { Equipment } from "./equipment";
+export type { Equipment, EquipmentItem } from "./equipment";
