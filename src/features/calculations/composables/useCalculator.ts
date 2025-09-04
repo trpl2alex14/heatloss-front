@@ -185,6 +185,12 @@ export const useCalculator = () => {
 		);
 	});
 
+	// Получение максимального этажа из всех помещений
+	const getMaxFloor = (): number => {
+		if (!calculation.value.rooms.length) return 1;
+		return Math.max(...calculation.value.rooms.map((room) => room.floor));
+	};
+
 	const getRoomHeight = (item: Room) => {
 		const height = item.height || 0;
 		return item.isMansard ? (height + (item.minHeight || 0)) / 2 : height;
@@ -233,6 +239,7 @@ export const useCalculator = () => {
 		calculatedHeatLoss,
 		getSnipResistance,
 		getRoomHeight,
+		getMaxFloor,
 		computedTempDiff: tempDiff,
 		tempDiff: tempDiff.value,
 	};

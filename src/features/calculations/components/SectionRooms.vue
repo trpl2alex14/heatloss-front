@@ -70,11 +70,9 @@ import EmptyBox from "@/shared/components/EmptyBox.vue";
 import type {
 	CalculationDetails,
 	Room as RoomType,
-	RoomConstructionMethod,
-	RoomConstruction,
-	Construction,
+	RoomConstructionMethod
 } from "../types";
-import type { SurfaceType } from "@/features/directories/types/materials";
+import { useAutoDistribution } from "../composables/useAutoDistribution";
 import { useCalculator } from "../composables/useCalculator";
 
 interface Props {
@@ -89,7 +87,7 @@ interface Emits {
 const props = defineProps<Props>();
 const emit = defineEmits<Emits>();
 
-const { getRoomHeight } = useCalculator();
+const { getMaxFloor } = useCalculator();
 
 // Режим выбора конструкций
 const constructionMode = computed<RoomConstructionMethod>({
@@ -148,12 +146,6 @@ const constructionModeOptions = computed(() => {
 
 	return options;
 });
-
-// Получение максимального этажа из всех помещений
-const getMaxFloor = (): number => {
-	if (!props.modelValue.rooms.length) return 1;
-	return Math.max(...props.modelValue.rooms.map((room) => room.floor));
-};
 
 // Методы для работы с помещениями
 const getNextRoomId = (): number => {
@@ -259,74 +251,6 @@ watch(
 	{ deep: true }
 );
 
-const getRoomConstructionsById = (
-	room: RoomType,
-	ids: number[]
-): RoomConstruction[] => {
-	const newRoomConstructions: RoomConstruction[] = [];
-
-	room.roomConstructions?.forEach((construction) => {
-		if (ids.includes(construction.id)) {
-			newRoomConstructions.push(construction);
-		}
-	});
-
-	return newRoomConstructions;
-};
-
-const getWindowConstructions = (room: RoomType): RoomConstruction[] => {
-	const idsWindowConstructions = props.modelValue.constructions
-		?.filter((construction) => construction.surface?.type === "window")
-		.map((construction) => construction.id) || [];
-
-	return getRoomConstructionsById(room, idsWindowConstructions);
-};
-
-const getUnlockedConstructions = (room: RoomType): RoomConstruction[] => {
-	const idsUnlockedConstructions = room.roomConstructions
-		?.filter((c) => c.unlocked)
-		.map((construction) => construction.id) || [];
-
-	return getRoomConstructionsById(room, idsUnlockedConstructions);
-};
-
-const getAreaMultiplier = (
-	room: RoomType,
-	construction?: Construction
-): number => {
-	if (!construction) return 0;
-
-	const maxFloor = getMaxFloor();
-	const totalAreaFirstFloor = getTotalAreaByFloor(1);
-	const totalAreaLastFloor = getTotalAreaByFloor(maxFloor);
-	const totalVolume = getTotalVolume();
-
-	const surfaceType = (construction.surface?.type as SurfaceType) || "other";
-	let areaMultiplier = 0;
-
-	if (
-		surfaceType === "floor" &&
-		room.floor === 1 &&
-		totalAreaFirstFloor > 0
-	) {
-		areaMultiplier = room.area / totalAreaFirstFloor;
-	} else if (
-		surfaceType === "roof" &&
-		room.floor === maxFloor &&
-		totalAreaLastFloor > 0
-	) {
-		areaMultiplier = room.area / totalAreaLastFloor;
-	} else if (
-		["wall", "window", "other"].includes(surfaceType) &&
-		totalVolume > 0
-	) {
-		const roomVolume = room.area * getRoomHeight(room);
-		areaMultiplier = roomVolume / totalVolume;
-	}
-
-	return areaMultiplier;
-};
-
 // Функция автоматического распределения конструкций
 const distributeConstructionsAutomatically = (
 	mode: RoomConstructionMethod = "auto"
@@ -339,90 +263,13 @@ const distributeConstructionsAutomatically = (
 		return;
 	}
 
-	const decreaseAreaForConstructions = props.modelValue.rooms
-		.map((room) =>
-			room.roomConstructions
-				?.filter((c) => c.unlocked)
-				.map((c) => ({
-					id: c.id,
-					area: c.area,
-					areaMultiplier: getAreaMultiplier(
-						room,
-						props.modelValue.constructions.find(
-							(construction) => construction.id === c.id
-						)
-					),
-				})) || []
-		)
-		.flat()
-		.reduce((acc, curr) => {
-			acc[curr.id] = {
-				area: (acc[curr.id]?.area || 0) + curr.area,
-				areaMultiplier:
-					(acc[curr.id]?.areaMultiplier || 0) + curr.areaMultiplier,
-			};
-			return acc;
-		}, {} as Record<number, { area: number; areaMultiplier: number }>);
+	const { distributeConstructions, isAlertConstructions } 
+		= useAutoDistribution(props.modelValue.rooms, props.modelValue.constructions);
+	const updatedRooms = distributeConstructions(mode);
 
-	const updatedRooms = props.modelValue.rooms.map((room) => {
-		// Очищаем существующие конструкции
-		const newRoomConstructions: RoomConstruction[] =
-			mode === "windows" ? getWindowConstructions(room) : [];
-
-		newRoomConstructions.push(...getUnlockedConstructions(room));
-
-		// Получаем все конструкции
-		props.modelValue.constructions.forEach((construction) => {
-			if (
-				!construction.surface?.type ||
-				!construction.area ||
-				newRoomConstructions.find((rC) => rC.id === construction.id) ||
-				(construction.surface.type === "window" && mode === "windows")
-			) {
-				return;
-			}
-
-			const areaMultiplier = getAreaMultiplier(room, construction);
-
-			if (areaMultiplier > 0) {
-				const area =
-					decreaseAreaForConstructions[construction.id]?.area || 0;
-				const decreaseAreaMultiplier =
-					decreaseAreaForConstructions[construction.id]
-						?.areaMultiplier || 0;
-				let deltaArea =
-					((construction.area * decreaseAreaMultiplier - area) *
-						areaMultiplier) /
-					(1 - decreaseAreaMultiplier);
-				let calcArea = construction.area * areaMultiplier;
-
-				if (calcArea + deltaArea < 0) {
-					deltaArea = -calcArea;
-					emit("alertConstructions");
-				}
-
-				//отличие больше чем на 50% от расчетного
-				if (Math.abs(deltaArea) > 0.5 * Math.abs(calcArea)) {
-					emit("alertConstructions");
-				}
-
-				const newRoomConstruction: RoomConstruction = {
-					id: construction.id,
-					enabled: true,
-					area: Math.round((calcArea + deltaArea) * 10) / 10,
-					count:
-						construction.surface?.type === "window" ? 1 : undefined,
-					heatLoss: 0,
-				};
-				newRoomConstructions.push(newRoomConstruction);
-			}
-		});
-
-		return {
-			...room,
-			roomConstructions: newRoomConstructions,
-		};
-	});
+	if (isAlertConstructions.value) {
+		emit("alertConstructions");
+	}
 
 	// Вызываем emit только если есть изменения
 	if (hasRoomsChanges(updatedRooms, props.modelValue.rooms)) {
@@ -431,20 +278,6 @@ const distributeConstructionsAutomatically = (
 			rooms: updatedRooms,
 		});
 	}
-};
-
-// Вспомогательные функции для расчета площадей и объемов
-const getTotalAreaByFloor = (floor: number): number => {
-	return props.modelValue.rooms
-		.filter((room) => room.floor === floor)
-		.reduce((sum, room) => sum + room.area, 0);
-};
-
-const getTotalVolume = (): number => {
-	return props.modelValue.rooms.reduce(
-		(sum, room) => sum + room.area * getRoomHeight(room),
-		0
-	);
 };
 
 // Функция для проверки изменений в помещениях
