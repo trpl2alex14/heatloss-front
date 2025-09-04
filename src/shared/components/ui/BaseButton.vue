@@ -63,13 +63,10 @@ const icon = computed(() => {
 });
 
 const variant = computed(() => {
-	if (props.variant === "outlined") {
-		return "outlined";
-	}
 	if (props.text) {
 		return "text";
 	}
-	return "filled";
+	return props.variant ||"filled";
 });
 
 const severity = computed(() => {
