@@ -45,6 +45,8 @@
 				placeholder="0"
 				:min="0"
 				:minFractionDigits="2"
+				:disabled="true"
+				:readonly="true"
 				:suffix="' ₽'"
 				class="w-full"
 			/>

@@ -41,6 +41,7 @@
 				@duplicate="duplicateRoom(index)"
 				@remove="removeRoom(index)"
 				@add-floor="addFloor(index)"
+				@add-equipment="addEquipment(index)"
 			/>
 
 			<EmptyBox
@@ -61,12 +62,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed, watch } from "vue";
+import { computed, watch, defineAsyncComponent } from "vue";
 import BaseButton from "@/shared/components/ui/BaseButton.vue";
 import BaseSelectButton from "@/shared/components/ui/BaseSelectButton.vue";
 import Room from "./Room.vue";
 import EmptyBox from "@/shared/components/EmptyBox.vue";
-
 import type {
 	CalculationDetails,
 	Room as RoomType,
@@ -74,6 +74,9 @@ import type {
 } from "../types";
 import { useAutoDistribution } from "../composables/useAutoDistribution";
 import { useCalculator } from "../composables/useCalculator";
+import { useDialog } from 'primevue/usedialog';
+
+const equipmentsPicker = defineAsyncComponent(() => import('./EquipmentPickerDialog.vue'));
 
 interface Props {
 	modelValue: CalculationDetails;
@@ -88,6 +91,8 @@ const props = defineProps<Props>();
 const emit = defineEmits<Emits>();
 
 const { getMaxFloor } = useCalculator();
+
+const dialog = useDialog();
 
 // Режим выбора конструкций
 const constructionMode = computed<RoomConstructionMethod>({
@@ -226,6 +231,39 @@ const moveRoomDown = (index: number) => {
 
 const addFloor = (index: number) => {
 	props.modelValue.rooms[index].floor = getMaxFloor() + 1;
+};
+
+const addEquipment = (index: number) => {
+	dialog.open(equipmentsPicker, {
+        props: {            
+			showHeader: false,
+            style: {
+                width: '45vw',
+            },
+            modal: true
+        },		
+		data: {
+			product: props.modelValue.product,
+			roomId: props.modelValue.rooms[index].id,
+			roomName: props.modelValue.rooms[index].name,
+			exclude: props.modelValue.rooms[index].equipment?.map((equipment) => equipment.id) || [],
+		},
+		onClose: (value) => {
+			if (!value?.data || !Array.isArray(value.data) || value.data.length === 0) {
+				return;
+			}			
+
+			emit("update:modelValue", {
+				...props.modelValue,
+				rooms: props.modelValue.rooms.map((room, roomIndex) => {
+					if (roomIndex === index) {
+						return { ...room, equipment: [...room.equipment || [], ...value.data] };
+					}
+					return room;
+				}),
+			});
+		}
+	});
 };
 
 // Watch для автоматического распределения конструкций

@@ -1,8 +1,8 @@
 <template>
 	<div class="equipments-picker">
 		<!-- Заголовок -->
-		<div class="mb-4">
-			<h3 class="text-xl font-normal text-gray-900">
+		<div class="my-4">
+			<h3 v-if="showTitle" class="text-xl font-normal text-gray-900 ">
 				Добавить оборудование
 			</h3>
 			<p class="text-md text-gray-600 mt-1">
@@ -62,7 +62,7 @@
 						option-value="id"
 						placeholder="Выберите оборудование"
 						class="w-full"
-						listStyle="max-height:350px"
+						listStyle="max-height:35vh; min-height:35vh;"
 					>
 						<template #option="{ option }">
 							<div class="equipment-item p-0 w-full">
@@ -102,8 +102,7 @@
 										<span
 											class="text-sm font-semibold text-gray-900"
 										>
-											{{ option.price.toLocaleString() }}
-											₽
+											{{ option.price.toLocaleString() }}₽
 										</span>
 									</div>
 								</div>
@@ -115,7 +114,7 @@
 				<!-- Сообщение об отсутствии оборудования -->
 				<div
 					v-else-if="!isLoading"
-					class="text-center py-8 text-gray-500"
+					class="text-center py-8 text-gray-500 min-h-[38vh]"
 				>
 					<p>Оборудование не найдено</p>
 				</div>
@@ -161,6 +160,7 @@ interface Props {
 	roomId: number;
 	roomName: string;
 	exclude?: number[];
+	showTitle?: boolean;
 }
 
 const props = defineProps<Props>();

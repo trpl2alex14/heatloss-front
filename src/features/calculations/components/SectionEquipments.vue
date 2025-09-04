@@ -38,11 +38,12 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, defineAsyncComponent } from "vue";
 import BaseButton from "@/shared/components/ui/BaseButton.vue";
 import RoomEquipment from "./RoomEquipment.vue";
 import EmptyBox from "@/shared/components/EmptyBox.vue";
 import type { CalculationDetails, Equipment } from "../types";
+import { useDialog } from 'primevue/usedialog';
 
 interface Props {
 	modelValue: CalculationDetails;
@@ -52,8 +53,12 @@ interface Emits {
 	(e: "update:modelValue", value: CalculationDetails): void;
 }
 
+const equipmentsPicker = defineAsyncComponent(() => import('./EquipmentPickerDialog.vue'));
+
 const props = defineProps<Props>();
 const emit = defineEmits<Emits>();
+
+const dialog = useDialog();
 
 // Вычисляемое свойство для списка оборудования
 const equipmentList = computed({
@@ -69,27 +74,31 @@ const equipmentList = computed({
 });
 
 // Методы для работы с оборудованием
-const getNextEquipmentId = (): number => {
-	if (!props.modelValue.equipment?.length) return 1;
-	return (
-		Math.max(
-			...props.modelValue.equipment.map((equipment) => equipment.id)
-		) + 1
-	);
-};
-
 const addEquipment = () => {
-	const newEquipment: Equipment = {
-		id: getNextEquipmentId(),
-		name: "",
-		quantity: 1,
-		price: 0,
-		power: 0,
-	};
+	dialog.open(equipmentsPicker, {
+        props: {            
+			showHeader: false,
+            style: {
+                width: '45vw',
+            },
+            modal: true
+        },		
+		data: {
+			product: props.modelValue.product,
+			roomId: 0,
+			roomName: 'Дополнительное',
+			exclude: props.modelValue.equipment?.map((equipment) => equipment.id) || [],
+		},
+		onClose: (value) => {
+			if (!value?.data || !Array.isArray(value.data) || value.data.length === 0) {
+				return;
+			}			
 
-	emit("update:modelValue", {
-		...props.modelValue,
-		equipment: [...(props.modelValue.equipment || []), newEquipment],
+			emit("update:modelValue", {
+				...props.modelValue,
+				equipment: [...(props.modelValue.equipment || []), ...value.data],
+			});
+		}
 	});
 };
 
