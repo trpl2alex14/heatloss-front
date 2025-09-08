@@ -1,5 +1,6 @@
 <template>
 	<EquipmentsPicker
+		v-if="isInitialized"
 		:product="product"
 		:roomId="roomId"
 		:roomName="roomName"
@@ -27,6 +28,7 @@ const product = ref<Product>("all");
 const roomId = ref(0);
 const roomName = ref("Помещение");
 const exclude = ref<number[]>([]);
+const isInitialized = ref(false);
 
 onMounted(() => {
 	if (dialogRef && dialogRef.value?.data) {
@@ -34,6 +36,7 @@ onMounted(() => {
 		roomId.value = dialogRef.value.data.roomId;
 		roomName.value = dialogRef.value.data.roomName;
 		exclude.value = dialogRef.value.data.exclude || [];
+		isInitialized.value = true;
 	}
 });
 

@@ -21,7 +21,7 @@ export const useApi = <T, K>(
 
 		try {
 			const response = await axios.get(endpoint + (id || ""), params ? {params} : {});
-
+						
 			if (response.data?.status !== "success") {
 				throw new Error(
 					response.data?.error ?? "Ошибка при загрузке данных"

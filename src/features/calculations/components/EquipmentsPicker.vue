@@ -176,8 +176,10 @@ const selectedTags = ref<string[]>([]);
 
 const { powerProperty } = useSettings();
 
+const product = computed(() => props.product);
+
 // API для загрузки оборудования
-const { data: equipments, isLoading, loadData } = useEquipments(props.product);
+const { data: equipments, isLoading, loadData } = useEquipments(product);
 
 // Загрузка данных при монтировании
 onMounted(() => {
@@ -186,7 +188,7 @@ onMounted(() => {
 
 // Следим за изменением продукта и перезагружаем данные
 watch(
-	() => props.product,
+	product,
 	() => {
 		selectedCategory.value = "all";
 		selectedEquipment.value = [];
