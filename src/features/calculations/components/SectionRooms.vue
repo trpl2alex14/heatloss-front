@@ -36,6 +36,7 @@
 				:room-construction-method="constructionMode"
 				:is-first="index === 0"
 				:is-last="index === modelValue.rooms.length - 1"
+				:product="modelValue.product || 'all'"
 				@move-up="moveRoomUp(index)"
 				@move-down="moveRoomDown(index)"
 				@duplicate="duplicateRoom(index)"
@@ -257,7 +258,11 @@ const addEquipment = (index: number) => {
 				...props.modelValue,
 				rooms: props.modelValue.rooms.map((room, roomIndex) => {
 					if (roomIndex === index) {
-						return { ...room, equipment: [...room.equipment || [], ...value.data] };
+						return { 
+							...room,
+							manualEquip: true,
+							equipment: [...room.equipment || [], ...value.data] 
+						};
 					}
 					return room;
 				}),
@@ -310,7 +315,7 @@ const distributeConstructionsAutomatically = (
 	}
 
 	// Вызываем emit только если есть изменения
-	if (hasRoomsChanges(updatedRooms, props.modelValue.rooms)) {
+	if (hasRoomsConstructionsChanges(updatedRooms, props.modelValue.rooms)) {
 		emit("update:modelValue", {
 			...props.modelValue,
 			rooms: updatedRooms,
@@ -319,7 +324,7 @@ const distributeConstructionsAutomatically = (
 };
 
 // Функция для проверки изменений в помещениях
-const hasRoomsChanges = (
+const hasRoomsConstructionsChanges = (
 	updatedRooms: RoomType[],
 	oldRooms: RoomType[]
 ): boolean => {

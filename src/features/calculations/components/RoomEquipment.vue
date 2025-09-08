@@ -27,6 +27,7 @@
 				:min="1"
 				:suffix="' шт.'"
 				class="w-full"
+				:disabled="disabled"
 			/>
 		</div>
 
@@ -38,7 +39,7 @@
 		</div>
 
 		<!-- Стоимость за единицу -->
-		<div class="w-34">
+		<div class="w-30">
 			<BaseInputNumber
 				v-model="priceValue"
 				label="Стоимость"
@@ -60,7 +61,7 @@
 		</div>
 
 		<!-- Общая сумма (только для чтения) -->
-		<div class="w-38">
+		<div class="w-34">
 			<BaseInputNumber
 				:model-value="totalCost"
 				label="Сумма"
@@ -78,6 +79,7 @@
 			variant="text"
 			severity="secondary"
 			text
+			:disabled="disabled"
 			@click="$emit('remove')"
 		/>
 	</div>
@@ -93,6 +95,7 @@ import type { Equipment } from "../types";
 interface Props {
 	modelValue: Equipment;
 	index: number;
+	disabled?: boolean;
 }
 
 interface Emits {

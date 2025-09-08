@@ -193,6 +193,7 @@
 					:key="equipment.id"
 					v-model="modelValue.equipment[index]"
 					:index="index"
+					:disabled="manualEquipValue"
 					@remove="removeEquipment(index)"
 				/>
 
@@ -203,12 +204,9 @@
 
 				<!-- Кнопки действий для оборудования -->
 				<div class="flex gap-5 self-end">
-					<BaseButton
-						icon="calculator"
-						label="Авто"
-						text
-						severity="primary"
-						@click="$emit('auto')"
+					<BaseToggleSwitch
+						v-model="manualEquipValue"
+						label="Авто расчёт"
 						:disabled="totalHeatLoss === 0"
 					/>
 					<BaseButton
@@ -322,6 +320,9 @@ import type {
 	RoomConstruction as RoomConstructionType,
 	RoomConstructionMethod,
 } from "../types";
+import { useAutoEquip } from "../composables/useAutoEquip";
+import type { Product } from "@shared/types/produtcs";
+import { useDebounce } from "@shared/utils/debounce";
 
 interface Props {
 	modelValue: Room;
@@ -332,11 +333,11 @@ interface Props {
 	roomConstructionMethod: RoomConstructionMethod;
 	isFirst?: boolean;
 	isLast?: boolean;
+	product: Product;
 }
 
 interface Emits {
 	(e: "update:modelValue", value: Room): void;
-	(e: "auto"): void;
 	(e: "addEquipment"): void;
 	(e: "moveUp"): void;
 	(e: "moveDown"): void;
@@ -355,6 +356,8 @@ const selectedConstructions = ref<Record<number, boolean>>({});
 const additionalHeatSource = ref(false);
 const additionalHeatPower = ref(0);
 const useDirectArea = ref(true);
+
+const debounce = useDebounce();
 
 const isAutoMode = (roomConstruction: RoomConstructionType) => {
 	return (
@@ -396,6 +399,16 @@ const isMansardValue = computed({
 			minHeight: value
 				? props.modelValue.minHeight
 				: props.modelValue.height,
+		});
+	},
+});
+
+const manualEquipValue = computed({
+	get: () => !(props.modelValue.manualEquip || false),
+	set: (value: boolean) => {
+		emit("update:modelValue", {
+			...props.modelValue,
+			manualEquip: !value,
 		});
 	},
 });
@@ -648,5 +661,60 @@ const getStyleHeatLoss = () => {
 // Метод для добавления этажа
 const addFloor = () => {
 	emit("addFloor");
+};
+
+// Композит для автоматического распределения оборудования
+const { equipRoom, equipments } = useAutoEquip(computed(() => props.product));
+
+watch(totalHeatLoss, (newHeatLoss, oldHeatLoss) => {	
+	if(newHeatLoss !== oldHeatLoss) {
+		emit("update:modelValue", {
+			...props.modelValue,
+			heatLoss: newHeatLoss,
+		});		
+		debounce(() => autoEquip(), 100);
+	}
+});
+
+watch(() => props.modelValue?.manualEquip, (newManualEquip, oldManualEquip) => {
+	if(newManualEquip !== oldManualEquip) {		
+		autoEquip();
+	}
+});
+
+watch(()=> props?.product, (newProduct, oldProduct) => {
+	if(newProduct !== oldProduct) {		
+		autoEquip();
+	}
+});
+
+watch(equipments, (newEquipments, oldEquipments) => {
+	if(!newEquipments?.data || !oldEquipments?.data) {
+		return;
+	}
+
+	if(newEquipments?.data.length !== oldEquipments?.data.length) {
+		autoEquip();
+	}
+
+	for(let i = 0; i < newEquipments?.data.length; i++) {
+		if(newEquipments?.data[i].id !== oldEquipments?.data[i].id) {
+			autoEquip();
+		}
+	}		
+});
+
+// Функция автоматического распределения оборудования
+const autoEquip = () => {
+	if(props.modelValue.manualEquip){
+		return;
+	}
+
+	const updatedEquipment = equipRoom(props.modelValue);
+
+	emit("update:modelValue", {
+		...props.modelValue,
+		equipment: updatedEquipment,
+	});
 };
 </script>

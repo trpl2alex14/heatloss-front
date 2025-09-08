@@ -10,7 +10,7 @@ export interface Equipment {
 
 export interface EquipmentProperty {
 	key: string;
-	value: string;
+	value: string | number;
 }
 
 export type EquipmentItem = EquipmentItemDirectory & {

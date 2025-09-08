@@ -31,7 +31,7 @@ export function route(name: string, id?: number | string) {
 		case "calculations.pdf":
 			return `/calculations/pdf/${id}`;
 		case "api.equipments":
-			return `/data/equipments.api.json`;
+			return `/data/equipments.api.json?product=`;
 	}
 	return "";
 }

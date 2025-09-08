@@ -23,6 +23,7 @@ export interface Room {
 	heatLoss: number;
 	baseHeat?: number;
 
+	manualEquip?: boolean;
 	roomConstructions: RoomConstruction[];
 	equipment: Equipment[];
 }

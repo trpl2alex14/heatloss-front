@@ -171,6 +171,10 @@
 				{
 					"key": "response_time",
 					"value": "30 сек"
+				},
+				{
+					"key": "max_power",
+					"value": 2500
 				}
 			]
 		},
