@@ -197,12 +197,12 @@ export const useCalculator = () => {
 	};
 
 	const totalVolume = computed(() => {
-		return (
+		return Math.round((
 			calculation.value.rooms?.reduce(
 				(acc, item) => acc + item.area * getRoomHeight(item),
 				0
 			) || 0
-		);
+		) * 10) / 10;
 	});
 
 	const result = computed<CalculationResult>(() => {
