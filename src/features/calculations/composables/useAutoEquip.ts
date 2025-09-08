@@ -1,26 +1,19 @@
 import type { Product } from "@shared/types/produtcs";
 import { computed, ref, type Ref } from "vue";
-import type { Room, Equipment, EquipmentItem } from "../types";
+import type { Room, Equipment, EquipmentItem, InitRule, Rule } from "../types";
 import { useEquipments } from "../api/equipments";
 
 import regulatorSimpl from "../rules/regulatorSimpl";
 import radiatorLowPrice from "../rules/radiatorLowPrice";
 
-
-type InitRule = {
-	equip: (room: Room, prevEquip: Equipment[]) => Equipment[]
-}
-
-type Rule = (equipments: EquipmentItem[]) => InitRule;
-
-const rulse: Rule[] = [	
+const defaultRulse: Rule[] = [	
 	radiatorLowPrice,
 	regulatorSimpl,
 ];
 
 let rulsePipeline: Ref<InitRule[]> = ref([]);
 
-export const useAutoEquip = (product: Ref<Product>) => {
+export const useAutoEquip = (product: Ref<Product>, rules?: Ref<Rule[]>) => {
 	const { data: equipments, loadData, refresh } = useEquipments(product);
 
 	loadData();
@@ -29,17 +22,17 @@ export const useAutoEquip = (product: Ref<Product>) => {
 		refresh();
 	}
 
-	const createRules = (equipments: EquipmentItem[]) => {
+	const createRules = (equipments: EquipmentItem[], rules: Rule[] = defaultRulse) => {
 		const pipeline = [];
 
-		for(const rule of rulse) {			
+		for(const rule of rules) {			
 			pipeline.push(rule(equipments));
 		}
 
 		return pipeline;
 	}
 
-	rulsePipeline = computed(() => createRules(equipments.value?.data ?? []));
+	rulsePipeline = computed(() => createRules(equipments.value?.data ?? [], rules?.value));
 
 	const equipRoom = (room: Room): Equipment[] => {		
 		return rulsePipeline.value

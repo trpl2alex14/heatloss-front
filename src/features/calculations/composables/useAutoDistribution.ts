@@ -5,32 +5,21 @@ import type { SurfaceType } from "@/features/directories/types/materials";
 import { useCalculator } from "./useCalculator";
 import { ref } from "vue";
 
-export const useAutoDistribution = (
-	rooms: Room[],
-	constructions: Construction[]
-) => {
+export const useAutoDistribution = (rooms: Room[], constructions: Construction[]) => {
 	const { getRoomHeight, getMaxFloor } = useCalculator();
 
 	const isAlertConstructions = ref(false);
 
 	// Вспомогательные функции для расчета площадей и объемов
 	const getTotalAreaByFloor = (floor: number): number => {
-		return rooms
-			.filter((room) => room.floor === floor)
-			.reduce((sum, room) => sum + room.area, 0);
+		return rooms.filter((room) => room.floor === floor).reduce((sum, room) => sum + room.area, 0);
 	};
 
 	const getTotalVolume = (): number => {
-		return rooms.reduce(
-			(sum, room) => sum + room.area * getRoomHeight(room),
-			0
-		);
+		return rooms.reduce((sum, room) => sum + room.area * getRoomHeight(room), 0);
 	};
 
-	const getRoomConstructionsById = (
-		room: Room,
-		ids: number[]
-	): RoomConstruction[] => {
+	const getRoomConstructionsById = (room: Room, ids: number[]): RoomConstruction[] => {
 		const newRoomConstructions: RoomConstruction[] = [];
 
 		room.roomConstructions?.forEach((construction) => {
@@ -45,9 +34,7 @@ export const useAutoDistribution = (
 	const getWindowConstructions = (room: Room): RoomConstruction[] => {
 		const idsWindowConstructions =
 			constructions
-				?.filter(
-					(construction) => construction.surface?.type === "window"
-				)
+				?.filter((construction) => construction.surface?.type === "window")
 				.map((construction) => construction.id) || [];
 
 		return getRoomConstructionsById(room, idsWindowConstructions);
@@ -55,18 +42,13 @@ export const useAutoDistribution = (
 
 	const getUnlockedConstructions = (room: Room): RoomConstruction[] => {
 		const idsUnlockedConstructions =
-			room.roomConstructions
-				?.filter((c) => c.unlocked)
-				.map((construction) => construction.id) || [];
+			room.roomConstructions?.filter((c) => c.unlocked).map((construction) => construction.id) || [];
 
 		return getRoomConstructionsById(room, idsUnlockedConstructions);
 	};
 
 	// Получение коэффициента для конструкций
-	const getAreaMultiplier = (
-		room: Room,
-		construction?: Construction
-	): number => {
+	const getAreaMultiplier = (room: Room, construction?: Construction): number => {
 		if (!construction) return 0;
 
 		const maxFloor = getMaxFloor();
@@ -74,26 +56,14 @@ export const useAutoDistribution = (
 		const totalAreaLastFloor = getTotalAreaByFloor(maxFloor);
 		const totalVolume = getTotalVolume();
 
-		const surfaceType =
-			(construction.surface?.type as SurfaceType) || "other";
+		const surfaceType = (construction.surface?.type as SurfaceType) || "other";
 		let areaMultiplier = 0;
 
-		if (
-			surfaceType === "floor" &&
-			room.floor === 1 &&
-			totalAreaFirstFloor > 0
-		) {
+		if (surfaceType === "floor" && room.floor === 1 && totalAreaFirstFloor > 0) {
 			areaMultiplier = room.area / totalAreaFirstFloor;
-		} else if (
-			surfaceType === "roof" &&
-			room.floor === maxFloor &&
-			totalAreaLastFloor > 0
-		) {
+		} else if (surfaceType === "roof" && room.floor === maxFloor && totalAreaLastFloor > 0) {
 			areaMultiplier = room.area / totalAreaLastFloor;
-		} else if (
-			["wall", "window", "other"].includes(surfaceType) &&
-			totalVolume > 0
-		) {
+		} else if (["wall", "window", "other"].includes(surfaceType) && totalVolume > 0) {
 			const roomVolume = room.area * getRoomHeight(room);
 			areaMultiplier = roomVolume / totalVolume;
 		}
@@ -116,9 +86,7 @@ export const useAutoDistribution = (
 							area: c.area,
 							areaMultiplier: getAreaMultiplier(
 								room,
-								constructions.find(
-									(construction) => construction.id === c.id
-								)
+								constructions.find((construction) => construction.id === c.id)
 							),
 						})) || []
 			)
@@ -126,33 +94,25 @@ export const useAutoDistribution = (
 			.reduce((acc, curr) => {
 				acc[curr.id] = {
 					area: (acc[curr.id]?.area || 0) + curr.area,
-					areaMultiplier:
-						(acc[curr.id]?.areaMultiplier || 0) +
-						curr.areaMultiplier,
+					areaMultiplier: (acc[curr.id]?.areaMultiplier || 0) + curr.areaMultiplier,
 				};
 				return acc;
 			}, {} as Record<number, { area: number; areaMultiplier: number }>);
 	};
 
 	// Функция автоматического распределения конструкций
-	const distributeConstructions = (
-		mode: RoomConstructionMethod = "auto"
-	): Room[] => {
+	const distributeConstructions = (mode: RoomConstructionMethod = "auto"): Room[] => {
 		if (!rooms.length || !constructions.length || mode === "manual") {
 			return rooms;
 		}
 
 		isAlertConstructions.value = false;
 
-		const decreaseAreaForConstructions = getDecreaseAreaForConstructions(
-			rooms,
-			constructions
-		);
+		const decreaseAreaForConstructions = getDecreaseAreaForConstructions(rooms, constructions);
 
 		return rooms.map((room) => {
 			// Очищаем существующие конструкции
-			const newRoomConstructions: RoomConstruction[] =
-				mode === "windows" ? getWindowConstructions(room) : [];
+			const newRoomConstructions: RoomConstruction[] = mode === "windows" ? getWindowConstructions(room) : [];
 
 			newRoomConstructions.push(...getUnlockedConstructions(room));
 
@@ -161,11 +121,8 @@ export const useAutoDistribution = (
 				if (
 					!construction.surface?.type ||
 					!construction.area ||
-					newRoomConstructions.find(
-						(rC) => rC.id === construction.id
-					) ||
-					(construction.surface.type === "window" &&
-						mode === "windows")
+					newRoomConstructions.find((rC) => rC.id === construction.id) ||
+					(construction.surface.type === "window" && mode === "windows")
 				) {
 					return;
 				}
@@ -173,15 +130,10 @@ export const useAutoDistribution = (
 				const areaMultiplier = getAreaMultiplier(room, construction);
 
 				if (areaMultiplier > 0) {
-					const area =
-						decreaseAreaForConstructions[construction.id]?.area ||
-						0;
-					const decreaseAreaMultiplier =
-						decreaseAreaForConstructions[construction.id]
-							?.areaMultiplier || 0;
+					const area = decreaseAreaForConstructions[construction.id]?.area || 0;
+					const decreaseAreaMultiplier = decreaseAreaForConstructions[construction.id]?.areaMultiplier || 0;
 					let deltaArea =
-						((construction.area * decreaseAreaMultiplier - area) *
-							areaMultiplier) /
+						((construction.area * decreaseAreaMultiplier - area) * areaMultiplier) /
 						(1 - decreaseAreaMultiplier);
 					let calcArea = construction.area * areaMultiplier;
 
@@ -195,14 +147,22 @@ export const useAutoDistribution = (
 						isAlertConstructions.value = true;
 					}
 
+					let count = undefined;
+
+					if (construction.surface?.type === "window") {
+						const windows = room.roomConstructions
+							.filter((rC) => rC.id === construction.id);
+
+						count = windows.length > 0 ?
+							windows.reduce((acc, rC) => acc + (rC?.count || 0), 0)
+							: 1;
+					}
+
 					const newRoomConstruction: RoomConstruction = {
 						id: construction.id,
 						enabled: true,
 						area: Math.round((calcArea + deltaArea) * 10) / 10,
-						count:
-							construction.surface?.type === "window"
-								? 1
-								: undefined,
+						count: count,
 						heatLoss: 0,
 					};
 					newRoomConstructions.push(newRoomConstruction);

@@ -116,10 +116,11 @@
 			</div>
 		</div>
 
-		<div class="px-4 flex flex-col gap-3" v-if="isShow">
+		<div class="px-4 flex flex-col gap-3" >
 			<div
 				class="flex flex-col gap-2"
 				v-if="props.constructions.length > 0"
+				v-show="isShow"
 			>
 				<div class="flex items-center">
 					<!-- Заголовок секции конструкций -->
@@ -264,7 +265,7 @@
 			<div class="flex items-center gap-3.5 px-4">
 				<div class="w-34" v-if="additionalHeatSource">
 					<BaseInputNumber
-						v-model="additionalHeatPower"
+						v-model="baseHeat"
 						label="Мощность"
 						placeholder="0"
 						:min="0"
@@ -311,6 +312,8 @@ import {
 	BaseToggleSwitch,
 	EmptyBox,
 } from "@/shared/components";
+import type { Product } from "@shared/types/produtcs";
+import { useDebounce } from "@shared/utils/debounce";
 import Popover from "primevue/popover";
 import RoomConstruction from "./RoomConstruction.vue";
 import RoomEquipment from "./RoomEquipment.vue";
@@ -321,8 +324,7 @@ import type {
 	RoomConstructionMethod,
 } from "../types";
 import { useAutoEquip } from "../composables/useAutoEquip";
-import type { Product } from "@shared/types/produtcs";
-import { useDebounce } from "@shared/utils/debounce";
+import { useEquipRules } from "../composables/useEquipRules";
 
 interface Props {
 	modelValue: Room;
@@ -334,6 +336,7 @@ interface Props {
 	isFirst?: boolean;
 	isLast?: boolean;
 	product: Product;
+	tags?: string[];
 }
 
 interface Emits {
@@ -354,7 +357,6 @@ const constructionPopoverRef = ref();
 const isShow = ref(true);
 const selectedConstructions = ref<Record<number, boolean>>({});
 const additionalHeatSource = ref(false);
-const additionalHeatPower = ref(0);
 const useDirectArea = ref(true);
 
 const debounce = useDebounce();
@@ -443,6 +445,17 @@ const heightValue = computed({
 	},
 });
 
+
+const baseHeat = computed({
+	get: () => props.modelValue.baseHeat || 0,
+	set: (value: number) => {
+		emit("update:modelValue", {
+			...props.modelValue,
+			baseHeat: value,
+		});
+	},
+});
+
 const minHeightValue = computed({
 	get: () => props.modelValue.minHeight || 0,
 	set: (value: number) => {
@@ -467,6 +480,12 @@ const directAreaValue = computed({
 			area: value,
 		});
 	},
+});
+
+watch(additionalHeatSource, (newAdditionalHeatSource) => {
+	if(!newAdditionalHeatSource) {
+		baseHeat.value = 0;
+	}
 });
 
 // Синхронизация площади при изменении размеров
@@ -622,7 +641,7 @@ const removeEquipment = (index: number) => {
 const totalEquipmentPower = computed(() => {
 	return props.modelValue?.equipment?.reduce(
 		(sum, eq) => sum + eq.quantity * (eq.power || 0),
-		additionalHeatSource.value ? additionalHeatPower.value || 0 : 0
+		additionalHeatSource.value ? (baseHeat.value || 0) : 0
 	) || 0;
 });
 
@@ -663,8 +682,9 @@ const addFloor = () => {
 	emit("addFloor");
 };
 
+const equipRules = useEquipRules(computed(() => props.tags || []));
 // Композит для автоматического распределения оборудования
-const { equipRoom, equipments } = useAutoEquip(computed(() => props.product));
+const { equipRoom, equipments } = useAutoEquip(computed(() => props.product), equipRules);
 
 watch(totalHeatLoss, (newHeatLoss, oldHeatLoss) => {	
 	if(newHeatLoss !== oldHeatLoss) {
@@ -680,6 +700,14 @@ watch(() => props.modelValue?.manualEquip, (newManualEquip, oldManualEquip) => {
 	if(newManualEquip !== oldManualEquip) {		
 		autoEquip();
 	}
+});
+
+watch(baseHeat, ()=>{
+	debounce(() => autoEquip(), 100);
+});
+
+watch( equipRules, () => {
+	debounce(() => autoEquip(), 100);
 });
 
 watch(()=> props?.product, (newProduct, oldProduct) => {

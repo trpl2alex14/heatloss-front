@@ -37,6 +37,7 @@
 				:is-first="index === 0"
 				:is-last="index === modelValue.rooms.length - 1"
 				:product="modelValue.product || 'all'"
+				:tags="modelValue.tags"
 				@move-up="moveRoomUp(index)"
 				@move-down="moveRoomDown(index)"
 				@duplicate="duplicateRoom(index)"

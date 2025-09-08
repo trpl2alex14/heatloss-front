@@ -152,8 +152,9 @@ const calculatedHeatLoss = computed(() => {
 
 	const area = props.modelValue.area;
 	const resistance = props.construction.calculatedResistance;
+	const heatLoss = getHeatLoss(area, resistance, tempDiff.value);
 
-	return getHeatLoss(area, resistance, tempDiff.value);
+	return heatLoss + (heatLoss * (props.modelValue.count || 0) * 0.05); //+5% на каждое окно
 });
 
 // Синхронизируем теплопотери при изменении параметров

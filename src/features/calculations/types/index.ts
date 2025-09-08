@@ -16,3 +16,5 @@ export type { RoomConstruction, Room } from "./room";
 
 // Типы оборудования
 export type { Equipment, EquipmentItem } from "./equipment";
+
+export type { InitRule, Rule } from "./rule";

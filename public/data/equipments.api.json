@@ -86,7 +86,7 @@
 			"article": "46747332722",
 			"price": 4400,
 			"characteristics": "wifi",
-			"tags": ["каркасник"],
+			"tags": ["wifi"],
 			"properties": [
 				{
 					"key": "display_type",
@@ -104,15 +104,15 @@
 			"photo": "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=80&q=80",
 			"product": "kouzi",
 			"category": "Конвекторы",
-			"name": "Коузи 250В - 30 Серый",
+			"name": "Коузи 450В - Вертикальный",
 			"article": "46747337721",
-			"price": 89000,
+			"price": 10500,
 			"characteristics": "Мощность - 250Вт",
-			"tags": ["настенный", "серый", "компактный"],
+			"tags": ["настенный", "серый", "компактный", "вертикальный"],
 			"properties": [
 				{
 					"key": "power",
-					"value": 250
+					"value": 450
 				}
 			]
 		},

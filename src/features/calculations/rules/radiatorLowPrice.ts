@@ -42,10 +42,10 @@ export default (equipments: EquipmentItem[]) => {
 		}
 
 		const calculatedRadiators = radiators.map((radiator) => {
-			const quantity = Math.max(1, Math.floor(heatLoss / radiator.power));
+			const quantity = Math.max(1, Math.ceil(heatLoss / radiator.power));
 			return {
 				...radiator,
-				quantity,
+				quantity: (quantity - 1) || 1,
 				effectivePower: (radiator.price * quantity) / heatLoss,
 			};
 		});
@@ -55,11 +55,11 @@ export default (equipments: EquipmentItem[]) => {
 
 	return {
 		equip: (room: Room, prevEquip: Equipment[]) => {
-			if (!radiators || radiators.length === 0 || !room) {
+			if (!radiators || radiators.length === 0 || !room || (room?.baseHeat || 0) > room.heatLoss) {
 				return prevEquip;
 			}
 
-			let heatLoss = room.heatLoss;
+			let heatLoss = room.heatLoss - (room.baseHeat || 0);
 
 			do {
 				const radiator = effectiveRadiator(heatLoss, radiators);

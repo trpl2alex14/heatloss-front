@@ -69,7 +69,12 @@
 			"id": 14,
 			"icon": "building",
 			"label": "квартира"
-		}
+		},
+		{
+			"id": 15,
+			"icon": "table",
+			"label": "для окон"
+		}		
 	],
 	"status": "success"
 }

@@ -22,7 +22,7 @@ export default (equipments: EquipmentItem[]) => {
 			const maxPower =
 				equipment.properties?.find(
 					(property) => property.key === maxPowerProperty
-				)?.value || 0;
+				)?.value || 2000;
 
 			const roomPower =
 				prevEquip?.reduce(

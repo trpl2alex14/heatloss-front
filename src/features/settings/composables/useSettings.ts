@@ -12,5 +12,11 @@ export const useSettings = () => {
 
 		regulatorCategory: 'Терморегулятор',
 		radiatorCategory: ['Конвекторы', 'Радиаторы'],
+
+		needRemoteControlTag: 'дистанционное управление',
+		wifiTag: 'wifi',
+
+		needForWindowTag: 'для окон',
+		excludeForWindow: ['вертикальный']
 	};
 }
