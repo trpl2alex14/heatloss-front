@@ -4,11 +4,10 @@ import { type Ref, watch } from "vue";
 import { route } from "@/shared/utils/router";
 
 export const useFetchCalculation = (
-	id: number,
 	calculationData: Ref<CalculationDetails>
 ) => {
 	const { data, isLoading, error, loadData } = useApi<{}, CalculationDetails>(
-		route("calculations.index", id)
+		route("calculations.index")
 	);
 
 	watch(data, (newData) => {
@@ -17,5 +16,5 @@ export const useFetchCalculation = (
 		}
 	});
 
-	return { isLoading, error, loadCalculationData: loadData };
+	return { isLoading, error, loadCalculationData: (id: number | string) => loadData(id) };
 };

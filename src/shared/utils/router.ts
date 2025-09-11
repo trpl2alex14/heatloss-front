@@ -15,9 +15,9 @@ export function route(name: string, id?: number | string) {
 		case "cases":
 			return "/data/cases.json";
 		case "requests.index":
-			return `/data/requests.${id}.json`;
+			return `/data/requests.1222.json?`;
 		case "calculations.index":
-			return `/data/calculations.${id}.json`;
+			return `/data/calculations.111.json?`;
 		case "crm.lead":
 			return `https://kouzi.bitrix24.ru/crm/lead/details/${id}/`;
 		case "crm.deal":

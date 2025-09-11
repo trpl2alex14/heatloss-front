@@ -4,13 +4,13 @@ import { route } from "@/shared/utils/router";
 import { computed } from "vue";
 import type { RequestDetails } from "@/features/requests/types/request";
 
-export const useRequest = (endpoint: string) => {
+export const useRequest = (endpoint?: string) => {
 	const {
 		data: requestDataRaw,
 		isLoading: isRequestLoading,
 		loadData: loadRequestData,
 		error: requestError,
-	} = useApi<{}, RequestDetails>(endpoint);
+	} = useApi<{}, RequestDetails>(endpoint || route("requests.index"));
 		
 	const requestData = computed<RequestDetails>(() => {
 		return requestDataRaw.value?.data ?? ({} as RequestDetails);
@@ -34,7 +34,7 @@ export const useRequest = (endpoint: string) => {
 		client,
 		isRequestLoading,
 		requestError,
-		loadRequestData: (id: number) => loadRequestData(null, route("requests.index", id)),
+		loadRequestData: (id: number | string) => loadRequestData(id),
 		hasRequest,
 	};
 };
