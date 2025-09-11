@@ -48,9 +48,7 @@
 			/>
 			<BaseInputNumber
 				v-model="result.averageExpenses"
-				:label="`Расходы в месяц (${
-					result.powerPrice || powerPrice
-				} ₽/кВт*ч)`"
+				:label="`Расходы в месяц (${result.powerPrice || powerPrice} ₽/кВт*ч)`"
 				class="flex-1"
 				disabled
 				suffix=" ₽"
@@ -59,15 +57,9 @@
 
 		<!-- Секция оборудования -->
 		<div v-if="result.equipment?.length" class="flex flex-col gap-2">
-			<div class="font-medium border-b border-gray-300 mt-2">
-				Суммарное количество оборудования
-			</div>
+			<div class="font-medium border-b border-gray-300 mt-2">Суммарное количество оборудования</div>
 
-			<div
-				v-for="(equipment, index) in result.equipment"
-				:key="index"
-				class="flex gap-x-2"
-			>
+			<div v-for="(equipment, index) in result.equipment" :key="index" class="flex gap-x-2">
 				<BaseTextArea
 					v-model="equipment.name"
 					label="Наименование"
@@ -77,20 +69,8 @@
 					style="resize: none"
 					disabled
 				/>
-				<BaseInputNumber
-					v-model="equipment.quantity"
-					label="Количество"
-					class="w-22"
-					suffix=" шт."
-					disabled
-				/>
-				<BaseInputNumber
-					v-model="equipment.price"
-					label="Цена"
-					class="w-26"
-					suffix=" ₽"
-					disabled
-				/>
+				<BaseInputNumber v-model="equipment.quantity" label="Количество" class="w-22" suffix=" шт." disabled />
+				<BaseInputNumber v-model="equipment.price" label="Цена" class="w-26" suffix=" ₽" disabled />
 			</div>
 
 			<div class="flex justify-end">
@@ -115,68 +95,59 @@
 		</div>
 
 		<!-- Секция теплопотерь -->
-		<div class="font-medium border-b border-gray-300 mt-2">Теплопотери</div>
+		<div v-if="result.city" class="flex flex-col gap-2">
+			<div class="font-medium border-b border-gray-300 mt-2">Теплопотери</div>
 
-		<div class="flex gap-x-2">
-			<BaseInputText
-				:model-value="`${result.city} (${result.humidity})`"
-				label="Регион размещения"
-				class="flex-1"
-				disabled
-			/>
-			<BaseInputText
-				:model-value="`${result.area} м² (${result.volume} м³)`"
-				label="Размер объекта"
-				class="flex-1"
-				disabled
-			/>
-		</div>
+			<div class="flex gap-x-2">
+				<BaseInputText
+					:model-value="`${result.city} (${result.humidity})`"
+					label="Регион размещения"
+					class="flex-1"
+					disabled
+				/>
+				<BaseInputText
+					:model-value="`${result.area} м² (${result.volume} м³)`"
+					label="Размер объекта"
+					class="flex-1"
+					disabled
+				/>
+			</div>
 
-		<div class="flex gap-x-2">
-			<BaseInputText
-				:model-value="`${result.minTemp} C°`"
-				label="Температура холодной пятидневки"
-				class="flex-1"
-				disabled
-			/>
-			<BaseInputText
-				:model-value="`${result.avgTemp} C°`"
-				:label="`Средняя температура в сезон (${plural(
-					result.heatingSeason,
-					['день', 'дня', 'дней'],
-					true
-				)})`"
-				class="flex-1"
-				disabled
-			/>
-		</div>
+			<div class="flex gap-x-2">
+				<BaseInputText
+					:model-value="`${result.minTemp} C°`"
+					label="Температура холодной пятидневки"
+					class="flex-1"
+					disabled
+				/>
+				<BaseInputText
+					:model-value="`${result.avgTemp} C°`"
+					:label="`Средняя температура в сезон (${plural(
+						result.heatingSeason,
+						['день', 'дня', 'дней'],
+						true
+					)})`"
+					class="flex-1"
+					disabled
+				/>
+			</div>
 
-		<div class="flex gap-x-2">
-			<BaseInputText
-				:model-value="`${result.requiredTemp} C°`"
-				label="Температура в помещение"
-				class="flex-1"
-				disabled
-			/>
-			<BaseInputText
-				:model-value="totalHeatLoss"
-				label="Общие теплопотери объекта"
-				class="flex-1"
-				disabled
-			/>
+			<div class="flex gap-x-2">
+				<BaseInputText
+					:model-value="`${result.requiredTemp} C°`"
+					label="Температура в помещение"
+					class="flex-1"
+					disabled
+				/>
+				<BaseInputText :model-value="totalHeatLoss" label="Общие теплопотери объекта" class="flex-1" disabled />
+			</div>
 		</div>
 
 		<!-- Секция конструкций -->
 		<div v-if="result.constructions?.length" class="flex flex-col gap-2">
-			<div class="font-medium border-b border-gray-300 mt-2">
-				Конструкции
-			</div>
+			<div class="font-medium border-b border-gray-300 mt-2">Конструкции</div>
 
-			<div
-				v-for="(constr, index) in result.constructions"
-				:key="index"
-				class="flex gap-x-2"
-			>
+			<div v-for="(constr, index) in result.constructions" :key="index" class="flex gap-x-2">
 				<BaseTextArea
 					v-model="constr.name"
 					label="Конструкция"
@@ -219,13 +190,8 @@ const props = defineProps<Props>();
 const { powerPrice } = useSettings();
 
 const totalHeatLoss = computed(() => {
-	const heatLossInCube = props.result.volume
-		? props.result.totalHeatLoss / props.result.volume
-		: 0;
-	return (
-		`${props.result.totalHeatLoss} кВт*ч` +
-		(heatLossInCube ? ` (${heatLossInCube.toFixed(2)} Вт/м³)` : "")
-	);
+	const heatLossInCube = props.result.volume ? props.result.totalHeatLoss / props.result.volume : 0;
+	return `${props.result.totalHeatLoss} кВт*ч` + (heatLossInCube ? ` (${heatLossInCube.toFixed(2)} Вт/м³)` : "");
 });
 
 const getStyleHeatLoss = (c: Construction) => {
