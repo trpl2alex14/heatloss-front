@@ -39,7 +39,7 @@ export interface CalculationDetails {
 	city: string;
 	useSeason?: UseSeason;
 
-	climate: ClimateItem;
+	climate?: ClimateItem;
 	requiredTemp: number;
 	freezeTemp: number;
 
@@ -85,4 +85,10 @@ export interface CalculationResult {
 	constructions?: Construction[];
 
 	powerPrice?: number;
+}
+
+export interface CalculationSaved {
+	key?: string;
+	calculation: CalculationDetails;
+	result: CalculationResult;
 }

@@ -6,6 +6,7 @@ export type {
 	CalculationItem,
 	CalculationDetails,
 	CalculationResult,
+	CalculationSaved,
 } from "./calculation";
 
 // Типы конструкций
