@@ -14,6 +14,15 @@ const calculation = ref<CalculationDetails>({
 } as CalculationDetails);
 
 export const useCalculator = () => {
+
+	const resetCalculation = () => {
+		calculation.value = {
+			useSeason: "permanent",
+			date: new Date().toLocaleDateString(),
+			status: 'working',
+		} as CalculationDetails;
+	};
+
 	const getTypeObject = computed(() => {
 		return (
 			tagsForTitle.find((item) =>
@@ -123,7 +132,7 @@ export const useCalculator = () => {
 
 	const tempDiff = computed(() => {
 		return (
-			calculation.value.requiredTemp - calculation.value.climate?.minTemp
+			calculation.value.requiredTemp - (calculation.value.climate?.minTemp || 0)
 		);
 	});
 
@@ -131,7 +140,7 @@ export const useCalculator = () => {
 		return Math.round(
 			totalHeatLoss.value *
 				((calculation.value.requiredTemp -
-					calculation.value.climate?.avgTemp) /
+					(calculation.value.climate?.avgTemp || 0)) /
 					tempDiff.value)
 		);
 	});
@@ -242,5 +251,6 @@ export const useCalculator = () => {
 		getMaxFloor,
 		computedTempDiff: tempDiff,
 		tempDiff: tempDiff.value,
+		resetCalculation,
 	};
 };

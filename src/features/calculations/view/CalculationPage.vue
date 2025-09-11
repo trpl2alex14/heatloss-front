@@ -31,6 +31,12 @@
 							outlined
 						/>
 					</div>
+					<LocalHistoryMenu 
+						class="mt-8" 						
+						@open="openLocalHistory" 
+						:history="history"
+						:open-key="historyKey"
+					/>
 				</div>
 			</div>
 			<div class="w-full min-w-0">
@@ -88,26 +94,42 @@ import {
 	CalculationResult,
 	RequestDetails,
 	Calculation,
+	LocalHistoryMenu,
 } from "@features/calculations/components";
 import type { SelectButtonOption } from "@/shared/types/ui";
 import type { SubMenuItem } from "@shared/types/submenu.ts";
 import { useCalculator } from "@features/calculations/composables/useCalculator.ts";
 import { useRequest } from "@/features/calculations/api/request";
 import { useFetchCalculation } from "@/features/calculations/api/calculation";
+import { useLocalHistory } from "@/features/calculations/composables/useLocalHistory";
+import { useDebounce } from "@/shared/utils/debounce";
+import type { CalculationSaved } from "@/features/calculations/types";
+import { useRoute, useRouter } from "vue-router";
+
+const debounce = useDebounce();
+
+const route = useRoute();
+const router = useRouter();
+
+let notSaved = false;
+const historyKey = ref("");
+const { setLocalHistory, getLocalHistory, getLocalHistoryList } = useLocalHistory();
+const historyList = ref(getLocalHistoryList());
 
 const {
 	result: calculationResult,
 	calculation,
 	title,
 	subTitle,
+	resetCalculation,
 } = useCalculator();
+
+const { isLoading, loadCalculationData } = useFetchCalculation(calculation);
+const { requestData, attachments, client, hasRequest, loadRequestData } = useRequest();
 
 const requestId = computed(() => {
 	return calculation.value.requestId;
 });
-
-const { requestData, attachments, client, hasRequest, loadRequestData } =
-	useRequest("");
 
 watch(requestId, (newId) => {
 	if (newId) {
@@ -115,15 +137,54 @@ watch(requestId, (newId) => {
 	}
 });
 
-// TODO: взять из route params
-const calculationId = 111;
+watch(() => route.params, ({id, key}) => {
+	notSaved = true;
+	
+	if(id) {	
+		loadCalculationData(+id);	
+	}else if(key && typeof key === "string") {
+		const calculationHistory = getLocalHistory(key);
+		if (calculationHistory) {
+			calculation.value = calculationHistory.calculation;
+			historyKey.value = key;
+		}
+	}else {
+		historyKey.value = "";
+		resetCalculation();		
+	}
+}, { immediate: true });
 
-const { isLoading, /* error,*/ loadCalculationData } = useFetchCalculation(
-	calculationId,
-	calculation
+watch(calculation, (newCalculation) => {
+	debounce(() => {
+		autoSaveCalculation({
+			key: newCalculation.id?.toString() || historyKey.value,
+			calculation: {...newCalculation}, 
+			result: {...calculationResult.value}
+		});
+	}, 3000);	
+}, { deep: true });
+
+watch(historyKey, () => {
+	historyList.value = getLocalHistoryList();
+});
+
+const history = computed(() =>
+	historyList.value.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
 );
 
-loadCalculationData();
+const autoSaveCalculation = (calculation: CalculationSaved) => {
+	if(notSaved) {
+		notSaved = false;
+		return;
+	}
+	
+	historyKey.value = setLocalHistory(calculation);
+	//TODO: отправить на сервер
+};
+
+const openLocalHistory = (key: string) => {
+	router.push(`/history/${key}`);
+};
 
 const copyAll = () => {
 	console.log("copyAll");

@@ -35,6 +35,16 @@ const routes = [
 		redirect: "/calculations",
 	},
 	{
+		path: "/calculations/:id",		
+		component: () =>
+			import("@features/calculations/view/CalculationPage.vue"),
+	},	
+	{
+		path: "/history/:key",
+		component: () =>
+			import("@features/calculations/view/CalculationPage.vue"),
+	},	
+	{
 		path: "/calculations",
 		name: "Calculations",
 		meta: { title: "Расчёты", icon: "layout-list.svg" },
