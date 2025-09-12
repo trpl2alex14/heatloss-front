@@ -18,8 +18,6 @@ export const useCalculator = () => {
 	const resetCalculation = () => {
 		calculation.value = {
 			useSeason: "permanent",
-			date: new Date().toLocaleDateString(),
-			status: 'working',
 		} as CalculationDetails;
 	};
 

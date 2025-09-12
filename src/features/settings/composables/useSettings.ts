@@ -6,7 +6,7 @@ export const useSettings = () => {
 		powerPrice: 3.6,
 		tagsForTitle: ['дом', 'квартира', 'ком. объект'],
 
-		deltaPower: 0.02,
+		deltaPower: 0.02, //допустимое отклонение мощности
 		powerProperty: 'power',
 		maxPowerProperty: 'max_power', //терморегуляторы
 

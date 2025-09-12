@@ -23,7 +23,7 @@ export const useLocalHistory = () => {
 		return key;
 	};
 
-	const getLocalHistory = (key: string): CalculationSaved | null => {
+	const getLocalHistory = (key: string): CalculationSaved | null => {		
 		const calculation = localStorage.getItem(key);
 		return calculation ? JSON.parse(calculation) : null;
 	};
