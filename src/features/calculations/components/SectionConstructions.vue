@@ -1,16 +1,11 @@
 <template>
-	<div
-		class="flex flex-col gap-3.5"
-		v-if="!isLoadingMaterial && !isLoadingSurface"
-	>
+	<div class="flex flex-col gap-3.5" v-if="!isLoadingMaterial && !isLoadingSurface">
 		<!-- Заголовок секции -->
 		<div class="flex flex-col gap-1.5">
-			<h3 class="text-xl font-normal text-gray-900">
-				Ограждающие конструкции
-			</h3>
+			<h3 class="text-xl font-normal text-gray-900">Ограждающие конструкции</h3>
 			<p class="text-sm font-normal text-gray-600">
-				Добавьте все ограждающие конструкции, которые есть на объекте и
-				укажите их площади, для расчёта теплопотерь через них.
+				Добавьте все ограждающие конструкции, которые есть на объекте и укажите их площади, для расчёта
+				теплопотерь через них.
 			</p>
 		</div>
 
@@ -26,10 +21,7 @@
 		</div>
 
 		<!-- Список конструкций -->
-		<div
-			v-if="calculateMethod === 'detailed' && modelValue.climate"
-			class="flex flex-col gap-4"
-		>
+		<div v-if="calculateMethod === 'detailed' && modelValue.climate" class="flex flex-col gap-4">
 			<Construction
 				v-for="({}, index) in modelValue.constructions"
 				:key="index"
@@ -41,10 +33,7 @@
 				@duplicate="duplicateConstruction(index)"
 			/>
 
-			<EmptyBox
-				v-if="modelValue.constructions.length === 0"
-				label="конструкции отсутствуют"
-			/>
+			<EmptyBox v-if="modelValue.constructions.length === 0" label="конструкции отсутствуют" />
 
 			<!-- Кнопка добавления конструкции -->
 			<BaseButton
@@ -99,10 +88,7 @@ import Construction from "./Construction.vue";
 import ConstructionSnip from "./ConstructionSnip.vue";
 import { useMaterialData } from "@/features/directories/composables/useMaterialData";
 import { useSurfaceData } from "@/features/directories/composables/useSurfaceData";
-import type {
-	CalculationDetails,
-	Construction as ConstructionType,
-} from "../types";
+import type { CalculationDetails, Construction as ConstructionType } from "../types";
 import { useCalculator } from "../composables/useCalculator";
 
 interface Props {
@@ -117,20 +103,13 @@ const props = defineProps<Props>();
 const emit = defineEmits<Emits>();
 
 const area = ref(1);
+const oldConstructions = ref();
 
 // Загрузка материалов
-const {
-	materialData,
-	loadMaterialData,
-	isLoading: isLoadingMaterial,
-} = useMaterialData();
+const { materialData, loadMaterialData, isLoading: isLoadingMaterial } = useMaterialData();
 
 // Загрузка поверхностей
-const {
-	surfaces,
-	loadSurfaceData,
-	isLoading: isLoadingSurface,
-} = useSurfaceData();
+const { surfaces, loadSurfaceData, isLoading: isLoadingSurface } = useSurfaceData();
 
 // Опции для метода расчета
 const calculateMethodOptions = [
@@ -143,19 +122,18 @@ const calculateMethodOptions = [
 const calculateMethod = computed({
 	get: () => props.modelValue.calculateMethod,
 	set: (value: "detailed" | "simple" | "snip") => {
+			
 		emit("update:modelValue", {
 			...props.modelValue,
 			calculateMethod: value,
+			constructions: makeConstructionsForMethod(value),
 		});
 	},
 });
 
 // Методы для работы с конструкциями
 let constructionId =
-	props.modelValue.constructions.reduce(
-		(max, construction) => Math.max(max, construction.id),
-		0
-	) + 1;
+	props.modelValue.constructions.reduce((max, construction) => Math.max(max, construction.id), 0) + 1;
 
 const addConstruction = () => {
 	const newConstruction: ConstructionType = {
@@ -197,10 +175,7 @@ const duplicateConstruction = (index: number) => {
 
 	emit("update:modelValue", {
 		...props.modelValue,
-		constructions: [
-			...props.modelValue.constructions,
-			duplicatedConstruction,
-		],
+		constructions: [...props.modelValue.constructions, duplicatedConstruction],
 	});
 };
 
@@ -210,7 +185,75 @@ onMounted(() => {
 	loadSurfaceData();
 });
 
-const oldConstructions = ref();
+
+const makeConstructionsForMethod = (method: "detailed" | "snip" | "simple") => {
+	let constructions = [];
+
+	if (method === "snip") {
+		constructions = [
+			{
+				id: 1,
+				layers: [],
+				name: "Стены",
+				snipResistance: props.modelValue.climate?.wallNorm || 0,
+				calculatedResistance: props.modelValue.climate?.wallNorm || 0,
+				area: 0,
+				surface: {
+					id: 1,
+					name: "Стены",
+					type: "wall",
+				},
+			},
+			{
+				id: 2,
+				layers: [],
+				name: "Кровля",
+				snipResistance: props.modelValue.climate?.roofNorm || 0,
+				calculatedResistance: props.modelValue.climate?.roofNorm || 0,
+				area: 0,
+				surface: {
+					id: 2,
+					name: "Кровля",
+					type: "roof",
+				},
+			},
+			{
+				id: 3,
+				layers: [],
+				name: "Пол",
+				snipResistance: props.modelValue.climate?.floorNorm || 0,
+				calculatedResistance: props.modelValue.climate?.floorNorm || 0,
+				area: 0,
+				surface: {
+					id: 3,
+					name: "Пол",
+					type: "floor",
+				},
+			},
+		];
+	} else if (method == "simple") {
+		constructions = [
+			{
+				id: 0,
+				layers: [],
+				name: "Ограждающие конструкции",
+				snipResistance: 0,
+				calculatedResistance: 0,
+				area: 0,
+				surface: {
+					id: 0,
+					name: "Ограждающие конструкции",
+					type: "wall",
+				},
+				heatLoss: props.modelValue.baseHeatLoss,
+			},
+		];
+	} else if (oldConstructions.value) {
+		constructions = oldConstructions.value;
+	}
+
+	return constructions;
+};
 
 watch(
 	() => calculateMethod.value,
@@ -219,74 +262,8 @@ watch(
 			calculateMethod.value = "detailed";
 		}
 
-		if (
-			oldValue === "detailed" &&
-			props.modelValue.constructions.length > 0
-		) {
+		if (oldValue === "detailed" && props.modelValue.constructions.length > 0) {
 			oldConstructions.value = props.modelValue.constructions;
-		}
-
-		if (value === "snip") {
-			props.modelValue.constructions = [
-				{
-					id: 1,
-					layers: [],
-					name: "Стены",
-					snipResistance: props.modelValue.climate.wallNorm,
-					calculatedResistance: props.modelValue.climate.wallNorm,
-					area: 0,
-					surface: {
-						id: 1,
-						name: "Стены",
-						type: "wall",
-					},
-				},
-				{
-					id: 2,
-					layers: [],
-					name: "Кровля",
-					snipResistance: props.modelValue.climate.roofNorm,
-					calculatedResistance: props.modelValue.climate.roofNorm,
-					area: 0,
-					surface: {
-						id: 2,
-						name: "Кровля",
-						type: "roof",
-					},
-				},
-				{
-					id: 3,
-					layers: [],
-					name: "Пол",
-					snipResistance: props.modelValue.climate.floorNorm,
-					calculatedResistance: props.modelValue.climate.floorNorm,
-					area: 0,
-					surface: {
-						id: 3,
-						name: "Пол",
-						type: "floor",
-					},
-				},
-			];
-		} else if (value == "simple") {
-			props.modelValue.constructions = [
-				{
-					id: 0,
-					layers: [],
-					name: "Ограждающие конструкции",
-					snipResistance: 0,
-					calculatedResistance: 0,
-					area: 0,
-					surface: {
-						id: 0,
-						name: "Ограждающие конструкции",
-						type: "wall",
-					},
-					heatLoss: props.modelValue.baseHeatLoss,
-				},
-			];
-		} else {
-			props.modelValue.constructions = oldConstructions.value || [];
 		}
 	}
 );
@@ -294,11 +271,7 @@ watch(
 const { computedTempDiff } = useCalculator();
 
 watch(
-	[
-		() => props.modelValue.baseHeatLoss,
-		() => area.value,
-		() => computedTempDiff.value,
-	],
+	[() => props.modelValue.baseHeatLoss, () => area.value, () => computedTempDiff.value],
 	([baseHeatLoss = 0, volume = 1, tempDiff = 0]) => {
 		if (calculateMethod.value !== "simple") {
 			return;
@@ -307,8 +280,7 @@ watch(
 		if (props.modelValue.constructions.length > 0 && baseHeatLoss > 0) {
 			props.modelValue.constructions[0].heatLoss = baseHeatLoss;
 			props.modelValue.constructions[0].area = volume;
-			props.modelValue.constructions[0].calculatedResistance =
-				(volume * tempDiff) / baseHeatLoss;
+			props.modelValue.constructions[0].calculatedResistance = (volume * tempDiff) / baseHeatLoss;
 		}
 	}
 );

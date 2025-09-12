@@ -18,6 +18,8 @@ export function route(name: string, id?: number | string) {
 			return `/data/requests.1222.json?`;
 		case "calculations.index":
 			return `/data/calculations.111.json?`;
+		case "calculations.save":
+			return `/data/calculations.save.json?`;
 		case "crm.lead":
 			return `https://kouzi.bitrix24.ru/crm/lead/details/${id}/`;
 		case "crm.deal":

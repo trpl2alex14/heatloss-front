@@ -45,6 +45,37 @@ export const useApi = <T, K>(
 		} finally {
 			isLoading.value = false;
 		}
+
+		return data.value;
+	};
+
+	const saveData = async (route: string, params: T) => {
+		isLoading.value = true;
+		error.value = null;
+		
+		try {
+			const response = await axios.post(endpoint + route, params);
+
+			if (response.data?.status !== "success") {
+				throw new Error(
+					response.data?.error ?? "Ошибка при сохранении данных"
+				);
+			}
+
+			data.value = response.data;
+		} catch (err) {
+			error.value =
+				err instanceof Error
+					? err.message
+					: "Ошибка при сохранении данных";
+			console.error("Ошибка сохранения данных:", err);
+			
+			data.value = null;
+		} finally {
+			isLoading.value = false;
+		}
+
+		return data.value;
 	};
 
 	const clearError = () => {
@@ -64,6 +95,7 @@ export const useApi = <T, K>(
 		isLoading: computed(() => isLoading.value),
 		error: computed(() => error.value),
 		loadData,
+		saveData,
 		clearError
 	};
 };

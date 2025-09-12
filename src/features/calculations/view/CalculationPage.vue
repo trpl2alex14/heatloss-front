@@ -23,6 +23,7 @@
 							icon="save"
 							class="w-full"
 							label="Сохранить"
+							@click="save"
 						/>
 						<BaseButton
 							icon="eye"
@@ -100,7 +101,7 @@ import type { SelectButtonOption } from "@/shared/types/ui";
 import type { SubMenuItem } from "@shared/types/submenu.ts";
 import { useCalculator } from "@features/calculations/composables/useCalculator.ts";
 import { useRequest } from "@/features/calculations/api/request";
-import { useFetchCalculation } from "@/features/calculations/api/calculation";
+import { useFetchCalculation, useSaveCalculation } from "@/features/calculations/api/calculation";
 import { useLocalHistory } from "@/features/calculations/composables/useLocalHistory";
 import { useDebounce } from "@/shared/utils/debounce";
 import type { CalculationSaved } from "@/features/calculations/types";
@@ -126,6 +127,7 @@ const {
 
 const { isLoading, loadCalculationData } = useFetchCalculation(calculation);
 const { requestData, attachments, client, hasRequest, loadRequestData } = useRequest();
+const { saveCalculation } = useSaveCalculation();
 
 const requestId = computed(() => {
 	return calculation.value.requestId;
@@ -139,14 +141,18 @@ watch(requestId, (newId) => {
 
 watch(() => route.params, ({id, key}) => {
 	notSaved = true;
-	
+
 	if(id) {	
 		loadCalculationData(+id);	
-	}else if(key && typeof key === "string") {
-		const calculationHistory = getLocalHistory(key);
+	}else if(key && typeof key === "string") {		
+		const calculationHistory = getLocalHistory(key);		
 		if (calculationHistory) {
-			calculation.value = calculationHistory.calculation;
-			historyKey.value = key;
+			historyKey.value = key;			
+			calculation.value = {
+				...calculationHistory.calculation,				
+			};
+		}else {
+			resetCalculation();
 		}
 	}else {
 		historyKey.value = "";
@@ -154,11 +160,11 @@ watch(() => route.params, ({id, key}) => {
 	}
 }, { immediate: true });
 
-watch(calculation, (newCalculation) => {
+watch(calculation, (newCalculation) => {	
 	debounce(() => {
 		autoSaveCalculation({
 			key: newCalculation.id?.toString() || historyKey.value,
-			calculation: {...newCalculation}, 
+			calculation:JSON.parse(JSON.stringify(newCalculation)), 
 			result: {...calculationResult.value}
 		});
 	}, 3000);	
@@ -179,11 +185,24 @@ const autoSaveCalculation = (calculation: CalculationSaved) => {
 	}
 	
 	historyKey.value = setLocalHistory(calculation);
-	//TODO: отправить на сервер
+	//TODO: отправить на сервер(auto sava)?
 };
 
 const openLocalHistory = (key: string) => {
 	router.push(`/history/${key}`);
+};
+
+const save = async () => {
+	const id = await saveCalculation(calculation.value.id || "", {
+		key: calculation.value.id?.toString() || "",
+		calculation: {...calculation.value},
+		result: {...calculationResult.value}
+	});
+	
+	if(id) {
+		notSaved = true;
+		router.push(`/calculations/${id}`);
+	}
 };
 
 const copyAll = () => {
