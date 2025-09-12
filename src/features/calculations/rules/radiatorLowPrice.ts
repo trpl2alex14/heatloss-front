@@ -74,6 +74,7 @@ export default (equipments: EquipmentItem[]) => {
 					quantity: radiator.quantity || 1,
 					price: radiator.price,
 					power: radiator.power,
+					article: radiator?.article || "",
 				});
 
 				heatLoss -= radiator.power * radiator.quantity;

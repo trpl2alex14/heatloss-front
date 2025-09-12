@@ -310,6 +310,7 @@ const addToRoom = () => {
 				quantity: 1,
 				price: item.price,
 				power: powerValue,
+				article: item.article || "",
 			};
 		}
 	);

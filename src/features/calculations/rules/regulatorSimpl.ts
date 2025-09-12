@@ -39,6 +39,7 @@ export default (equipments: EquipmentItem[]) => {
 					name: equipment?.name || "",
 					quantity: quantity,
 					price: equipment?.price || 0,
+					article: equipment?.article || "",
 				});
 			}
 

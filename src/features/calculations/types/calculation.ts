@@ -1,7 +1,7 @@
 import type { Product } from "@/shared/types/produtcs";
 import type { ClimateItem } from "@/features/directories/types";
 import type { Construction } from "./construction";
-import type { Room } from "./room";
+import type { Room, RoomResult } from "./room";
 import type { Equipment } from "./equipment";
 
 export type CalculationStatus = "published" | "working" | "case" | "hide";
@@ -56,6 +56,8 @@ export interface CalculationDetails {
 	comment?: string;
 	promoCode?: string;
 	deliveryCost?: number;
+	diliveryInfo?: string;
+	needDelivery?: boolean;
 }
 
 export interface CalculationResult {
@@ -85,6 +87,11 @@ export interface CalculationResult {
 	constructions?: Construction[];
 
 	powerPrice?: number;
+
+	diliveryInfo?: string;
+	comment?: string;
+
+	rooms?: RoomResult[];
 }
 
 export interface CalculationSaved {

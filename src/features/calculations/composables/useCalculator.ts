@@ -192,6 +192,20 @@ export const useCalculator = () => {
 		);
 	});
 
+	const rooms = computed(() => {
+		return calculation.value.rooms?.map((item) => ({
+			id: item.id,
+			name: item.name,
+			area: item.area,
+			floor: item.floor,
+			volume:  Math.round(item.area * getRoomHeight(item) * 10) / 10,
+			heatLoss: Math.round(item.heatLoss * 10) / 10,
+			baseHeat: Math.round(item.baseHeat || 0 * 10) / 10,
+			equipment: item.equipment,
+			windows: item.roomConstructions.reduce((acc, item) => acc + (item.count || 0), 0),
+		})) || [];
+	});
+
 	// Получение максимального этажа из всех помещений
 	const getMaxFloor = (): number => {
 		if (!calculation.value.rooms.length) return 1;
@@ -218,10 +232,10 @@ export const useCalculator = () => {
 			power: totalEquipmentPower.value / 1000,
 			equipmentCost: totalEquipmentCost.value,
 			equipment: totalEquipment.value,
-			averagePower: averagePower.value,
-			averageExpenses:
+			averagePower: Math.round(averagePower.value * 10) / 10,
+			averageExpenses:Math.round(
 				averagePower.value *
-				(calculation.value.powerPrice || powerPrice),
+				(calculation.value.powerPrice || powerPrice) * 10) / 10,
 			deliveryCost: calculation.value.deliveryCost || 0,
 
 			city: calculation.value.city,
@@ -230,11 +244,14 @@ export const useCalculator = () => {
 			avgTemp: calculation.value.climate?.avgTemp || 0,
 			requiredTemp: calculation.value.requiredTemp || 0,
 			heatingSeason: calculation.value.climate?.heatingSeason || 0,
-			area: totalArea.value,
-			volume: totalVolume.value,
+			area: Math.round(totalArea.value * 10) / 10,
+			volume: Math.round(totalVolume.value * 10) / 10,
 			totalHeatLoss: totalHeatLoss.value,
 			constructions: constructions.value,
 			powerPrice: calculation.value.powerPrice || powerPrice,
+			diliveryInfo: calculation.value.diliveryInfo || "",
+			comment: calculation.value.comment || "",
+			rooms: rooms.value,
 		};
 	});
 

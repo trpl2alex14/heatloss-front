@@ -6,6 +6,7 @@ export interface Equipment {
 	quantity: number;
 	price: number;
 	power?: number;
+	article?: string;
 }
 
 export interface EquipmentProperty {

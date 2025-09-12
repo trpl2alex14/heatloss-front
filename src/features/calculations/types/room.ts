@@ -27,3 +27,15 @@ export interface Room {
 	roomConstructions: RoomConstruction[];
 	equipment: Equipment[];
 }
+
+export interface RoomResult {
+	id: number;
+	name: string;
+	floor: number;
+	area: number;
+	volume: number;
+	heatLoss: number;
+	baseHeat?: number;
+	windows?: number;
+	equipment: Equipment[];
+}
