@@ -6,7 +6,7 @@
 			<!-- Заголовок с основными полями -->
 			<div class="flex items-center gap-3.5">
 				<!-- Выбор типа поверхности -->
-				<div class="w-120">
+				<div class="w-110">
 					<BaseSelect
 						v-model="selectedSurface"
 						:options="surfaceOptions"
@@ -75,16 +75,16 @@
 			<!-- Кнопки действий -->
 			<div class="absolute top-0 right-0 flex gap-1">
 				<BaseButton
-					icon="trash"
-					text
-					severity="secondary"
-					@click="$emit('remove')"
-				/>
-				<BaseButton
 					icon="copy"
 					text
 					severity="secondary"
 					@click="$emit('duplicate')"
+				/>
+				<BaseButton
+					icon="trash"
+					text
+					severity="secondary"
+					@click="$emit('remove')"
 				/>
 			</div>
 		</div>
