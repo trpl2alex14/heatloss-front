@@ -3,12 +3,15 @@
 		<!-- Заголовок и кнопка -->
 		<div class="flex justify-between items-center border-b border-gray-300">
 			<div class="font-medium">Данные по объекту</div>
-			<BaseButton
-				label="Перенести всё"
-				text
-				@click="$emit('copy-all')"
-				icon="upload"
-			/>
+			<div>				
+				<BaseButton
+					label="Перенести всё"
+					text
+					@click="$emit('copy-all')"
+					icon="upload"
+				/>
+				<BaseButton text @click="$emit('copy-tags')" icon="copy" />
+			</div>
 		</div>
 
 		<!-- Теги объекта -->
@@ -23,8 +26,11 @@
 		</div>
 
 		<!-- Основные данные объекта -->
-		<BaseInputText v-model="request.city" label="Город / Регион" disabled />
-
+		<div class="flex gap-x-2">
+			<BaseInputText v-model="request.city" label="Город / Регион" disabled class="flex-1" />
+			<BaseButton text @click="$emit('copy-city')" icon="copy" />
+		</div>
+		
 		<div class="flex gap-x-2">
 			<BaseInputText
 				:model-value="
@@ -143,11 +149,10 @@
 							:model-value="
 								room.windows
 									? `${
-											room.windows.length
-									  } (${room.windows.reduce(
-											(sum, w) => sum + (w.area || 0),
-											0
-									  )} м²)`
+										room.windows.reduce((sum, w) => sum + w.count, 0)
+									} (${
+											room.windows.reduce((sum, w) => sum + (w.area || 0),0)
+										} м²)`
 									: ''
 							"
 							label="Окна"
@@ -215,6 +220,8 @@ type Emits = {
 	"copy-all": [];
 	"copy-constructions": [];
 	"copy-rooms": [];
+	"copy-city": [];
+	"copy-tags": [];
 };
 
 defineProps<Props>();

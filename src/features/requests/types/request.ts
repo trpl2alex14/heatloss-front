@@ -1,9 +1,10 @@
 import type { Product } from "@/shared/types/produtcs";
 import type { ClientRequest, Attach } from "@/shared/types/client";
+import type { SurfaceType } from "@/features/directories/types";
 
 export type RequestStatus = "working" | "completed" | "pending" | "cancelled";
 
-export type ConstructionType = "roof" | "walls" | "floor" | "windows" | "doors";
+export type ConstructionType = SurfaceType;
 
 export type TagShort = string;
 
@@ -33,6 +34,7 @@ export interface Room {
 	windows?: Window[];
 	area: number;
 	height?: number;
+	minHeight?: number;
 	tags?: TagShort[];
 }
 
@@ -45,6 +47,7 @@ export interface Material {
 export interface Construction {
 	id: number;
 	label?: string;
+	surfaceId: number;
 	type: ConstructionType;
 	area?: number;
 	materials: Material[];

@@ -6,10 +6,42 @@
 			"label": "дом"
 		},
 		{
+			"id": 14,
+			"icon": "building",
+			"label": "квартира"
+		},
+		{
+			"id": 16,
+			"icon": "building-columns",
+			"label": "ком. объект"
+		},
+		{
 			"id": 2,
 			"icon": "calendar-clock",
 			"label": "постоянное проживание"
 		},
+		{
+			"id": 17,
+			"icon": "calendar-clock",
+			"label": "весна и осень"
+		},
+		{
+			"id": 18,
+			"icon": "asterisk",
+			"label": "защита от промерзания"
+		},
+
+		{
+			"id": 7,
+			"icon": "wifi",
+			"label": "дистанционное управление"
+		},
+		{
+			"id": 15,
+			"icon": "table",
+			"label": "для окон"
+		},
+
 		{
 			"id": 3,
 			"icon": "arrow-up",
@@ -29,11 +61,6 @@
 			"id": 6,
 			"icon": "palette",
 			"label": "окраска по ral"
-		},
-		{
-			"id": 7,
-			"icon": "wifi",
-			"label": "дистанционное управление"
 		},
 		{
 			"id": 8,
@@ -64,17 +91,7 @@
 			"id": 13,
 			"icon": "table",
 			"label": "окна в пол"
-		},
-		{
-			"id": 14,
-			"icon": "building",
-			"label": "квартира"
-		},
-		{
-			"id": 15,
-			"icon": "table",
-			"label": "для окон"
-		}		
+		}	
 	],
 	"status": "success"
 }

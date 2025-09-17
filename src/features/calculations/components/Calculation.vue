@@ -9,17 +9,24 @@
 
 			<!-- Секция: Климат -->
 			<div class="my-8 border-t border-gray-100" ref="climateRef"></div>
-			<SectionClimat v-model="modelValueProxy" />
+			<SectionClimat 
+				v-model="modelValueProxy" 
+				ref="sectionClimateRef" 
+			/>
 
 			<div
 				class="my-8 border-t border-gray-100"
 				ref="constructionsRef"
 			></div>
-			<SectionConstructions v-model="modelValueProxy" />
+			<SectionConstructions 
+				v-model="modelValueProxy" 
+				ref="sectionConstructionsRef" 
+			/>
 
 			<div class="my-8 border-t border-gray-100" ref="roomsRef"></div>
 			<SectionRooms
 				v-model="modelValueProxy"
+				ref="sectionRoomsRef"
 				@alertConstructions="alertConstructions"
 			/>
 
@@ -37,7 +44,8 @@
 
 <script setup lang="ts">
 import { computed, useTemplateRef, watch } from "vue";
-import type { CalculationDetails } from "../types";
+import type { CalculationDetails, RoomFromRequest } from "../types";
+import type { Construction as ConstructionFromRequest} from "@/features/requests/types/request";
 import SectionProduct from "./SectionProduct.vue";
 import SectionClimat from "./SectionClimat.vue";
 import SectionConstructions from "./SectionConstructions.vue";
@@ -50,6 +58,10 @@ import { useDebounce } from "@/shared/utils/debounce";
 interface Props {
 	modelValue: CalculationDetails;
 }
+
+const sectionClimateRef = useTemplateRef("sectionClimateRef");
+const sectionConstructionsRef = useTemplateRef("sectionConstructionsRef");
+const sectionRoomsRef = useTemplateRef("sectionRoomsRef");
 
 const props = defineProps<Props>();
 
@@ -114,7 +126,22 @@ const scrollTo = (
 	sections[scrollTo]?.value?.scrollIntoView({ behavior: "smooth" });
 };
 
+const cityChange = (value: string) => {
+	sectionClimateRef.value?.setCity(value);
+}
+
+const addConstructions = (constructions: ConstructionFromRequest[]) => {
+	sectionConstructionsRef.value?.addConstructions(constructions);
+}
+
+const addRooms = (rooms: RoomFromRequest[]) => {
+	sectionRoomsRef.value?.addRooms(rooms);
+}
+
 defineExpose({
 	scrollTo,
+	cityChange,
+	addConstructions,
+	addRooms
 });
 </script>

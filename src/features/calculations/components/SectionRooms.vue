@@ -56,7 +56,7 @@
 				icon="home"
 				label="Добавить помещение"
 				severity="primary"
-				@click="addRoom"
+				@click="newRoom"
 				class="self-end"
 			/>
 		</div>
@@ -72,7 +72,8 @@ import EmptyBox from "@/shared/components/EmptyBox.vue";
 import type {
 	CalculationDetails,
 	Room as RoomType,
-	RoomConstructionMethod
+	RoomConstructionMethod,
+	RoomFromRequest
 } from "../types";
 import { useAutoDistribution } from "../composables/useAutoDistribution";
 import { useCalculator } from "../composables/useCalculator";
@@ -160,10 +161,11 @@ const getNextRoomId = (): number => {
 	return Math.max(...props.modelValue.rooms.map((room) => room.id)) + 1;
 };
 
-const addRoom = () => {
+const newRoom = () => {
+	const id = getNextRoomId();
 	const newRoom: RoomType = {
-		id: getNextRoomId(),
-		name: "Комната " + getNextRoomId(),
+		id: id,
+		name: `Комната ${id}`,
 		area: 0,
 		floor: 1,
 		width: 0,
@@ -364,4 +366,36 @@ const hasRoomsConstructionsChanges = (
 			});
 	});
 };
+
+const addRooms = (rooms: any) => {
+	let index = 0;
+	const newRooms = rooms.map((room: RoomFromRequest) => {		
+		const id = ++index;
+		return {
+			id: id,
+			name: room.name || `Комната ${id}`,
+			area: room.area,
+			floor: room.floor,
+			width: 0,
+			length: 0,
+			height: room.height,
+			minHeight: room.minHeight,
+			isMansard: room.isMansard,
+			defaultWindows: room.windows,
+			heatLoss: 0,
+			baseHeat: 0,
+			roomConstructions: [],
+			equipment: [],
+		};
+	})
+
+	emit("update:modelValue", {
+		...props.modelValue,
+		rooms: [...newRooms],
+	});
+}
+
+defineExpose({
+	addRooms
+});
 </script>

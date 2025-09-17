@@ -118,7 +118,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
+import { computed, ref, watch, defineExpose } from "vue";
 import {
 	BaseSelect,
 	BaseSelectButton,
@@ -130,6 +130,7 @@ import type { SelectButtonOption } from "@/shared/types/ui";
 import { useClimateData } from "@/features/directories/composables/useClimateData";
 import type { ClimateItem } from "@/features/directories/types/climate";
 import { useSettings } from "@/features/settings/composables/useSettings";
+import { useMessage } from "@/shared/composables/useMessage";
 
 interface Props {
 	modelValue: CalculationDetails;
@@ -140,6 +141,7 @@ const props = defineProps<Props>();
 const isEditingClimate = ref(false);
 
 const { comfortTemp, freezeTemp } = useSettings();
+const { error } = useMessage();
 
 const emit = defineEmits<{
 	"update:modelValue": [value: CalculationDetails];
@@ -234,6 +236,10 @@ const climateProxy = computed({
 	},
 });
 
+const findCity = (value: string) => {
+	return citiesOptions.value.find((v: {value: string})=>v.value===value);
+}
+
 const onCityChange = (value: string) => {
 	isEditingClimate.value = false;
 	localModel.value = {
@@ -244,4 +250,19 @@ const onCityChange = (value: string) => {
 		climate: getCurrentClimate(value, localModel.value.useSeason) || {},
 	};
 };
+
+const setCity = (value: string) => {
+	const city = findCity(value);
+	
+	if(!city){
+		error("Населённый пункт отсутствует в справочнике")
+		return
+	}
+
+	onCityChange(city.value);
+}
+
+defineExpose({
+	setCity,
+});
 </script>

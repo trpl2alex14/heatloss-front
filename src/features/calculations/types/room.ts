@@ -19,6 +19,7 @@ export interface Room {
 	height?: number;
 	minHeight?: number;
 	isMansard?: boolean;
+	defaultWindows?: number;
 
 	heatLoss: number;
 	baseHeat?: number;
@@ -38,4 +39,14 @@ export interface RoomResult {
 	baseHeat?: number;
 	windows?: number;
 	equipment: Equipment[];
+}
+
+export interface RoomFromRequest {
+	name?: string,
+	area: number,
+	height? :number,
+	minHeight?: number,
+	isMansard?: boolean,
+	floor: number,
+	windows: number
 }

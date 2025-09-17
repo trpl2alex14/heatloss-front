@@ -155,7 +155,7 @@ export const useAutoDistribution = (rooms: Room[], constructions: Construction[]
 
 						count = windows.length > 0 ?
 							windows.reduce((acc, rC) => acc + (rC?.count || 0), 0)
-							: 1;
+							: (room.defaultWindows || 1);
 					}
 
 					const newRoomConstruction: RoomConstruction = {
