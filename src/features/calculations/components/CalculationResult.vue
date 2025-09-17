@@ -1,7 +1,7 @@
 <template>
 	<div class="flex flex-col gap-2">
 		<!-- Кнопки действий -->
-		<div v-if="result.id" class="flex gap-x-4">
+		<div v-if="result.id && isCorrect" class="flex gap-x-4">
 			<BaseButton
 				label="Ссылка на расчёт"
 				as="a"
@@ -183,6 +183,7 @@ import { useSettings } from "@/features/settings/composables/useSettings.ts";
 
 type Props = {
 	result: CalculationResult;
+	isCorrect?: boolean;
 };
 
 const props = defineProps<Props>();

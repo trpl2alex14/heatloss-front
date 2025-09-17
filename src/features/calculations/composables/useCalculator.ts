@@ -7,6 +7,7 @@ import type {
 	Construction,
 } from "../types";
 import { useSettings } from "@/features/settings/composables/useSettings.ts";
+import type { SurfaceType } from "@/features/directories/types";
 
 const { powerPrice, tagsForTitle } = useSettings();
 const calculation = ref<CalculationDetails>({
@@ -44,9 +45,9 @@ export const useCalculator = () => {
 		}`;
 	});
 
-	const getSnipResistance = (surfaceType: string) => {
+	const getSnipResistance = (surfaceType: SurfaceType) => {
 		switch (surfaceType) {
-			case "wall":
+			case 'wall':
 				return calculation.value.climate?.wallNorm || 0;
 			case "roof":
 				return calculation.value.climate?.roofNorm || 0;
@@ -263,9 +264,12 @@ export const useCalculator = () => {
 		calculatedHeatLoss,
 		getSnipResistance,
 		getRoomHeight,
-		getMaxFloor,
+		getMaxFloor,		
 		computedTempDiff: tempDiff,
 		tempDiff: tempDiff.value,
 		resetCalculation,
+		isCorrect: computed(() => {
+			return result.value.power > 0 && result.value.area > 0 && result.value.totalHeatLoss > 0;
+		}),
 	};
 };
