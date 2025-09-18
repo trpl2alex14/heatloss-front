@@ -127,7 +127,12 @@ watch(requestId, (newId) => {
 
 watch(
 	() => route.params,
-	({ id, key }) => {
+	({ id, key }, oldValue) => {
+		console.log(id, key,oldValue);
+		if(id === oldValue?.id && key === oldValue?.key){
+			return ;
+		}
+
 		notSaveAuto = true;
 
 		if (id) {
@@ -303,25 +308,25 @@ const rightBoxTabs = computed<SelectButtonOption[]>(() => {
 
 const subMenuItems: SubMenuItem[] = [
 	{
-		path: "#climate",
+		path: "#",
 		title: "Климат",
 		icon: "map-pinned.svg",
 		action: () => calculationRef.value?.scrollTo("climate"),
 	},
 	{
-		path: "#materials",
+		path: "#",
 		title: "Огр. конструкции",
 		icon: "brick-wall.svg",
 		action: () => calculationRef.value?.scrollTo("constructions"),
 	},
 	{
-		path: "#rooms",
+		path: "#",
 		title: "Помещения",
 		icon: "house.svg",
 		action: () => calculationRef.value?.scrollTo("rooms"),
 	},
 	{
-		path: "#equipments",
+		path: "#",
 		title: "Оборудование",
 		icon: "heater.svg",
 		action: () => calculationRef.value?.scrollTo("equipments"),
