@@ -11,5 +11,9 @@ export const useMessage = () => {
 		toast.add({ severity: "warn", summary: "Внимание", detail: message, life });
 	};
 
-	return { error, warning };
+	const info = (message: string, life: number = 3000, title?: string) => {
+		toast.add({ severity: "info", summary: title, detail: message, life });
+	};	
+
+	return { error, warning, info };
 };
