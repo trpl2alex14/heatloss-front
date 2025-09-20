@@ -61,6 +61,10 @@ export const useLazyTable = <T>(
 		loadDataDebounced(requestData as RequestDataOptions<T>);
 	};
 
+	const reload = () => {
+		loadDataDebounced(requestData as RequestDataOptions<T>);
+	}
+
 	const onDateChange = (value: Date[] | null) => {
 		dates.value = value;
 
@@ -124,5 +128,6 @@ export const useLazyTable = <T>(
 		onSortChange,
 		onDateChange,
 		onFilterChange,
+		reload
 	};
 };

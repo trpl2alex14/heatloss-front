@@ -46,7 +46,7 @@ const isActive = computed(() => {
 	if (route.path === props.to) return true;
 
 	// Если текущий маршрут начинается с пути меню и не равен ему, то это дочерний маршрут
-	if (route.path.startsWith(props.to) && route.path !== props.to) {
+	if (route.path.startsWith(props.to) && route.path !== props.to && route.meta.hasSubMenu) {
 		return true;
 	}
 

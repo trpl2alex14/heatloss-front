@@ -92,6 +92,7 @@ import type { CalculationSaved } from "@/features/calculations/types";
 import { useRoute, useRouter } from "vue-router";
 import { toRaw } from "vue";
 import { useSettings } from "@/features/settings/composables/useSettings";
+import { route as routeUrl } from "@/shared/utils/router";
 
 const debounce = useDebounce();
 
@@ -127,8 +128,7 @@ watch(requestId, (newId) => {
 
 watch(
 	() => route.params,
-	({ id, key }, oldValue) => {
-		console.log(id, key,oldValue);
+	({ id, key }, oldValue) => {		
 		if(id === oldValue?.id && key === oldValue?.key){
 			return ;
 		}
@@ -195,7 +195,7 @@ const autoSaveCalculation = (calculation: CalculationSaved) => {
 };
 
 const openLocalHistory = (key: string) => {
-	router.push(`/history/${key}`);
+	router.push(routeUrl("calculations.history", key));
 };
 
 const save = async () => {
@@ -208,7 +208,7 @@ const save = async () => {
 	if (id) {
 		needSave.value = false;
 		notSaveAuto = true;
-		router.push(`/calculations/${id}`);
+		router.push(routeUrl("calculations", id));
 	}
 };
 

@@ -2,7 +2,9 @@ import {
 	createRouter,
 	createWebHistory,
 	type RouteRecordRaw,
+	type RouteLocation
 } from "vue-router";
+import EmptyLayout from "@/layouts/EmptyLayout.vue";
 
 interface RouteMeta {
 	title: string;
@@ -23,34 +25,55 @@ export type AppRoute = IAppRoute & RouteRecordRaw;
 const isDev = import.meta.env.MODE !== "production";
 
 const routes = [
+	//API 
 	{
-		path: "/create",
-		name: "CreateCalculation",
-		meta: { title: "Создать расчёт", icon: "file-plus-2.svg" },
-		component: () =>
-			import("@features/calculations/view/CalculationPage.vue"),
-	},
+		name: 'calculation-status',
+		//path: '/api/calculation/:id/status',  //TODO	
+		path: '/data/calculation.public.json?:id',	
+		redirect: '/'	
+	},	
+	//PATH
 	{
 		path: "/",
 		redirect: "/calculations",
 	},
 	{
-		path: "/calculations/:id",		
+		path: "/calculations/create",
+		name: "calculation-create",
+		meta: { title: "Создать расчёт", icon: "file-plus-2.svg" },
 		component: () =>
 			import("@features/calculations/view/CalculationPage.vue"),
+	},
+	{
+		path: "/calculations",
+		name: "calculations",
+		meta: { title: "Расчёты", icon: "layout-list.svg" },
+		component: () =>
+			import("@features/calculations/view/CalculationsPage.vue"),
+	},
+	{
+		path: "/calculations/:id",		
+		name: 'calculation',
+		component: () =>
+			import("@features/calculations/view/CalculationPage.vue"),
+		children: [
+			{
+				name: 'calculation-view',
+				path: 'view',
+				redirect: (to:RouteLocation) => '/calculations/view/' + to.params.id  //TODO
+			},
+			{
+				name: 'calculation-pdf',
+				path: 'pdf',
+				redirect: (to:RouteLocation) => '/calculations/pdf/' + to.params.id  //TODO
+			},						
+		]
 	},	
 	{
 		path: "/history/:key",
 		component: () =>
 			import("@features/calculations/view/CalculationPage.vue"),
 	},	
-	{
-		path: "/calculations",
-		name: "Calculations",
-		meta: { title: "Расчёты", icon: "layout-list.svg" },
-		component: () =>
-			import("@features/calculations/view/CalculationsPage.vue"),
-	},
 	{
 		path: "/requests",
 		name: "Requests",
@@ -64,6 +87,12 @@ const routes = [
 		meta: { title: "Кейсы", icon: "book-open-check.svg" },
 		component: () => import("@features/cases/components/CasesPage.vue"),
 	},
+	{
+		path: "/cases/create",
+		name: "case-create",
+		component: () =>
+			import("@features/cases/components/CasePage.vue"),
+	},	
 	{
 		path: "/directories",
 		name: "Directories",
@@ -104,7 +133,7 @@ const routes = [
 		meta: { title: "Настройки", icon: "settings.svg", bottom: true },
 		component: () =>
 			import("@features/settings/components/SettingsPage.vue"),
-	},
+	},		
 	...(isDev
 		? [
 				{
@@ -114,7 +143,12 @@ const routes = [
 					component: () => import("@/features/ui-kit/UiKitPage.vue"),
 				},
 		  ]
-		: []),
+		: []),	
+	{
+		path: '/:catchAll(.*)', 
+		component: () => import("@/shared/components/NotFound.vue"),
+		meta: { layout: EmptyLayout }
+	},
 ];
 
 const router = createRouter({

@@ -1,7 +1,10 @@
 import { useApi } from "@/shared/composables/useApi";
-import type { CalculationDetails, CalculationSaved } from "../types";
+import type { CalculationDetails, CalculationSaved, CalculationStatus } from "../types";
 import { type Ref, watch } from "vue";
 import { route } from "@/shared/utils/router";
+import { useRouter } from "vue-router";
+import axios from "axios";
+import { useMessage } from "@/shared/composables/useMessage.ts";
 
 export const useFetchCalculation = (
 	calculationData: Ref<CalculationDetails>
@@ -40,3 +43,83 @@ export const useSaveCalculation = () => {
 		error
 	};
 };
+
+export const useCalculationAction = () => {
+	const router = useRouter();
+	const { info, error } = useMessage();
+
+	const changeStateCalculation = async (id: number, status: CalculationStatus, successMsg?: string) => {
+		const path = router.resolve({
+			name: "calculation-status",
+			params: { id },
+			query: { status },
+		});
+
+		return new Promise(async(resolve, reject)=> {
+			try {
+				const result = await axios.get(path.href);
+				if (result.data.status === "success") {
+					id = result.data.data || "";
+					info("", 5000, successMsg || `Статус расчёта ${id} изменён`);
+					resolve(id);
+				}
+			} catch (e) {
+				error("Сервер вернул: " + (e instanceof Error ? e.message : "ошибку"));
+			}
+			reject();
+		});
+	};
+
+	const deleteCalculation = async (id: number) => {
+		const path = router.resolve({
+			name: "calculation",
+			params: { id },
+		});
+	
+		return new Promise(async(resolve, reject)=> {
+			try {
+				const result = await axios.delete(path.href);
+				if (result.data.status === "success") {
+					id = result.data.data || "";
+					info("", 5000, `Расчёт ${id} удалён`);
+					resolve(id);
+					return;
+				}
+			} catch (e) {
+				error("Сервер вернул: " + (e instanceof Error ? e.message : "ошибку"));
+			}
+			reject();
+		});
+	};	
+
+	const copyCalculation = async(id: number) => {
+		const path = router.resolve({
+			name: "calculation",
+			params: { id },
+			query: {
+				action: 'copy'
+			}
+		});
+
+		return new Promise(async(resolve, reject)=> {
+			try {
+				const result = await axios.post(path.href);
+				if (result.data.status === "success") {
+					const newId = result.data.data || "";
+					info("", 5000, `Расчёт ${id} скопирован в ${newId}`);
+					resolve(newId);
+					return;
+				}
+			} catch (e) {
+				error("Сервер вернул: " + (e instanceof Error ? e.message : "ошибку"));
+			}
+			reject();
+		});		
+	};	
+
+	return {
+		changeStateCalculation,
+		deleteCalculation,
+		copyCalculation
+	}
+}

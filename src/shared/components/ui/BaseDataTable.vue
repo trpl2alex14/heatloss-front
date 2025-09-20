@@ -80,8 +80,9 @@
 					>
 						<div class="flex justify-end w-full">
 							<BaseDropdownMenu
-								:actions="actions || []"
+								:actions="computedActions(data.id)"
 								:id="data.id"
+								@action="(e: any)=>emit('action', e)"
 							/>
 						</div>
 					</template>
@@ -125,7 +126,7 @@ const props = defineProps<{
 	sortField?: string;
 	sortOrder?: 1 | -1;
 	customizable?: boolean;
-	actions?: ActionDef[];
+	actions?: ((id: number) => ActionDef[]) | ActionDef[];
 	statuses?: TypeLabelDef[];
 	expandable?: boolean;
 }>();
@@ -133,6 +134,14 @@ const props = defineProps<{
 const expandedRows = ref({});
 
 const viewColumns = ref<ColumnDef[]>(props.columns);
+
+const computedActions = (id: number)=>{
+	if(typeof  props.actions === 'function'){
+		return props.actions(id) || [];
+	}
+
+	return props.actions || [];
+};
 
 const sortedColumns = computed(() => {
 	const colums = viewColumns.value.sort(
@@ -172,6 +181,7 @@ const getIconColumn = (value: string | { icon: string; color: string }) => {
 const emit = defineEmits([
 	"update:pagination",
 	"update:sort",
+	"action",
 ]);
 
 const onSortChange = (e: any) => {
