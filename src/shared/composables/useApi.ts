@@ -1,6 +1,7 @@
 import { ref, computed, shallowRef, watch } from "vue";
 import axios from "axios";
 import { useMessage } from "@/shared/composables/useMessage";
+import { useRouter } from "vue-router";
 
 export type ResponseData<T> = {
 	data: T;
@@ -8,12 +9,26 @@ export type ResponseData<T> = {
 	error?: string;
 };
 
+export type Endpoint = string | { name: string };
+
 export const useApi = <T, K>(
-	endpoint: string
+	endpoint: Endpoint
 ) => {
 	const data = shallowRef<K>({} as K);
 	const isLoading = ref(false);
 	const error = ref<string | null>(null);
+	const router = useRouter();
+
+	const getUrl = (id?: string | number) => {
+		if(typeof endpoint === 'object'){				
+			return router.resolve({
+				name: endpoint.name, 
+				params: id ? { id } : {}
+			}).href;
+		} 
+
+		return endpoint + (id || "");
+	};
 	
 	const loadData = async (params?: T | string | number | null, id?: string | number) => {
 		isLoading.value = true;
@@ -24,7 +39,7 @@ export const useApi = <T, K>(
 			params = null;
 		}
 
-		const url = endpoint + (id || "");
+		const url = getUrl(id);
 
 		try {
 			const response = await axios.get(url, params ? {params} : {});
@@ -54,7 +69,9 @@ export const useApi = <T, K>(
 		error.value = null;
 		
 		try {
-			const response = await axios.post(endpoint + route, params);
+			const url =getUrl(route);
+			
+			const response = await axios.post(url, params);
 
 			if (response.data?.status !== "success") {
 				throw new Error(

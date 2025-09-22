@@ -1,13 +1,12 @@
+import { computed } from "vue";
 import type { Surface } from "@features/directories/types/materials";
 import { useApi } from "@/shared/composables/useApi";
-import { route } from "@/shared/utils/router";
-import { computed } from "vue";
 
 export const useSurfaceData = () => {
 	const { data, isLoading, error, loadData, clearError } = useApi<
 		void,
 		{ data: Surface[] }
-	>(route("directories.surfaces"));
+	>({name: 'api-directories-surfaces' });
 
 	const loadSurfaceData = () => {
 		loadData();

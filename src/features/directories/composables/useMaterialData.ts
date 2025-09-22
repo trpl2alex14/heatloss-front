@@ -1,6 +1,5 @@
 import type { MaterialItem } from "@features/directories/types/materials";
 import { useFetchCollection, type RequestDataOptions } from "@/shared/composables/useFetchCollection";
-import { route } from "@/shared/utils/router";
 import type { ColumnDef } from "@/shared/types/table";
 import { MaterialType } from "@features/directories/types/materials";
 import { computed } from "vue";
@@ -61,7 +60,7 @@ export const useMaterialData = () => {
 		error,
 		loadData,
 		clearError,
-	} = useFetchCollection<MaterialItem>(route("directories.materials"), false);
+	} = useFetchCollection<MaterialItem>({ name: 'api-directories-materials' }, false);
 
 	const loadMaterialData = (filterValue?: string) => {
 		const params: RequestDataOptions<MaterialItem> = {};

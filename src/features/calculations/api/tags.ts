@@ -1,14 +1,13 @@
 import { computed, ref, shallowRef } from "vue";
 import { useApi } from "@/shared/composables/useApi";
 import type { Tag } from "@/shared/types/ui";
-import { route } from "@/shared/utils/router";
 
 // Глобальное состояние для кэширования данных
 const globalTagsData = shallowRef<{ data: Tag[] } | null>(null);
 const isInitialized = ref(false);
 
 export const useTagsApi = () => {
-	const api = useApi<void, { data: Tag[] }>(route("/api/tags"));
+	const api = useApi<void, { data: Tag[] }>({ name: 'api-tags' });
 
 	// Создаем индекс для быстрого поиска тегов по label
 	const tagsIndex = computed(() => {

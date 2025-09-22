@@ -27,12 +27,84 @@ const isDev = import.meta.env.MODE !== "production";
 const routes = [
 	//API 
 	{
+		name: 'api-request',		
+		//path: '/api/requests/:id'
+		path: '/data/requests.1222.json?:id', //TODO
+		redirect: '/'
+	},
+	{
+		name: 'api-requests',		
+		//path: '/api/requests/:id'
+		path: '/data/requests.json', //TODO
+		redirect: '/'
+	},
+	{
+		name: 'api-case',		
+		//path: '/api/requests/:id'
+		path: '/data/case.1.json?', //TODO
+		redirect: '/'
+	},
+	{
+		name: 'api-cases',		
+		//path: '/api/requests/:id'
+		path: '/data/cases.json', //TODO
+		redirect: '/'
+	},		
+	{
 		name: 'calculation-status',
-		//path: '/api/calculation/:id/status',  //TODO	
-		path: '/data/calculation.public.json?:id',	
-		redirect: '/'	
+		//path: '/api/calculations/:id/status',  //TODO	
+		path: '/data/calculation.public.json?:id',
+		redirect: '/'
+	},
+	{
+		name: 'api-calculation',
+		//path: '/api/calculations/:id',  //TODO	
+		path: '/data/calculations.111.json?:id',
+		redirect: '/'
+	},
+	{
+		name: 'api-calculations',
+		//path: '/api/calculations',  //TODO	
+		path: '/data/calculations.lazy.json',
+		redirect: '/'
+	},
+	{
+		name: 'api-equipments',
+		path: '/data/equipments.api.json', //TODO
+		redirect: '/'
+	},
+	{
+		name: 'api-promos',
+		path: '/data/promos.json', //TODO
+		redirect: '/'
+	},				
+	{
+		name: 'api-tags',
+		path: '/data/tags.json', //TODO
+		redirect: '/'
+	},
+	{
+		name: 'api-directories-equipments',
+		path: '/data/equipment.json', //TODO
+		redirect: '/'
 	},	
+	{
+		name: 'api-directories-climete',
+		path: '/data/climate.json', //TODO
+		redirect: '/'
+	},	
+	{
+		name: 'api-directories-materials',
+		path: '/data/materials.json', //TODO
+		redirect: '/'
+	},
+	{
+		name: 'api-directories-surfaces',
+		path: '/data/surfaces.json', //TODO
+		redirect: '/'
+	},							
 	//PATH
+	//ROUTES
 	{
 		path: "/",
 		redirect: "/calculations",
@@ -71,6 +143,7 @@ const routes = [
 	},	
 	{
 		path: "/history/:key",
+		name: 'history',
 		component: () =>
 			import("@features/calculations/view/CalculationPage.vue"),
 	},	

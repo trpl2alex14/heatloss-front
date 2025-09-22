@@ -6,7 +6,7 @@
 				label="Ссылка на расчёт"
 				as="a"
 				text
-				:href="route('calculations.view', result.id)"
+				:href="routeView"
 				target="_blank"
 				icon="link"
 			/>
@@ -14,7 +14,7 @@
 				label="Скачать в PDF"
 				as="a"
 				text
-				:href="route('calculations.pdf', result.id)"
+				:href="routePdf"
 				target="_blank"
 				icon="file-pdf"
 			/>
@@ -175,11 +175,11 @@ import BaseButton from "@shared/components/ui/BaseButton.vue";
 import BaseInputText from "@shared/components/ui/BaseInputText.vue";
 import BaseInputNumber from "@shared/components/ui/BaseInputNumber.vue";
 import type { CalculationResult, Construction } from "../types";
-import { route } from "@/shared/utils/router";
 import BaseTextArea from "@/shared/components/ui/BaseTextArea.vue";
 import { plural } from "@/shared/utils/text";
 import { computed } from "vue";
 import { useSettings } from "@/features/settings/composables/useSettings.ts";
+import { useRouter } from "vue-router";
 
 type Props = {
 	result: CalculationResult;
@@ -190,9 +190,26 @@ const props = defineProps<Props>();
 
 const { powerPrice } = useSettings();
 
+const router = useRouter();
+
 const totalHeatLoss = computed(() => {
 	const heatLossInCube = props.result.volume ? props.result.totalHeatLoss / props.result.volume : 0;
 	return `${props.result.totalHeatLoss} кВт*ч` + (heatLossInCube ? ` (${heatLossInCube.toFixed(2)} Вт/м³)` : "");
+});
+
+const getUrl = (name: string, id?: number) => {
+	return id && router.resolve({
+		name,
+		params: { id }
+	}).href || "";	
+}
+
+const routeView = computed(() => {
+	return getUrl('calculation-view', props.result.id);
+});
+
+const routePdf = computed(() => {
+	return getUrl('calculation-pdf', props.result.id);
 });
 
 const getStyleHeatLoss = (c: Construction) => {

@@ -6,7 +6,7 @@
 				:label="`Лид №${client.lead}`"
 				as="a"
 				text
-				:href="route('crm.lead', client.lead)"
+				:href="getLeadUrl(client.lead)"
 				target="_blank"
 				icon="link"
 			/>
@@ -15,7 +15,7 @@
 				:label="`Сделка №${client.deal}`"
 				as="a"
 				text
-				:href="route('crm.deal', client.deal)"
+				:href="getDealUrl(client.deal)"
 				target="_blank"
 				icon="link"
 			/>
@@ -64,12 +64,14 @@ import type { Attach, ClientRequest } from "@/shared/types/client";
 import BaseButton from "@shared/components/ui/BaseButton.vue";
 import BaseInputText from "@shared/components/ui/BaseInputText.vue";
 import BaseTextArea from "@shared/components/ui/BaseTextArea.vue";
-import { route } from "@shared/utils/router.ts";
+import { useCrm } from "@/shared/composables/useCrm";
 
 type Props = {
 	client: ClientRequest;
 	attachments?: Attach[];
 };
+
+const { getDealUrl, getLeadUrl } = useCrm();
 
 defineProps<Props>();
 </script>

@@ -1,6 +1,5 @@
 import type { EquipmentItem } from "@features/directories/types/equipment";
 import { useFetchCollection, type RequestDataOptions } from "@/shared/composables/useFetchCollection";
-import { route } from "@/shared/utils/router";
 import type { ColumnDef } from "@/shared/types/table";
 
 const columns: ColumnDef[] = [
@@ -84,7 +83,7 @@ export const useEquipmentData = () => {
 		error,
 		loadData,
 		clearError,
-	} = useFetchCollection<EquipmentItem>(route("directories.equipment"), false);
+	} = useFetchCollection<EquipmentItem>({ name: 'api-directories-equipments'}, false);
 
 	const loadEquipmentData = (filterValue?: string) => {
 		const params: RequestDataOptions<EquipmentItem> = {};

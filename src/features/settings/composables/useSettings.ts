@@ -25,6 +25,10 @@ export const useSettings = () => {
 		needForWindowTag: 'для окон',
 		excludeForWindow: ['вертикальный'],
 
-		isMansardaTag: "мансарда"
+		isMansardaTag: "мансарда",
+
+		crmEndpointUrl: "https://kouzi.bitrix24.ru/crm/",
+		crmLeadPath: "lead/details/",
+		crmDealPath: "deal/details/"
 	};
 }

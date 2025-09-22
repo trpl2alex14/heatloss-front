@@ -1,14 +1,13 @@
 import { computed, ref, shallowRef } from "vue";
 import { useApi } from "@/shared/composables/useApi";
 import type { PromoCode } from "@/shared/types/ui";
-import { route } from "@/shared/utils/router";
 
 // Глобальное состояние для кэширования данных
 const globalPromosData = shallowRef<{ data: PromoCode[] } | null>(null);
 const isInitialized = ref(false);
 
 export const usePromos = () => {
-	const api = useApi<void, { data: PromoCode[] }>(route("/api/promos"));
+	const api = useApi<void, { data: PromoCode[] }>({ name: 'api-promos' });
 
 	const loadDataOnce = async () => {
 		if (globalPromosData.value || isInitialized.value) {

@@ -6,7 +6,7 @@ import type {
 	FilterOptions,
 	PaginationOptions,
 } from "@/shared/types/table";
-import { useApi, type ResponseData } from "@/shared/composables/useApi";
+import { useApi, type ResponseData, type Endpoint } from "@/shared/composables/useApi";
 
 type LazyLoadOptions = {
 	page: number;
@@ -51,7 +51,7 @@ const requestParams = <T>(params?: RequestDataOptions<T>) => {
 	return options;
 };
 
-export const useFetchCollection = <T>(endpoint: string, autoLoad = true) => {
+export const useFetchCollection = <T>(endpoint: Endpoint, autoLoad = true) => {
 	const {
 		data: dataApi,
 		isLoading,

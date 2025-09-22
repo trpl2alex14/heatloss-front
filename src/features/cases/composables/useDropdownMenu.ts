@@ -4,30 +4,22 @@ export const dropdownActions: ActionDef[] = [
 	{
 		label: "Редактировать",
 		icon: "pi pi-pencil",
-		command: (id: number) => {
-			console.log("Редактировать кейс:", id);
-		},
+		name: 'edit',
 	},
 	{
 		label: "Опубликовать",
 		icon: "pi pi-check",
-		command: (id: number) => {
-			console.log("Опубликовать кейс:", id);
-		},
+		name: 'public',
 	},
 	{
 		label: "Скрыть",
 		icon: "pi pi-eye-slash",
-		command: (id: number) => {
-			console.log("Скрыть кейс:", id);
-		},
+		name: 'hide',
 	},
 	{ separator: true },
 	{
 		label: "Удалить",
 		icon: "pi pi-trash",
-		command: (id: number) => {
-			console.log("Удалить кейс:", id);
-		},
+		name: 'delete',
 	},
 ];

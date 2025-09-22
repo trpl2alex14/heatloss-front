@@ -1,31 +1,24 @@
 import { useApi } from "@/shared/composables/useApi";
 import type { CalculationDetails, CalculationSaved, CalculationStatus } from "../types";
 import { type Ref, watch } from "vue";
-import { route } from "@/shared/utils/router";
 import { useRouter } from "vue-router";
 import axios from "axios";
 import { useMessage } from "@/shared/composables/useMessage.ts";
 
-export const useFetchCalculation = (
-	calculationData: Ref<CalculationDetails>
-) => {
-	const { data, isLoading, error, loadData } = useApi<{}, CalculationDetails>(
-		route("calculations.index")
-	);
-	
+export const useFetchCalculation = (calculationData: Ref<CalculationDetails>) => {
+	const { data, isLoading, error, loadData } = useApi<{}, CalculationDetails>({ name: "api-calculation" });
+
 	watch(data, (newData) => {
 		if (newData && newData.data) {
 			calculationData.value = newData.data;
 		}
 	});
-	
+
 	return { isLoading, error, loadCalculationData: (id: number | string) => loadData(id) };
 };
 
 export const useSaveCalculation = () => {
-	const { saveData, error } = useApi<CalculationSaved, number>(
-		route("calculations.save")
-	);
+	const { saveData, error } = useApi<CalculationSaved, number>({ name: "api-calculation" });
 
 	const saveCalculation = async (id: number | string | CalculationSaved, params?: CalculationSaved) => {
 		if (typeof id === "object") {
@@ -34,13 +27,13 @@ export const useSaveCalculation = () => {
 		}
 
 		const result = await saveData(id ? `${id}` : "", params as CalculationSaved);
-		
-		return result.data;
+
+		return result.data.id;
 	};
 
-	return { 
+	return {
 		saveCalculation,
-		error
+		error,
 	};
 };
 
@@ -55,7 +48,7 @@ export const useCalculationAction = () => {
 			query: { status },
 		});
 
-		return new Promise(async(resolve, reject)=> {
+		return new Promise(async (resolve, reject) => {
 			try {
 				const result = await axios.get(path.href);
 				if (result.data.status === "success") {
@@ -75,8 +68,8 @@ export const useCalculationAction = () => {
 			name: "calculation",
 			params: { id },
 		});
-	
-		return new Promise(async(resolve, reject)=> {
+
+		return new Promise(async (resolve, reject) => {
 			try {
 				const result = await axios.delete(path.href);
 				if (result.data.status === "success") {
@@ -90,18 +83,18 @@ export const useCalculationAction = () => {
 			}
 			reject();
 		});
-	};	
+	};
 
-	const copyCalculation = async(id: number) => {
+	const copyCalculation = async (id: number) => {
 		const path = router.resolve({
 			name: "calculation",
 			params: { id },
 			query: {
-				action: 'copy'
-			}
+				action: "copy",
+			},
 		});
 
-		return new Promise(async(resolve, reject)=> {
+		return new Promise(async (resolve, reject) => {
 			try {
 				const result = await axios.post(path.href);
 				if (result.data.status === "success") {
@@ -114,12 +107,12 @@ export const useCalculationAction = () => {
 				error("Сервер вернул: " + (e instanceof Error ? e.message : "ошибку"));
 			}
 			reject();
-		});		
-	};	
+		});
+	};
 
 	return {
 		changeStateCalculation,
 		deleteCalculation,
-		copyCalculation
-	}
-}
+		copyCalculation,
+	};
+};

@@ -2,7 +2,6 @@ import { computed, ref, shallowRef, watch, type Ref } from "vue";
 import { useApi } from "@/shared/composables/useApi";
 import type { EquipmentItem } from "../types";
 import type { Product } from "@/shared/types/produtcs";
-import { route } from "@/shared/utils/router";
 
 // Глобальное состояние для кэширования данных
 const globalEquipmentsData = shallowRef<{ data: EquipmentItem[] } | null>(null);
@@ -10,9 +9,7 @@ const isInitialized = ref(false);
 let initializedForProduct: Product | undefined;
 
 export const useEquipments = (product: Ref<Product>) => {
-	const api = useApi<void, { data: EquipmentItem[] }>(
-		route("api.equipments")
-	);
+	const api = useApi<{ product: Product }, { data: EquipmentItem[] }>({ name : 'api-equipments'});
 
 	watch(product, (newProduct, oldProduct) => {
 		if(newProduct !== oldProduct) {
@@ -35,7 +32,9 @@ export const useEquipments = (product: Ref<Product>) => {
 		initializedForProduct = product.value;
 		isInitialized.value = true;
 		
-		await api.loadData(null, initializedForProduct);
+		await api.loadData({
+			product: initializedForProduct
+		});
 		
 		if (api.data.value) {
 			globalEquipmentsData.value = api.data.value;

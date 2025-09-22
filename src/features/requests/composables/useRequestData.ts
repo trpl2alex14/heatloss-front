@@ -3,7 +3,6 @@ import {
 	useFetchCollection,
 	type RequestDataOptions,
 } from "@/shared/composables/useFetchCollection";
-import { route } from "@/shared/utils/router";
 import type { ColumnDef } from "@/shared/types/table";
 
 const columns: ColumnDef[] = [
@@ -100,7 +99,7 @@ export const useRequestData = () => {
 		loadData,
 		clearError,
 		pagination,
-	} = useFetchCollection<RequestItem>(route("requests"), false);
+	} = useFetchCollection<RequestItem>({ name: 'api-requests' }, false);
 
 	const loadRequestData = (params?: RequestDataOptions<RequestItem>) => {
 		loadData(params);

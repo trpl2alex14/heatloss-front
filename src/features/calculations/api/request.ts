@@ -1,7 +1,6 @@
+import { computed } from "vue";
 import { useApi } from "@/shared/composables/useApi";
 import type { ClientRequest, Attach } from "@/shared/types/client";
-import { route } from "@/shared/utils/router";
-import { computed } from "vue";
 import type { RequestDetails } from "@/features/requests/types/request";
 
 export const useRequest = (endpoint?: string) => {
@@ -10,7 +9,7 @@ export const useRequest = (endpoint?: string) => {
 		isLoading: isRequestLoading,
 		loadData: loadRequestData,
 		error: requestError,
-	} = useApi<{}, RequestDetails>(endpoint || route("requests.index"));
+	} = useApi<{}, RequestDetails>(endpoint || { name: 'api-request' });
 		
 	const requestData = computed<RequestDetails>(() => {
 		return requestDataRaw.value?.data ?? ({} as RequestDetails);

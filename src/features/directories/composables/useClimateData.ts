@@ -1,5 +1,4 @@
 import type { ClimateItem } from "@features/directories/types/climate";
-import { route } from "@/shared/utils/router";
 import type { ColumnDef } from "@/shared/types/table";
 import { useFetchCollection } from "@/shared/composables/useFetchCollection";
 import { onMounted } from "vue";
@@ -74,7 +73,7 @@ export const useClimateData = (autoLoad = false) => {
 		error,
 		loadData,
 		clearError,
-	} = useFetchCollection<ClimateItem>(route("directories.climate"), false);
+	} = useFetchCollection<ClimateItem>({ name: 'api-directories-climete' }, false);
 
 	const loadClimateData = () => {
 		loadData();
