@@ -4,16 +4,12 @@ export const dropdownActions: ActionDef[] = [
 	{
 		label: "Просмотр",
 		icon: "pi pi-eye",
-		command: (id: number) => {
-			console.log("Просмотр заявки", id);
-		},
+		name: 'view',
 	},
 	{
 		label: "Создать расчёт",
 		icon: "pi pi-plus",
-		command: (id: number) => {
-			console.log("Создать расчёт для заявки", id);
-		},
+		name: 'create',
 	},
 	{
 		separator: true,
@@ -21,8 +17,6 @@ export const dropdownActions: ActionDef[] = [
 	{
 		label: "Удалить",
 		icon: "pi pi-trash",
-		command: (id: number) => {
-			console.log("Удалить заявку", id);
-		},
+		name: 'delete',
 	},
 ];

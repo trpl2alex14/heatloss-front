@@ -116,19 +116,21 @@ const { requestData, attachments, client, hasRequest, loadRequestData } = useReq
 const { saveCalculation } = useSaveCalculation();
 
 const requestId = computed(() => {
-	return calculation.value.requestId;
+	return calculation.value.requestId || Number(route.query.request);
 });
 
-watch(requestId, (newId) => {
+watch(requestId, (newId) => {	
 	if (newId) {
 		loadRequestData(newId);
 	}
+}, {
+	immediate: true
 });
 
 watch(
 	() => route.params,
-	({ id, key }, oldValue) => {		
-		if(id === oldValue?.id && key === oldValue?.key){
+	({ id, key }, oldValue) => {			
+		if((id || key) && id === oldValue?.id && key === oldValue?.key){
 			return ;
 		}
 
@@ -203,7 +205,7 @@ const save = async () => {
 		calculation: { ...calculation.value },
 		result: { ...calculationResult.value },
 	});
-
+		
 	if (id) {
 		needSave.value = false;
 		notSaveAuto = true;
