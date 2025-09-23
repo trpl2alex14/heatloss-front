@@ -1,9 +1,8 @@
 import { useApi } from "@/shared/composables/useApi";
 import type { CalculationDetails, CalculationSaved, CalculationStatus } from "../types";
 import { type Ref, watch } from "vue";
-import { useRouter } from "vue-router";
-import axios from "axios";
 import { useMessage } from "@/shared/composables/useMessage.ts";
+import { useApiRequest } from "@/shared/composables/useApiRequest"
 
 export const useFetchCalculation = (calculationData: Ref<CalculationDetails>) => {
 	const { data, isLoading, error, loadData } = useApi<{}, CalculationDetails>({ name: "api-calculation" });
@@ -28,7 +27,7 @@ export const useSaveCalculation = () => {
 
 		const result = await saveData(id ? `${id}` : "", params as CalculationSaved);
 
-		return result.data.id;
+		return result?.data?.id || 0;
 	};
 
 	return {
@@ -38,76 +37,40 @@ export const useSaveCalculation = () => {
 };
 
 export const useCalculationAction = () => {
-	const router = useRouter();
-	const { info, error } = useMessage();
+	const { info } = useMessage();
+	const { get, drop, post } = useApiRequest();
 
 	const changeStateCalculation = async (id: number, status: CalculationStatus, successMsg?: string) => {
-		const path = router.resolve({
-			name: "calculation-status",
-			params: { id },
-			query: { status },
-		});
-
-		return new Promise(async (resolve, reject) => {
-			try {
-				const result = await axios.get(path.href);
-				if (result.data.status === "success") {
-					id = result.data.data || "";
-					info("", 5000, successMsg || `Статус расчёта ${id} изменён`);
-					resolve(id);
-				}
-			} catch (e) {
-				error("Сервер вернул: " + (e instanceof Error ? e.message : "ошибку"));
+		return get('calculation-status', { id },{ status })
+		.then((value: any) => {
+			if(typeof value === 'object' && 'id' in value){
+				const id = value.id;
+				info("", 5000, successMsg || `Статус расчёта ${id} изменён`);
+				return id;
 			}
-			reject();
-		});
+		});		
 	};
 
 	const deleteCalculation = async (id: number) => {
-		const path = router.resolve({
-			name: "calculation",
-			params: { id },
-		});
-
-		return new Promise(async (resolve, reject) => {
-			try {
-				const result = await axios.delete(path.href);
-				if (result.data.status === "success") {
-					id = result.data.data || "";
-					info("", 5000, `Расчёт ${id} удалён`);
-					resolve(id);
-					return;
-				}
-			} catch (e) {
-				error("Сервер вернул: " + (e instanceof Error ? e.message : "ошибку"));
+		return drop('calculation', { id })
+		.then((value: any) => {
+			if(typeof value === 'object' && 'id' in value){
+				const id = value.id;
+				info("", 5000, `Расчёт ${id} удалён`);
+				return id;
 			}
-			reject();
-		});
+		});	
 	};
 
 	const copyCalculation = async (id: number) => {
-		const path = router.resolve({
-			name: "calculation",
-			params: { id },
-			query: {
-				action: "copy",
-			},
-		});
-
-		return new Promise(async (resolve, reject) => {
-			try {
-				const result = await axios.post(path.href);
-				if (result.data.status === "success") {
-					const newId = result.data.data || "";
-					info("", 5000, `Расчёт ${id} скопирован в ${newId}`);
-					resolve(newId);
-					return;
-				}
-			} catch (e) {
-				error("Сервер вернул: " + (e instanceof Error ? e.message : "ошибку"));
+		return post('calculation', { id }, { action: "copy" })
+		.then((value: any) => {
+			if(typeof value === 'object' && 'id' in value){
+				const id = value.newId;
+				info("", 5000, `Расчёт ${id} скопирован в ${id}`);
+				return id;
 			}
-			reject();
-		});
+		});	
 	};
 
 	return {

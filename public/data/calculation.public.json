@@ -1,4 +1,6 @@
 {
-	"data": 12200,
+	"data": {
+		"id": 12200
+	},
 	"status": "success"
 }

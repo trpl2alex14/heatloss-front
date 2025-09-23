@@ -19,7 +19,7 @@ export const useApi = <T, K>(
 	const error = ref<string | null>(null);
 	const router = useRouter();
 
-	const getUrl = (id?: string | number) => {
+	const getUrl = (id?: string | number) => {		
 		if(typeof endpoint === 'object'){				
 			return router.resolve({
 				name: endpoint.name, 
@@ -69,7 +69,7 @@ export const useApi = <T, K>(
 		error.value = null;
 		
 		try {
-			const url =getUrl(route);
+			const url = getUrl(route);
 			
 			const response = await axios.post(url, params);
 

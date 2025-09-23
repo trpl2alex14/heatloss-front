@@ -59,7 +59,7 @@ const routes = [
 	{
 		name: 'api-calculation',
 		//path: '/api/calculations/:id',  //TODO	
-		path: '/data/calculations.111.json?:id',
+		path: '/data/calculations.111.json?:id?',
 		redirect: '/'
 	},
 	{
