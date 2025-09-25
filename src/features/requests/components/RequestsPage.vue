@@ -2,8 +2,7 @@
 	<div class="p-0">
 		<Head title="Заявки" subtitle="Список входящих заявок на расчётов отопления">
 			<template #actions>
-				<RowCounter :value="requestData.length" />
-				<BaseButton label="Создать заявку" icon="plus" />
+				<RowCounter :value="requestData.length" />				
 			</template>
 		</Head>
 
@@ -68,7 +67,6 @@
 
 <script setup lang="ts">
 import { computed, defineAsyncComponent, markRaw } from "vue";
-import BaseButton from "@/shared/components/ui/BaseButton.vue";
 import BaseSearch from "@/shared/components/ui/BaseSearch.vue";
 import BaseDataTable from "@/shared/components/ui/BaseDataTable.vue";
 import BaseChip from "@/shared/components/ui/BaseChip.vue";

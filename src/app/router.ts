@@ -87,10 +87,20 @@ const routes = [
 		name: 'api-directories-equipments',
 		path: '/data/equipment.json', //TODO
 		redirect: '/'
-	},	
+	},
 	{
-		name: 'api-directories-climete',
-		path: '/data/climate.json', //TODO
+		name: 'api-climate',
+		path: '/data/climate.json?:id', //TODO
+		redirect: '/'
+	},
+	{
+		name: 'api-climate-create',
+		path: '/data/climate.create.json', //TODO
+		redirect: '/'
+	},			
+	{
+		name: 'api-directories-climates',
+		path: '/data/climates.json', //TODO
 		redirect: '/'
 	},	
 	{

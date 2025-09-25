@@ -73,7 +73,7 @@ export const useClimateData = (autoLoad = false) => {
 		error,
 		loadData,
 		clearError,
-	} = useFetchCollection<ClimateItem>({ name: 'api-directories-climete' }, false);
+	} = useFetchCollection<ClimateItem>({ name: 'api-directories-climates' }, false);
 
 	const loadClimateData = () => {
 		loadData();

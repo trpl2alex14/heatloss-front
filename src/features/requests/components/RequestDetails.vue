@@ -183,7 +183,6 @@ import BaseStatusTag from "@shared/components/ui/BaseStatusTag.vue";
 import BaseProgressBar from "@/shared/components/ui/BaseProgressBar.vue";
 import CalculationBtn from "@/shared/components/CalculationBtn.vue";
 
-
 interface Dialog {
 	data: { id: number };
 }

@@ -1,3 +1,5 @@
+import { type Component } from "vue";
+
 export interface SelectButtonOption {
 	label: string;
 	value: any;
@@ -19,4 +21,16 @@ export interface Tag {
 export interface PromoCode {
 	code: string;
 	description: string;
+}
+
+export interface ProxyDialog {
+	data: {
+		component: Component,
+		props: {
+			[key: string]: any
+		},
+		actions: {
+			[key: string]: (...arg: any[]) => any;
+		}
+	}
 }

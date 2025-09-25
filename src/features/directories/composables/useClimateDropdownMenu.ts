@@ -4,12 +4,12 @@ export const dropdownActions: ActionDef[] = [
 	{
 		label: "Редактировать",
 		icon: "pi pi-pencil",
-		command: (id: number) => alert(`Редактировать: ${id}`),
+		name: 'edit',
 	},	
 	{ separator: true },
 	{
 		label: "Удалить",
 		icon: "pi pi-trash",
-		command: (id: number) => alert(`Удалить: ${id}`),
+		name: 'delete',
 	},
 ];
