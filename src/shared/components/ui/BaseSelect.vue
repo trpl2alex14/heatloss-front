@@ -10,6 +10,8 @@
 			:class="computedClass"
 			class="w-full"
 			v-bind="selectAttrs"
+			ref="selectRef"
+			@filter="emit('filter', $event)"
 		>
 			<template #value="slotProps">
 				<div v-if="slotProps.value" class="flex items-center gap-2">
@@ -19,9 +21,9 @@
 						class="w-4 h-4 object-cover"
 					/>
 					<span>{{
-						getOption(slotProps.value)?.[optionLabel] ||
-						slotProps.value
-					}}</span>
+							getOption(slotProps.value)?.[optionLabel] ||
+							slotProps.value
+						}}</span>
 				</div>
 				<span v-else class="text-gray-500">{{ placeholder }}</span>
 			</template>
@@ -35,17 +37,23 @@
 					<span>{{ slotProps.option[optionLabel] }}</span>
 				</div>
 			</template>
+			<template #empty>
+				<slot name="empty"/>
+			</template>
+			<template #emptyfilter>
+				<slot name="empty-filter"/>
+			</template>
 		</Select>
 		<label class="block text-sm font-medium text-gray-700">{{
-			label || placeholder || ""
-		}}</label>
+				label || placeholder || ""
+			}}</label>
 	</IftaLabel>
 </template>
 
 <script setup lang="ts">
-import { computed, useAttrs } from "vue";
+import {computed, useAttrs, useTemplateRef} from "vue";
 import Select from "primevue/select";
-import type { SelectOption } from "@/shared/types/ui";
+import type {SelectOption} from "@/shared/types/ui";
 
 const props = defineProps({
 	modelValue: {
@@ -82,7 +90,9 @@ const props = defineProps({
 	},
 });
 
-const emit = defineEmits(["update:modelValue"]);
+const selectRef = useTemplateRef('selectRef');
+
+const emit = defineEmits(["update:modelValue", "filter"]);
 
 const modelValueProxy = computed({
 	get: () => props.modelValue,
@@ -107,7 +117,7 @@ const selectAttrs = computed(() => {
 		className,
 		...rest
 	} = props;
-	return { ...attrs, ...rest };
+	return {...attrs, ...rest};
 });
 
 const computedClass = computed(() =>
@@ -116,6 +126,10 @@ const computedClass = computed(() =>
 		props.className,
 	].join(" ")
 );
+
+defineExpose({
+	selectRef
+})
 </script>
 
 <style lang="scss">
