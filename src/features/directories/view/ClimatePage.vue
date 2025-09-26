@@ -3,7 +3,7 @@
 		<Head title="Климатология" subtitle="Справочник населенный пунктов с данными по климату">
 			<template #actions>
 				<RowCounter :value="climateData.length" />
-				<BaseButton label="Добавить" icon="plus" @click="openCliamteDialog()"/>
+				<BaseButton label="Добавить" icon="plus" @click="openClimateDialog()"/>
 			</template>
 		</Head>
 
@@ -69,7 +69,7 @@ const pagedDataTransformed = computed(() => {
 	}));
 });
 
-let openDialg: DynamicDialogInstance;
+let openDialog: DynamicDialogInstance;
 
 onMounted(() => {
 	loadClimateData();
@@ -84,8 +84,8 @@ const dropClimate = (id: number) => {
 		.catch(() => warning(`Не удалось удалить ${id}`, 5000));
 };
 
-const openCliamteDialog = (id?: number) => {
-	openDialg = dialog.open(ProxyDialog, {
+const openClimateDialog = (id?: number) => {
+	openDialog = dialog.open(ProxyDialog, {
 		props: {
 			header: "Климат зоны",
 			showHeader: false,
@@ -101,10 +101,10 @@ const openCliamteDialog = (id?: number) => {
 			},
 			actions: {
 				close: () => {
-					openDialg.close();
+					openDialog.close();
 				},
-				save: () => {					
-					openDialg.close();
+				save: () => {
+					openDialog.close();
 					loadClimateData();
 				},
 			},
@@ -115,7 +115,7 @@ const openCliamteDialog = (id?: number) => {
 const menuActions = ({ id, action }: ActionValue) => {
 	switch (action) {
 		case "edit":
-			openCliamteDialog(id);
+			openClimateDialog(id);
 			break;
 		case "delete":
 			confirmDelete(null).then(() => {
