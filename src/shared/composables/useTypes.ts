@@ -5,6 +5,7 @@ import imageFleyt from "@/assets/images/fleyt.png";
 import imageKouzi from "@/assets/images/kouzi.png";
 import imageAll from "@/assets/images/grevolt.png";
 import type { Product } from "@/shared/types/produtcs";
+import type {SurfaceType} from "@features/directories/types";
 
 const materialTypes: TypeImageDef[] = [
 	{
@@ -39,11 +40,30 @@ const productCategory: ProductType[] = [
 	},
 ];
 
+const typeSurfaces: { value:SurfaceType, label: string }[] = [
+	{
+		value: 'roof',
+		label: 'Кровля'
+	},
+	{
+		value: 'wall',
+		label: 'Стены'
+	},
+	{
+		value: 'floor',
+		label: 'Фундамент/Пол'
+	},
+	{
+		value: 'window',
+		label: 'Остекление'
+	}
+];
+
 export const useTypes = () => {
 
 	return {
 		materialTypes,
 		productCategory,
-
+		typeSurfaces
 	};
 };

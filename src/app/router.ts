@@ -25,46 +25,46 @@ export type AppRoute = IAppRoute & RouteRecordRaw;
 const isDev = import.meta.env.MODE !== "production";
 
 const routes = [
-	//API 
+	//API
 	{
-		name: 'api-request',		
+		name: 'api-request',
 		//path: '/api/requests/:id'
 		path: '/data/requests.1222.json?:id', //TODO
 		redirect: '/'
 	},
 	{
-		name: 'api-requests',		
+		name: 'api-requests',
 		//path: '/api/requests/:id'
 		path: '/data/requests.json', //TODO
 		redirect: '/'
 	},
 	{
-		name: 'api-case',		
+		name: 'api-case',
 		//path: '/api/requests/:id'
 		path: '/data/case.1.json?', //TODO
 		redirect: '/'
 	},
 	{
-		name: 'api-cases',		
+		name: 'api-cases',
 		//path: '/api/requests/:id'
 		path: '/data/cases.json', //TODO
 		redirect: '/'
-	},		
+	},
 	{
 		name: 'calculation-status',
-		//path: '/api/calculations/:id/status',  //TODO	
+		//path: '/api/calculations/:id/status',  //TODO
 		path: '/data/calculation.public.json?:id',
 		redirect: '/'
 	},
 	{
 		name: 'api-calculation',
-		//path: '/api/calculations/:id',  //TODO	
+		//path: '/api/calculations/:id',  //TODO
 		path: '/data/calculations.111.json?:id?',
 		redirect: '/'
 	},
 	{
 		name: 'api-calculations',
-		//path: '/api/calculations',  //TODO	
+		//path: '/api/calculations',  //TODO
 		path: '/data/calculations.lazy.json',
 		redirect: '/'
 	},
@@ -77,7 +77,7 @@ const routes = [
 		name: 'api-promos',
 		path: '/data/promos.json', //TODO
 		redirect: '/'
-	},				
+	},
 	{
 		name: 'api-tags',
 		path: '/data/tags.json', //TODO
@@ -97,12 +97,22 @@ const routes = [
 		name: 'api-climate-create',
 		path: '/data/climate.create.json', //TODO
 		redirect: '/'
-	},			
+	},
+	{
+		name: 'api-material',
+		path: '/data/material.get.json?:id', //TODO
+		redirect: '/'
+	},
+	{
+		name: 'api-material-create',
+		path: '/data/material.create.json', //TODO
+		redirect: '/'
+	},
 	{
 		name: 'api-directories-climates',
 		path: '/data/climates.json', //TODO
 		redirect: '/'
-	},	
+	},
 	{
 		name: 'api-directories-materials',
 		path: '/data/materials.json', //TODO
@@ -112,7 +122,12 @@ const routes = [
 		name: 'api-directories-surfaces',
 		path: '/data/surfaces.json', //TODO
 		redirect: '/'
-	},							
+	},
+	{
+		name: 'api-directories-material-categories',
+		path: '/data/categories.json', //TODO
+		redirect: '/'
+	},
 	//PATH
 	//ROUTES
 	{
@@ -134,7 +149,7 @@ const routes = [
 			import("@features/calculations/view/CalculationsPage.vue"),
 	},
 	{
-		path: "/calculations/:id",		
+		path: "/calculations/:id",
 		name: 'calculation',
 		component: () =>
 			import("@features/calculations/view/CalculationPage.vue"),
@@ -148,15 +163,15 @@ const routes = [
 				name: 'calculation-pdf',
 				path: 'pdf',
 				redirect: (to:RouteLocation) => '/calculations/pdf/' + to.params.id  //TODO
-			},						
+			},
 		]
-	},	
+	},
 	{
 		path: "/history/:key",
 		name: 'history',
 		component: () =>
 			import("@features/calculations/view/CalculationPage.vue"),
-	},	
+	},
 	{
 		path: "/requests",
 		name: "Requests",
@@ -175,7 +190,7 @@ const routes = [
 		name: "case-create",
 		component: () =>
 			import("@features/cases/components/CasePage.vue"),
-	},	
+	},
 	{
 		path: "/directories",
 		name: "Directories",
@@ -216,7 +231,7 @@ const routes = [
 		meta: { title: "Настройки", icon: "settings.svg", bottom: true },
 		component: () =>
 			import("@features/settings/components/SettingsPage.vue"),
-	},		
+	},
 	...(isDev
 		? [
 				{
@@ -226,9 +241,9 @@ const routes = [
 					component: () => import("@/features/ui-kit/UiKitPage.vue"),
 				},
 		  ]
-		: []),	
+		: []),
 	{
-		path: '/:catchAll(.*)', 
+		path: '/:catchAll(.*)',
 		component: () => import("@/shared/components/NotFound.vue"),
 		meta: { layout: EmptyLayout }
 	},

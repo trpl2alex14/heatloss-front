@@ -1,0 +1,18 @@
+{
+	"data": {
+		"id": 2,
+		"name": "Дерево: сосна, ель поперек волокон 500",
+		"category": "Дерево",
+		"photo": "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=80&q=80",
+		"type": 1,
+		"a": 0.045,
+		"b": 0.045,
+		"r": null,
+		"surface": [
+			"roof",
+			"wall",
+			"floor"
+		]
+	},
+	"status": "success"
+}
