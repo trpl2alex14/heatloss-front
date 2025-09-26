@@ -81,7 +81,7 @@
 			</div>
 		</div>
 		<div class="flex flex-row gap-2 justify-end w-full">
-			<BaseButton v-if="climate" label="Сохранить" icon="save" @click="save" />
+			<BaseButton v-if="climate" label="Сохранить" icon="save" @click="save"/>
 			<BaseButton
 				label="Закрыть"
 				icon="times-circle"
@@ -94,11 +94,11 @@
 </template>
 
 <script setup lang="ts">
-import { useApiRequest, type RejectResponse } from "@/shared/composables/useApiRequest";
-import { computed, onMounted, ref, watch } from "vue";
-import type { ClimateItem } from "../types";
-import { BaseInputNumber, BaseInputText, BaseSelectButton } from "@/shared/components";
+import {onMounted, watch} from "vue";
+import type {ClimateItem} from "../types";
+import {BaseInputNumber, BaseInputText, BaseSelectButton} from "@/shared/components";
 import BaseButton from "@/shared/components/ui/BaseButton.vue";
+import {useForm} from "@features/directories/composables/useForm.ts";
 
 type Props = {
 	id?: number;
@@ -111,39 +111,22 @@ const emit = defineEmits<{
 
 const props = defineProps<Props>();
 
-const { get, post } = useApiRequest();
-
-const climate = ref();
-
-const isChanged = ref(false);
-
-const errors = ref<{
-	fields: string[];
-	message: string;
-} | null>(null);
-
-const errorMessage = computed(() => (!isChanged.value && errors.value !== null ? errors.value.message : ""));
-
-watch(
-	climate,
-	() => {
-		isChanged.value = true;
-	},
-	{
-		deep: true,
-	}
-);
+const {entity: climate, errorMessage, fetchEntity, isInvalidField, save: saveEntity} = useForm<ClimateItem>({
+	get: 'api-climate',
+	create: 'api-climate-create',
+	update: 'api-climate',
+})
 
 watch(
 	() => props.id,
 	(id) => {
-		id && fetchClimate(id);
+		id && fetchEntity(id);
 	}
 );
 
 onMounted(() => {
 	if (props.id) {
-		fetchClimate(props.id);
+		fetchEntity(props.id);
 	} else {
 		climate.value = {
 			humidity: "А",
@@ -151,26 +134,10 @@ onMounted(() => {
 	}
 });
 
-const isInvalidField = (name: string) => {
-	return !isChanged.value && errors.value !== null && errors.value.fields.includes(name);
-};
-
-const fetchClimate = async (id: number) => {
-	climate.value = await get<ClimateItem>("api-climate", { id });
-};
-
-const save = () => {
-	isChanged.value = false;
-
-	post(props.id ? "api-climate" : "api-climate-create", props.id ? { id: props.id } : undefined, climate.value)
-		.then((result: any) => {
-			emit("save", result);
-		})
-		.catch((result: RejectResponse) => {
-			errors.value = {
-				message: result.message,
-				fields: Object.keys(result.fields),
-			};
-		});
+const save = async () => {
+	const result = await saveEntity(props.id)
+	if (result) {
+		emit("save", result);
+	}
 };
 </script>

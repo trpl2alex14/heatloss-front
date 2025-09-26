@@ -1,5 +1,5 @@
 import { useRouter, type LocationQueryRaw, type RouteParamsRawGeneric } from "vue-router";
-import axios from "axios";
+import axios, {type AxiosRequestConfig} from "axios";
 import { useMessage } from "@/shared/composables/useMessage.ts";
 
 export type RejectResponse = {
@@ -16,7 +16,8 @@ export const useApiRequest = () => {
 	const request = async <T>(
 		url: string,
 		action: "get" | "delete" | "post" = "get",
-		params?: any
+		params?: any,
+		config?:  AxiosRequestConfig<any>
 	): Promise<T | undefined> => {
 		return new Promise(async (resolve, reject) => {
 			const rejectResponse: RejectResponse = {
@@ -24,7 +25,7 @@ export const useApiRequest = () => {
 				fields: {}
 			}
 			try {
-				const result = await axios[action](url, params);
+				const result = await axios[action](url, params, config);
 				if (result.data.status === "success") {
 					resolve(result.data.data || {});
 				}else if (result.data.errors) {
@@ -57,13 +58,13 @@ export const useApiRequest = () => {
 		return request<{id: number}>(path.href, "delete");
 	};
 
-	const post = <T>(name: string, params?: RouteParamsRawGeneric, data?: any) => {
+	const post = <T>(name: string, params?: RouteParamsRawGeneric, data?: any, config?: AxiosRequestConfig<any>) => {
 		const path = router.resolve({
 			name,
 			params,
 		});
 
-		return request<T>(path.href, "post", data);
+		return request<T>(path.href, "post", data, config);
 	};
 
 	return {
