@@ -19,6 +19,7 @@
 						v-if="getOption(slotProps.value)?.icon"
 						:src="getOption(slotProps.value)?.icon"
 						class="w-4 h-4 object-cover"
+						alt=""
 					/>
 					<span>{{
 							getOption(slotProps.value)?.[optionLabel] ||
@@ -33,6 +34,7 @@
 						v-if="slotProps.option.icon"
 						:src="slotProps.option.icon"
 						class="w-4 h-4 object-cover"
+						alt=""
 					/>
 					<span>{{ slotProps.option[optionLabel] }}</span>
 				</div>
