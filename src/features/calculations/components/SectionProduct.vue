@@ -45,7 +45,7 @@ import {
 import type { CalculationDetails } from "../types";
 import { useTypes } from "@/shared/composables/useTypes";
 import type { SelectOption } from "@/shared/types/ui";
-import { useTagsApi } from "../api/tags";
+import { useTagsApi } from "@shared/api/tags.ts";
 import type { Tag } from "@/shared/types/ui";
 
 interface Props {
@@ -76,7 +76,7 @@ const productOptions = productCategory.map((p) => ({
 	icon: p.image,
 }));
 
-const { data, loadData } = useTagsApi();
+const { data, loadData } = useTagsApi('calculation');
 loadData();
 
 const tagsOptions = computed<SelectOption[]>(() => {

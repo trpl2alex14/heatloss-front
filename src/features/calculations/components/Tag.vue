@@ -18,7 +18,7 @@
 <script setup lang="ts">
 import { computed, onMounted } from "vue";
 import BaseChip from "@/shared/components/ui/BaseChip.vue";
-import { useTagsApi } from "@/features/calculations/api/tags";
+import { useTagsApi } from "@shared/api/tags.ts";
 import type { Tag } from "@/shared/types/ui";
 
 interface Props {
