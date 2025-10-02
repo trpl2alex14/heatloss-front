@@ -85,7 +85,7 @@ const routes = [
 	},
 	{
 		name: 'api-directories-equipments',
-		path: '/data/equipment.json', //TODO
+		path: '/data/equipments.json', //TODO
 		redirect: '/'
 	},
 	{
@@ -109,6 +109,21 @@ const routes = [
 		redirect: '/'
 	},
 	{
+		name: 'api-equipment',
+		path: '/data/equipment.get.json?:id', //TODO
+		redirect: '/'
+	},
+	{
+		name: 'api-equipment-create',
+		path: '/data/equipment.create.json', //TODO
+		redirect: '/'
+	},
+	{
+		name: 'api-equipment-status',
+		path: '/data/equipment.get.json?:id', //TODO
+		redirect: '/'
+	},
+	{
 		name: 'api-directories-climates',
 		path: '/data/climates.json', //TODO
 		redirect: '/'
@@ -126,6 +141,11 @@ const routes = [
 	{
 		name: 'api-directories-material-categories',
 		path: '/data/categories.json', //TODO
+		redirect: '/'
+	},
+	{
+		name: 'api-directories-equipment-categories',
+		path: '/data/categories.equipments.json', //TODO
 		redirect: '/'
 	},
 	//PATH

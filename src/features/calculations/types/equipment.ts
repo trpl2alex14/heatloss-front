@@ -1,4 +1,5 @@
-import type { EquipmentItem as EquipmentItemDirectory } from "@/features/directories/types/equipment";
+export type {Equipment as EquipmentItem}
+	from "@/features/directories/types/equipment";
 
 export interface Equipment {
 	id: number;
@@ -8,12 +9,3 @@ export interface Equipment {
 	power?: number;
 	article?: string;
 }
-
-export interface EquipmentProperty {
-	key: string;
-	value: string | number;
-}
-
-export type EquipmentItem = EquipmentItemDirectory & {
-	properties?: EquipmentProperty[];
-};

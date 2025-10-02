@@ -5,8 +5,8 @@
 			subtitle="Список доступного отопительного оборудования"
 		>
 			<template #actions>
-				<RowCounter :value="equipmentData.length" />
-				<BaseButton label="Добавить" icon="plus" />
+				<RowCounter :value="equipmentData.length"/>
+				<BaseButton label="Добавить" icon="plus" @click="openEquipmentDialog()"/>
 			</template>
 		</Head>
 
@@ -15,10 +15,11 @@
 			:columns="columns"
 			:data="pagedDataTransformed"
 			:pagination="pagination"
-			:actions="dropdownActions"
+			:actions="dropdownMenu"
 			customizable
 			@update:pagination="onPageChange"
 			@update:sort="onSortChange"
+			@action="menuActions"
 		>
 			<template #top-left>
 				<BaseSelectButton
@@ -28,10 +29,10 @@
 				/>
 			</template>
 			<template #top-right>
-				<BaseSearch v-model="searchValue" />
+				<BaseSearch v-model="searchValue"/>
 			</template>
 			<template #slot-status="{ data }">
-				<TypeColumn :type="data.status" :types="statuses" short />
+				<TypeColumn :type="data.status" :types="statuses" short/>
 			</template>
 			<template #slot-photo="{ data }">
 				<img
@@ -42,7 +43,7 @@
 				/>
 			</template>
 			<template #slot-product="{ data }">
-				<TypeColumn :type="data.product" :types="productCategory" />
+				<TypeColumn :type="data.product" :types="productCategory"/>
 			</template>
 			<template #slot-tags="{ data }">
 				<div class="flex flex-wrap gap-1">
@@ -54,11 +55,12 @@
 				</div>
 			</template>
 		</BaseDataTable>
+		<ConfirmDialog/>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from "vue";
+import {ref, computed, onMounted, defineAsyncComponent} from "vue";
 import Head from "@/shared/components/SubHead.vue";
 import BaseButton from "@/shared/components/ui/BaseButton.vue";
 import RowCounter from "@/shared/components/RowCounter.vue";
@@ -67,16 +69,31 @@ import BaseDataTable from "@/shared/components/ui/BaseDataTable.vue";
 import BaseChip from "@/shared/components/ui/BaseChip.vue";
 import BaseSelectButton from "@/shared/components/ui/BaseSelectButton.vue";
 import TypeColumn from "@/shared/components/TypeColumn.vue";
-import type { TypeIconDef } from "@/shared/types/table";
-import { dropdownActions } from "@/features/directories/composables/useProductDropdownMenu";
-import { useTable } from "@/shared/composables/useTable";
-import { useTypes } from "@/shared/composables/useTypes";
-import { useEquipmentData } from "@features/directories/composables/useEquipmentData";
-import type { EquipmentItem } from "@/features/directories/types/equipment";
+import type {TypeIconDef} from "@/shared/types/table";
+import {dropdownActions} from "@/features/directories/composables/useProductDropdownMenu";
+import {useTable} from "@/shared/composables/useTable";
+import {useTypes} from "@/shared/composables/useTypes";
+import {useEquipmentData} from "@features/directories/composables/useEquipmentData";
+import type {EquipmentItem} from "@/features/directories/types/equipment";
+import {useConfirm} from "@shared/composables/useConfirm.ts";
+import type {DynamicDialogInstance} from "primevue/dynamicdialogoptions";
+import {useDialog} from "primevue/usedialog";
+import {useMessage} from "@shared/composables/useMessage.ts";
+import ConfirmDialog from "primevue/confirmdialog";
+import type {ActionValue} from "@shared/types/menu.ts";
+import {useEquipmentAction} from "@features/directories/composables/useEquipmentAction.ts";
+
+const ProxyDialog = defineAsyncComponent(() => import("@/shared/components/ProxyDialog.vue"));
 
 const filterValue = ref("all");
 
-const { productCategory } = useTypes();
+let openDialog: DynamicDialogInstance;
+
+const dialog = useDialog();
+const {warning} = useMessage();
+const {confirmDelete} = useConfirm();
+
+const {productCategory} = useTypes();
 
 const onFilterChange = (value: string) => {
 	filterValue.value = value;
@@ -96,14 +113,16 @@ const statuses: TypeIconDef[] = [
 	},
 ];
 
-const { equipmentData, isLoading, loadEquipmentData, columns, filterOptions } =
+const {equipmentData, isLoading, loadEquipmentData, columns, filterOptions} =
 	useEquipmentData();
 
-const { searchValue, pagination, tableData, onPageChange, onSortChange } =
+const {searchValue, pagination, tableData, onPageChange, onSortChange} =
 	useTable<EquipmentItem>(equipmentData, {
 		searchFields: ["name", "category", "article"],
 		pageSize: 10,
 	});
+
+const {dropEquipment, changeStateEquipment} = useEquipmentAction();
 
 const pagedDataTransformed = computed(() => {
 	return tableData.value.map((row) => ({
@@ -115,4 +134,77 @@ const pagedDataTransformed = computed(() => {
 onMounted(() => {
 	loadEquipmentData();
 });
+
+const dropdownMenu = (id: number) => {
+	return dropdownActions
+		.map((a) => ({
+			...a,
+			status: equipmentData.value.find((v: EquipmentItem) => v.id === id).status || "hidden",
+		}))
+		.filter((a) => {
+			return !("name" in a) || a.name !== "public" || a.status !== "published"
+		})
+		.filter((a) => {
+			return !("name" in a) || a.name !== "hide" || a.status !== "hidden";
+		});
+};
+
+const openEquipmentDialog = (id?: number) => {
+	openDialog = dialog.open(ProxyDialog, {
+		props: {
+			header: "Оборудование",
+			showHeader: false,
+			style: {
+				width: "40vw",
+			},
+			modal: true,
+		},
+		data: {
+			component: defineAsyncComponent(() => import("../components/Equipment.vue")),
+			props: {
+				id,
+			},
+			actions: {
+				close: () => {
+					openDialog.close();
+				},
+				save: () => {
+					openDialog.close();
+					loadEquipmentData();
+				},
+			},
+		},
+	});
+};
+
+const menuActions = ({id, action}: ActionValue) => {
+	switch (action) {
+		case "edit":
+			openEquipmentDialog(id);
+			break;
+		case 'public':
+			changeStateEquipment(id, 'published')
+				.then(() => {
+					loadEquipmentData();
+				})
+				.catch(() => warning(`Не удалось опубликовать ${id}`, 5000));
+			break;
+		case 'hide':
+			changeStateEquipment(id, 'hidden')
+				.then(() => {
+					loadEquipmentData();
+				})
+				.catch(() => warning(`Не удалось скрыть ${id}`, 5000));
+			break;
+		case "delete":
+			confirmDelete(null).then(() => {
+				dropEquipment(id)
+					.then(() => {
+						loadEquipmentData();
+					})
+					.catch(() => warning(`Не удалось удалить ${id}`, 5000));
+			});
+			break;
+	}
+};
 </script>

@@ -1,0 +1,18 @@
+{
+	"status": "error",
+	"message": "Ошибка заполнения оборудования",
+	"errors": {
+		"article": [
+			"Нет такого товара"
+		],
+		"price":  [
+			"Больше 0"
+		],
+		"properties.0.key": [
+			"Число"
+		],
+		"properties.1.label": [
+			"Число"
+		]
+	}
+}

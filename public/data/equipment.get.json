@@ -1,0 +1,25 @@
+{
+	"data": {
+		"id": 3,
+		"status": "published",
+		"photo": "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=80&q=80",
+		"product": "kouzi",
+		"category": "Радиаторы",
+		"name": "Флэйт 250В - 50 Белый",
+		"article": "46747337723",
+		"price": 8300,
+		"characteristics": "Мощность - 250Вт",
+		"tags": ["каркасник", "окна в пол"],
+		"properties": [
+			{
+				"key": "power",
+				"value": 250
+			},
+			{
+				"key": "width",
+				"value": 500
+			}
+		]
+	},
+	"status": "success"
+}

@@ -1,12 +1,12 @@
-export type Status = "published" | "hidden";
+import type {Product} from "@shared/types/produtcs.ts";
 
-export type Type = "fleyt" | "kouzi" | "all";
+export type Status = "published" | "hidden";
 
 export interface EquipmentItem {
 	id: number;
 	status: Status;
 	photo: string;
-	product: Type;
+	product: Product;
 	category: string;
 	name: string;
 	article: string;
@@ -14,3 +14,14 @@ export interface EquipmentItem {
 	characteristics: string;
 	tags: string[];
 }
+
+export interface EquipmentProperty {
+	key: string;
+	label?: string;
+	measure?: string;
+	value: string | number;
+}
+
+export type Equipment = EquipmentItem & {
+	properties?: EquipmentProperty[];
+};
