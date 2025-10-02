@@ -51,7 +51,7 @@ const routes = [
 		redirect: '/'
 	},
 	{
-		name: 'calculation-status',
+		name: 'api-calculation-status',
 		//path: '/api/calculations/:id/status',  //TODO
 		path: '/data/calculation.public.json?:id',
 		redirect: '/'

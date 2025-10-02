@@ -38,17 +38,17 @@ export const useSaveCalculation = () => {
 
 export const useCalculationAction = () => {
 	const { info } = useMessage();
-	const { get, drop, post } = useApiRequest();
+	const { drop, post } = useApiRequest();
 
 	const changeStateCalculation = async (id: number, status: CalculationStatus, successMsg?: string) => {
-		return get('calculation-status', { id },{ status })
+		return post('api-calculation-status', { id },{ status })
 		.then((value: any) => {
 			if(typeof value === 'object' && 'id' in value){
 				const id = value.id;
 				info("", 5000, successMsg || `Статус расчёта ${id} изменён`);
 				return id;
 			}
-		});		
+		});
 	};
 
 	const deleteCalculation = async (id: number) => {
@@ -59,7 +59,7 @@ export const useCalculationAction = () => {
 				info("", 5000, `Расчёт ${id} удалён`);
 				return id;
 			}
-		});	
+		});
 	};
 
 	const copyCalculation = async (id: number) => {
@@ -70,7 +70,7 @@ export const useCalculationAction = () => {
 				info("", 5000, `Расчёт ${id} скопирован в ${id}`);
 				return id;
 			}
-		});	
+		});
 	};
 
 	return {
