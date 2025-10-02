@@ -26,8 +26,3 @@ export interface Surface {
 	baseResistance?: number;
 	multiplier?: number;
 }
-
-export interface Category {
-	id: number,
-	name: string,
-}

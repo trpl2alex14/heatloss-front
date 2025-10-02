@@ -1,5 +1,5 @@
 import {computed} from "vue";
-import type {Category} from "@features/directories/types/materials";
+import type {Category} from "@features/directories/types";
 import {useApi} from "@/shared/composables/useApi";
 
 type ApiResponse = { data: Category[] };
