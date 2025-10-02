@@ -9,14 +9,14 @@ export const useSettings = () => {
 		seasonTag: 'весна и осень',
 		frostProtectionTag: 'защита от промерзания',
 
-		allowedTags: ['дом', 'квартира', 'ком. объект', 'весна и осень', 'защита от промерзания', 
+		allowedTags: ['дом', 'квартира', 'ком. объект', 'весна и осень', 'защита от промерзания',
 			'дистанционное управление', 'окраска по ral'],
 
 		deltaPower: 0.02, //допустимое отклонение мощности
 		powerProperty: 'power',
 		maxPowerProperty: 'max_power', //терморегуляторы
 
-		regulatorCategory: 'Терморегулятор',
+		regulatorCategory: ['Терморегулятор', 'Терморегуляторы'],
 		radiatorCategory: ['Конвекторы', 'Радиаторы'],
 
 		needRemoteControlTag: 'дистанционное управление',

@@ -9,7 +9,7 @@ export default (equipments: EquipmentItem[]) => {
 	if (equipments.length > 0) {
 		equipment =
 			equipments
-				.filter((equipment) => equipment.category === regulatorCategory)
+				.filter((equipment) => regulatorCategory.includes(equipment.category))
 				.sort((a, b) => a.price - b.price)[0] || null;
 	}
 
