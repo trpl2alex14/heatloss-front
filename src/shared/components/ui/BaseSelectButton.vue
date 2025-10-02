@@ -9,7 +9,18 @@
 		:aria-labelledby="ariaLabelledby"
 		:class="computedClass"
 		v-bind="$attrs"
-	/>
+	>
+		<template #option="slotProps">
+			<div v-if="slotProps.option.image" class="flex items-center gap-2">
+				<img
+					:src="slotProps.option.image"
+					class="w-4 h-4 object-cover"
+					alt=""
+				/>
+				<span>{{ slotProps.option[optionLabel] }}</span>
+			</div>
+		</template>
+	</SelectButton>
 </template>
 
 <script setup lang="ts">
