@@ -1,13 +1,14 @@
 @import "tailwindcss";
 @import 'primeicons/primeicons.css';
+@source "../";
 
 @theme {
 	--font-sans: "Roboto", sans-serif;
 	--color-black: #202020;
-	--my-color-gray: #687377;	
+	--my-color-gray: #687377;
 }
 
-html {	
+html {
 	font-size: 14px;
 	line-height: normal;
 }
