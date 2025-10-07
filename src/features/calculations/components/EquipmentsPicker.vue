@@ -147,13 +147,13 @@
 
 <script setup lang="ts">
 import { computed, ref, onMounted, watch } from "vue";
-import BaseListbox from "@/shared/components/ui/BaseListbox.vue";
-import BaseButton from "@/shared/components/ui/BaseButton.vue";
-import BaseChip from "@/shared/components/ui/BaseChip.vue";
+import BaseListbox from "@shared/components/ui/BaseListbox.vue";
+import BaseButton from "@shared/components/ui/BaseButton.vue";
+import BaseChip from "@shared/components/ui/BaseChip.vue";
 import { useEquipments } from "../api/equipments";
-import type { Product } from "@/shared/types/produtcs";
+import type { Product } from "@shared/types/produtcs";
 import type { EquipmentItem, Equipment } from "../types";
-import { useSettings } from "@/features/settings/composables/useSettings";
+import { useSettings } from "@features/settings/composables/useSettings";
 
 interface Props {
 	product: Product;

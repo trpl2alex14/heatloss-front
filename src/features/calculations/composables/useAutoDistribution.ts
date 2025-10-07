@@ -1,7 +1,7 @@
 import type { Room, RoomConstruction } from "../types";
 import type { Construction } from "../types";
 import type { RoomConstructionMethod } from "../types";
-import type { SurfaceType } from "@/features/directories/types/materials";
+import type { SurfaceType } from "@features/directories/types/materials";
 import { useCalculator } from "./useCalculator";
 import { ref } from "vue";
 

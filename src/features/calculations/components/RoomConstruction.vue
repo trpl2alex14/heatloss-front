@@ -82,7 +82,7 @@ import {
 	BaseInputNumber,
 	BaseInputText,
 	BaseButton,
-} from "@/shared/components";
+} from "@shared/components";
 import type { RoomConstruction, Construction } from "../types";
 import { useCalculator } from "../composables/useCalculator";
 
@@ -164,7 +164,7 @@ watch(
 		() => props.modelValue.enabled,
 		() => props.modelValue.heatLoss,
 	],
-	([heatLoss, enabled, value], [oldHeatLoss, oldEnabled, oldValue]) => {		
+	([heatLoss, enabled, value], [oldHeatLoss, oldEnabled, oldValue]) => {
 		if (
 			(oldHeatLoss === heatLoss &&
 				oldEnabled === enabled &&

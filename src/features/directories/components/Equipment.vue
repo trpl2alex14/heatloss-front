@@ -98,8 +98,8 @@
 <script setup lang="ts">
 import {onMounted, ref, useTemplateRef, watch, computed} from "vue";
 import type {Equipment} from "../types";
-import {BaseInputNumber, BaseInputText, BaseMultiSelect, BaseSelect, BaseSelectButton} from "@/shared/components";
-import BaseButton from "@/shared/components/ui/BaseButton.vue";
+import {BaseInputNumber, BaseInputText, BaseMultiSelect, BaseSelect, BaseSelectButton} from "@shared/components";
+import BaseButton from "@shared/components/ui/BaseButton.vue";
 import {useForm} from "@features/directories/composables/useForm.ts";
 import {useTypes} from "@shared/composables/useTypes.ts";
 import BaseImageUpload from "@shared/components/ui/BaseImageUpload.vue";

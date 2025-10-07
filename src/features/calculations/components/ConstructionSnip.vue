@@ -39,8 +39,8 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import BaseInputText from "@/shared/components/ui/BaseInputText.vue";
-import BaseInputNumber from "@/shared/components/ui/BaseInputNumber.vue";
+import BaseInputText from "@shared/components/ui/BaseInputText.vue";
+import BaseInputNumber from "@shared/components/ui/BaseInputNumber.vue";
 import type { Construction } from "../types";
 
 interface Props {

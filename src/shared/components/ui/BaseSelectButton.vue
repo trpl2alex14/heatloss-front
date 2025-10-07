@@ -26,7 +26,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import SelectButton from "primevue/selectbutton";
-import type { SelectButtonOption } from "@/shared/types/ui";
+import type { SelectButtonOption } from "@shared/types/ui";
 
 const props = defineProps({
 	modelValue: {

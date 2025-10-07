@@ -14,7 +14,7 @@
 <script setup lang="ts">
 import calcIcon from "@assets/icons/pencil-ruler.svg";
 import { computed, type PropType } from "vue";
-import { useLink } from "@/shared/composables/useLink";
+import { useLink } from "@shared/composables/useLink";
 
 const { link } = useLink();
 

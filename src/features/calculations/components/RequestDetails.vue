@@ -3,7 +3,7 @@
 		<!-- Заголовок и кнопка -->
 		<div class="flex justify-between items-center border-b border-gray-300">
 			<div class="font-medium">Данные по объекту</div>
-			<div>				
+			<div>
 				<BaseButton
 					label="Перенести всё"
 					text
@@ -30,7 +30,7 @@
 			<BaseInputText v-model="request.city" label="Город / Регион" disabled class="flex-1" />
 			<BaseButton text @click="$emit('copy-city')" icon="copy" />
 		</div>
-		
+
 		<div class="flex gap-x-2">
 			<BaseInputText
 				:model-value="
@@ -209,7 +209,7 @@
 <script setup lang="ts">
 import BaseInputText from "@shared/components/ui/BaseInputText.vue";
 import BaseButton from "@shared/components/ui/BaseButton.vue";
-import Tag from "@/features/calculations/components/Tag.vue";
+import Tag from "@features/calculations/components/Tag.vue";
 import type { RequestDetails } from "@features/requests/types/request.ts";
 
 type Props = {

@@ -1,6 +1,6 @@
 import type { EquipmentItem } from "@features/directories/types/equipment";
-import { useFetchCollection, type RequestDataOptions } from "@/shared/composables/useFetchCollection";
-import type { ColumnDef } from "@/shared/types/table";
+import { useFetchCollection, type RequestDataOptions } from "@shared/composables/useFetchCollection";
+import type { ColumnDef } from "@shared/types/table";
 
 const columns: ColumnDef[] = [
 	{
@@ -91,7 +91,7 @@ export const useEquipmentData = () => {
 			params.filter = {
 				product: filterValue,
 			};
-		}		
+		}
 
 		loadData(params);
 	};

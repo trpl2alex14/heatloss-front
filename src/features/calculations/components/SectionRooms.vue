@@ -65,10 +65,10 @@
 
 <script setup lang="ts">
 import { computed, watch, defineAsyncComponent } from "vue";
-import BaseButton from "@/shared/components/ui/BaseButton.vue";
-import BaseSelectButton from "@/shared/components/ui/BaseSelectButton.vue";
+import BaseButton from "@shared/components/ui/BaseButton.vue";
+import BaseSelectButton from "@shared/components/ui/BaseSelectButton.vue";
 import Room from "./Room.vue";
-import EmptyBox from "@/shared/components/EmptyBox.vue";
+import EmptyBox from "@shared/components/EmptyBox.vue";
 import type {
 	CalculationDetails,
 	Room as RoomType,
@@ -239,13 +239,13 @@ const addFloor = (index: number) => {
 
 const addEquipment = (index: number) => {
 	dialog.open(equipmentsPicker, {
-        props: {            
+        props: {
 			showHeader: false,
             style: {
                 width: '45vw',
             },
             modal: true
-        },		
+        },
 		data: {
 			product: props.modelValue.product,
 			roomId: props.modelValue.rooms[index].id,
@@ -255,16 +255,16 @@ const addEquipment = (index: number) => {
 		onClose: (value) => {
 			if (!value?.data || !Array.isArray(value.data) || value.data.length === 0) {
 				return;
-			}			
+			}
 
 			emit("update:modelValue", {
 				...props.modelValue,
 				rooms: props.modelValue.rooms.map((room, roomIndex) => {
 					if (roomIndex === index) {
-						return { 
+						return {
 							...room,
 							manualEquip: true,
-							equipment: [...room.equipment || [], ...value.data] 
+							equipment: [...room.equipment || [], ...value.data]
 						};
 					}
 					return room;
@@ -309,7 +309,7 @@ const distributeConstructionsAutomatically = (
 		return;
 	}
 
-	const { distributeConstructions, isAlertConstructions } 
+	const { distributeConstructions, isAlertConstructions }
 		= useAutoDistribution(props.modelValue.rooms, props.modelValue.constructions);
 	const updatedRooms = distributeConstructions(mode);
 
@@ -369,7 +369,7 @@ const hasRoomsConstructionsChanges = (
 
 const addRooms = (rooms: any) => {
 	let index = 0;
-	const newRooms = rooms.map((room: RoomFromRequest) => {		
+	const newRooms = rooms.map((room: RoomFromRequest) => {
 		const id = ++index;
 		return {
 			id: id,

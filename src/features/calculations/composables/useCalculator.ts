@@ -6,8 +6,8 @@ import type {
 	Room,
 	Construction,
 } from "../types";
-import { useSettings } from "@/features/settings/composables/useSettings.ts";
-import type { SurfaceType } from "@/features/directories/types";
+import { useSettings } from "@features/settings/composables/useSettings.ts";
+import type { SurfaceType } from "@features/directories/types";
 
 const { powerPrice, tagsForTitle } = useSettings();
 const calculation = ref<CalculationDetails>({
@@ -264,7 +264,7 @@ export const useCalculator = () => {
 		calculatedHeatLoss,
 		getSnipResistance,
 		getRoomHeight,
-		getMaxFloor,		
+		getMaxFloor,
 		computedTempDiff: tempDiff,
 		tempDiff: tempDiff.value,
 		resetCalculation,

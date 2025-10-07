@@ -1,4 +1,4 @@
-import {type RejectResponse, useApiRequest} from "@/shared/composables/useApiRequest";
+import {type RejectResponse, useApiRequest} from "@shared/composables/useApiRequest";
 import {computed, ref, watch} from "vue";
 import {serialize} from "@shared/utils/serialize.ts";
 

@@ -1,5 +1,5 @@
 import type { Equipment, EquipmentItem, Room } from "../types";
-import { useSettings } from "@/features/settings/composables/useSettings";
+import { useSettings } from "@features/settings/composables/useSettings";
 
 export default (equipments: EquipmentItem[]) => {
 	const { regulatorCategory, maxPowerProperty } = useSettings();

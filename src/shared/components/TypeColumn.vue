@@ -36,7 +36,7 @@ import type {
 	TypeImageDef,
 	TypeIconDef,
 	TypeLabelDef,
-} from "@/shared/types/table";
+} from "@shared/types/table";
 
 const props = defineProps<{
 	type: number | string;

@@ -25,7 +25,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useRoute } from "vue-router";
-import { useLink } from "@/shared/composables/useLink";
+import { useLink } from "@shared/composables/useLink";
 
 const { link } = useLink();
 
@@ -46,11 +46,7 @@ const isActive = computed(() => {
 	if (route.path === props.to) return true;
 
 	// Если текущий маршрут начинается с пути меню и не равен ему, то это дочерний маршрут
-	if (route.path.startsWith(props.to) && route.path !== props.to && route.meta.hasSubMenu) {
-		return true;
-	}
-
-	return false;
+	return !!(route.path.startsWith(props.to) && route.path !== props.to && route.meta.hasSubMenu);
 });
 
 const componentProps = computed(() => {

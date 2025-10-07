@@ -33,7 +33,7 @@
 <script setup lang="ts">
 import { computed, useAttrs } from "vue";
 import MultiSelect from "primevue/multiselect";
-import type { SelectOption } from "@/shared/types/ui";
+import type { SelectOption } from "@shared/types/ui";
 
 const props = defineProps({
 	modelValue: {

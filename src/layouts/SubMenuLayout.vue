@@ -1,5 +1,5 @@
-<template>	
-	<slot name="header" />	
+<template>
+	<slot name="header" />
 	<div class="flex gap-6">
 		<div class="w-80 flex-shrink-0">
 			<SubMenu :items="subMenuItems" />
@@ -13,7 +13,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import SubMenu from "@/shared/components/SubMenu.vue";
+import SubMenu from "@shared/components/SubMenu.vue";
 
 const route = useRoute();
 const router = useRouter();

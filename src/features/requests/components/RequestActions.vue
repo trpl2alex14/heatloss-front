@@ -11,7 +11,7 @@
 <script setup lang="ts">
 import BaseButton from "@shared/components/ui/BaseButton.vue";
 import { inject, onMounted, type Ref, ref } from "vue";
-import { useConfirm } from "@/shared/composables/useConfirm";
+import { useConfirm } from "@shared/composables/useConfirm";
 
 interface Dialog {
 	data: { id: number };
@@ -25,7 +25,7 @@ const dialogRef = inject("dialogRef") as Ref<Dialog>;
 let id = ref();
 
 onMounted(() => {
-	if (dialogRef && dialogRef.value?.data) {		
+	if (dialogRef && dialogRef.value?.data) {
 		id.value = dialogRef.value?.data.id;
 	}
 });
@@ -38,13 +38,13 @@ const close = () => {
 
 function create() {
 	emit('create', id.value);
-	setTimeout( () => close(), 0);	
+	setTimeout( () => close(), 0);
 }
 
 function drop() {
 	confirmDelete().then(()=>{
 		emit('delete', id.value);
-		setTimeout( () => close(), 0);	
+		setTimeout( () => close(), 0);
 	});
 }
 </script>

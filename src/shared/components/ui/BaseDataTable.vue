@@ -114,8 +114,8 @@ import BasePagination from "./BasePagination.vue";
 import BaseDataTableColsPicker from "./BaseDataTableColumnsPicker.vue";
 import BaseDropdownMenu from "./BaseDropdownMenu.vue";
 import Column from "primevue/column";
-import type { ColumnDef, TypeLabelDef } from "@/shared/types/table";
-import type { ActionDef } from "@/shared/types/menu";
+import type { ColumnDef, TypeLabelDef } from "@shared/types/table";
+import type { ActionDef } from "@shared/types/menu";
 import BaseStatusTag from "@shared/components/ui/BaseStatusTag.vue";
 
 const props = defineProps<{

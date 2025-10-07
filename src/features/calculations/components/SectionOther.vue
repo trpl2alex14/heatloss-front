@@ -78,13 +78,13 @@
 import { computed, onMounted, watch } from "vue";
 import type { CalculationDetails } from "../types";
 import { usePromos } from "../api/promos";
-import BaseSelect from "@/shared/components/ui/BaseSelect.vue";
-import BaseInputNumber from "@/shared/components/ui/BaseInputNumber.vue";
-import BaseTextArea from "@/shared/components/ui/BaseTextArea.vue";
-import BaseInputText from "@/shared/components/ui/BaseInputText.vue";
-import type { PromoCode } from "@/shared/types/ui";
-import { useSettings } from "@/features/settings/composables/useSettings.ts";
-import BaseToggleSwitch from "@/shared/components/ui/BaseToggleSwitch.vue";
+import BaseSelect from "@shared/components/ui/BaseSelect.vue";
+import BaseInputNumber from "@shared/components/ui/BaseInputNumber.vue";
+import BaseTextArea from "@shared/components/ui/BaseTextArea.vue";
+import BaseInputText from "@shared/components/ui/BaseInputText.vue";
+import type { PromoCode } from "@shared/types/ui";
+import { useSettings } from "@features/settings/composables/useSettings.ts";
+import BaseToggleSwitch from "@shared/components/ui/BaseToggleSwitch.vue";
 
 interface Props {
 	modelValue: CalculationDetails;

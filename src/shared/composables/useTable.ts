@@ -1,5 +1,5 @@
 import { ref, computed, type Ref } from "vue";
-import type { PaginationOptions, SortOptions } from "@/shared/types/table";
+import type { PaginationOptions, SortOptions } from "@shared/types/table";
 
 interface UseTableOptions<T> {
 	searchFields?: (keyof T)[];

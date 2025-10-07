@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { plural } from "@/shared/utils/text";
+import { plural } from "@shared/utils/text";
 
 interface Props {
 	value: number;
@@ -16,6 +16,6 @@ interface Props {
 const props = defineProps<Props>();
 
 const label = computed(() => {
-	return props?.label || plural(props.value, ["запись", "записи", "записей"]);	
+	return props?.label || plural(props.value, ["запись", "записи", "записей"]);
 });
 </script>

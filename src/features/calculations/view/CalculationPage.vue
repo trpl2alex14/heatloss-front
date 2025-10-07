@@ -81,17 +81,17 @@ import {
 	Calculation,
 	LocalHistoryMenu,
 } from "@features/calculations/components";
-import type { SelectButtonOption } from "@/shared/types/ui";
+import type { SelectButtonOption } from "@shared/types/ui";
 import type { SubMenuItem } from "@shared/types/submenu.ts";
 import { useCalculator } from "@features/calculations/composables/useCalculator.ts";
-import { useRequest } from "@/features/calculations/api/request";
-import { useFetchCalculation, useSaveCalculation } from "@/features/calculations/api/calculation";
-import { useLocalHistory } from "@/features/calculations/composables/useLocalHistory";
-import { useDebounce } from "@/shared/utils/debounce";
-import type { CalculationSaved } from "@/features/calculations/types";
+import { useRequest } from "@features/calculations/api/request";
+import { useFetchCalculation, useSaveCalculation } from "@features/calculations/api/calculation";
+import { useLocalHistory } from "@features/calculations/composables/useLocalHistory";
+import { useDebounce } from "@shared/utils/debounce";
+import type { CalculationSaved } from "@features/calculations/types";
 import { useRoute, useRouter } from "vue-router";
 import { toRaw } from "vue";
-import { useSettings } from "@/features/settings/composables/useSettings";
+import { useSettings } from "@features/settings/composables/useSettings";
 
 const debounce = useDebounce();
 
@@ -119,7 +119,7 @@ const requestId = computed(() => {
 	return calculation.value.requestId || Number(route.query.request);
 });
 
-watch(requestId, (newId) => {	
+watch(requestId, (newId) => {
 	if (newId) {
 		loadRequestData(newId);
 	}
@@ -129,7 +129,7 @@ watch(requestId, (newId) => {
 
 watch(
 	() => route.params,
-	({ id, key }, oldValue) => {			
+	({ id, key }, oldValue) => {
 		if((id || key) && id === oldValue?.id && key === oldValue?.key){
 			return ;
 		}
@@ -205,7 +205,7 @@ const save = async () => {
 		calculation: { ...calculation.value },
 		result: { ...calculationResult.value },
 	});
-		
+
 	if (id) {
 		needSave.value = false;
 		notSaveAuto = true;
@@ -213,7 +213,7 @@ const save = async () => {
 	}
 };
 
-const copyAll = async () => {	
+const copyAll = async () => {
 	await nextTick(()=>copyTags());
 	await nextTick(()=>copyCity());
 	await nextTick(()=>copyConstructions());

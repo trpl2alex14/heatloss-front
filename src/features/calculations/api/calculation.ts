@@ -1,8 +1,8 @@
-import { useApi } from "@/shared/composables/useApi";
+import { useApi } from "@shared/composables/useApi";
 import type { CalculationDetails, CalculationSaved, CalculationStatus } from "../types";
 import { type Ref, watch } from "vue";
-import { useMessage } from "@/shared/composables/useMessage.ts";
-import { useApiRequest } from "@/shared/composables/useApiRequest"
+import { useMessage } from "@shared/composables/useMessage.ts";
+import { useApiRequest } from "@shared/composables/useApiRequest"
 
 export const useFetchCalculation = (calculationData: Ref<CalculationDetails>) => {
 	const { data, isLoading, error, loadData } = useApi<{}, CalculationDetails>({ name: "api-calculation" });

@@ -1,5 +1,5 @@
 export type {Equipment as EquipmentItem}
-	from "@/features/directories/types/equipment";
+	from "@features/directories/types/equipment";
 
 export interface Equipment {
 	id: number;

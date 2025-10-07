@@ -1,4 +1,4 @@
-import type { MaterialType, Surface } from "@/features/directories/types";
+import type { MaterialType, Surface } from "@features/directories/types";
 
 export interface ConstructionLayer {
 	enabled: boolean;

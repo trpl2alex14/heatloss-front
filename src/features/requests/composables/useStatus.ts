@@ -1,4 +1,4 @@
-import type { TypeLabelDef } from "@/shared/types/table";
+import type { TypeLabelDef } from "@shared/types/table";
 import type { RequestStatus } from "../types/request";
 
 export const useStatus = (): TypeLabelDef[] & { key: RequestStatus }[] => [

@@ -311,7 +311,7 @@ import {
 	BaseButton,
 	BaseToggleSwitch,
 	EmptyBox,
-} from "@/shared/components";
+} from "@shared/components";
 import type { Product } from "@shared/types/produtcs";
 import { useDebounce } from "@shared/utils/debounce";
 import Popover from "primevue/popover";
@@ -686,18 +686,18 @@ const equipRules = useEquipRules(computed(() => props.tags || []));
 // Композит для автоматического распределения оборудования
 const { equipRoom, equipments } = useAutoEquip(computed(() => props.product), equipRules);
 
-watch(totalHeatLoss, (newHeatLoss, oldHeatLoss) => {	
+watch(totalHeatLoss, (newHeatLoss, oldHeatLoss) => {
 	if(newHeatLoss !== oldHeatLoss) {
 		emit("update:modelValue", {
 			...props.modelValue,
 			heatLoss: newHeatLoss,
-		});		
+		});
 		debounce(() => autoEquip(), 100);
 	}
 });
 
 watch(() => props.modelValue?.manualEquip, (newManualEquip, oldManualEquip) => {
-	if(newManualEquip !== oldManualEquip) {		
+	if(newManualEquip !== oldManualEquip) {
 		autoEquip();
 	}
 });
@@ -711,7 +711,7 @@ watch( equipRules, () => {
 });
 
 watch(()=> props?.product, (newProduct, oldProduct) => {
-	if(newProduct !== oldProduct) {		
+	if(newProduct !== oldProduct) {
 		autoEquip();
 	}
 });
@@ -729,7 +729,7 @@ watch(equipments, (newEquipments, oldEquipments) => {
 		if(newEquipments?.data[i].id !== oldEquipments?.data[i].id) {
 			autoEquip();
 		}
-	}		
+	}
 });
 
 // Функция автоматического распределения оборудования

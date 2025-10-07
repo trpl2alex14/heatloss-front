@@ -2,8 +2,8 @@ import type { CaseItem } from "@features/cases/types/case";
 import {
 	useFetchCollection,
 	type RequestDataOptions,
-} from "@/shared/composables/useFetchCollection";
-import type { ColumnDef } from "@/shared/types/table";
+} from "@shared/composables/useFetchCollection";
+import type { ColumnDef } from "@shared/types/table";
 
 const columns: ColumnDef[] = [
 	{
@@ -61,7 +61,7 @@ const columns: ColumnDef[] = [
 		style: "max-width: 150px;",
 		sort: 6,
 		hidden: true,
-	},	
+	},
 	{
 		key: "city",
 		label: "Город",
@@ -76,7 +76,7 @@ const columns: ColumnDef[] = [
 		sortable: true,
 		style: "width: 90px; text-align: right",
 		measure: "₽",
-		sort: 8,		
+		sort: 8,
 	},
 	{
 		key: "power",
@@ -85,7 +85,7 @@ const columns: ColumnDef[] = [
 		sortable: true,
 		style: "width: 90px; text-align: right",
 		measure: "кВт",
-		sort: 9,		
+		sort: 9,
 	},
 	{
 		key: "consumption",
@@ -94,7 +94,7 @@ const columns: ColumnDef[] = [
 		sortable: true,
 		style: "width: 90px; text-align: right",
 		measure: "₽",
-		sort: 10,		
+		sort: 10,
 	},
 ];
 

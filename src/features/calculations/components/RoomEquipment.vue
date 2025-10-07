@@ -87,9 +87,9 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import BaseInputText from "@/shared/components/ui/BaseInputText.vue";
-import BaseInputNumber from "@/shared/components/ui/BaseInputNumber.vue";
-import BaseButton from "@/shared/components/ui/BaseButton.vue";
+import BaseInputText from "@shared/components/ui/BaseInputText.vue";
+import BaseInputNumber from "@shared/components/ui/BaseInputNumber.vue";
+import BaseButton from "@shared/components/ui/BaseButton.vue";
 import type { Equipment } from "../types";
 
 interface Props {

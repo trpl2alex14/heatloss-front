@@ -5,16 +5,16 @@ import regulatorSimpl from "../rules/regulatorSimpl";
 import radiatorLowPrice from "../rules/radiatorLowPrice";
 import regulatorWiFi from "../rules/regulatorWiFi";
 import radiatorForWindow from "../rules/radiatorForWindow";
-import { useSettings } from "@/features/settings/composables/useSettings";
+import { useSettings } from "@features/settings/composables/useSettings";
 
 const defaultRulse: Rule[] = [
-	//radiatorLowPrice,	
+	//radiatorLowPrice,
 ];
 
 const { needRemoteControlTag, needForWindowTag } = useSettings();
 
 export const useEquipRules = (tags: Ref<string[]>) => {
-	
+
 	return computed(() => {
 		const rules = [];
 
@@ -27,7 +27,7 @@ export const useEquipRules = (tags: Ref<string[]>) => {
 		}
 
 		if(tags.value.includes(needRemoteControlTag)) {
-			rules.push(regulatorWiFi);			
+			rules.push(regulatorWiFi);
 		}else{
 			rules.push(regulatorSimpl);
 		}

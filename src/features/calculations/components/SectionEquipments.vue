@@ -39,9 +39,9 @@
 
 <script setup lang="ts">
 import { computed, defineAsyncComponent } from "vue";
-import BaseButton from "@/shared/components/ui/BaseButton.vue";
+import BaseButton from "@shared/components/ui/BaseButton.vue";
 import RoomEquipment from "./RoomEquipment.vue";
-import EmptyBox from "@/shared/components/EmptyBox.vue";
+import EmptyBox from "@shared/components/EmptyBox.vue";
 import type { CalculationDetails, Equipment } from "../types";
 import { useDialog } from 'primevue/usedialog';
 
@@ -76,13 +76,13 @@ const equipmentList = computed({
 // Методы для работы с оборудованием
 const addEquipment = () => {
 	dialog.open(equipmentsPicker, {
-        props: {            
+        props: {
 			showHeader: false,
             style: {
                 width: '45vw',
             },
             modal: true
-        },		
+        },
 		data: {
 			product: props.modelValue.product,
 			roomId: 0,
@@ -92,7 +92,7 @@ const addEquipment = () => {
 		onClose: (value) => {
 			if (!value?.data || !Array.isArray(value.data) || value.data.length === 0) {
 				return;
-			}			
+			}
 
 			emit("update:modelValue", {
 				...props.modelValue,

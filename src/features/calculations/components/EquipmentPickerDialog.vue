@@ -14,11 +14,11 @@
 <script setup lang="ts">
 import EquipmentsPicker from './EquipmentsPicker.vue';
 import { inject, onMounted, ref, type Ref } from 'vue';
-import type { Product } from '@/shared/types/produtcs';
+import type { Product } from '@shared/types/produtcs';
 import type { Equipment } from '../types';
 
 interface Dialog {
-	data: { product: Product, roomId: number, roomName: string, exclude?: number[] };	
+	data: { product: Product, roomId: number, roomName: string, exclude?: number[] };
 	close: (equipments: Equipment[] | void) => void;
 }
 
@@ -40,7 +40,7 @@ onMounted(() => {
 	}
 });
 
-const handleAdd = (equipments: Equipment[]) => {	
+const handleAdd = (equipments: Equipment[]) => {
 	dialogRef.value.close(equipments);
 };
 

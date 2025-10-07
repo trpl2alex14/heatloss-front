@@ -3,9 +3,9 @@ import type {
 	FilterOptions,
 	PaginationOptions,
 	SortOptions,
-} from "@/shared/types/table";
+} from "@shared/types/table";
 import { onMounted, reactive, ref, watch } from "vue";
-import { useDebounce } from "@/shared/utils/debounce";
+import { useDebounce } from "@shared/utils/debounce";
 
 const debounce = useDebounce();
 

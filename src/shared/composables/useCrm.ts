@@ -1,4 +1,4 @@
-import { useSettings } from "@/features/settings/composables/useSettings";
+import { useSettings } from "@features/settings/composables/useSettings";
 
 export const useCrm = () => {
 	const { crmEndpointUrl, crmDealPath, crmLeadPath } = useSettings();
@@ -9,7 +9,7 @@ export const useCrm = () => {
 
 	const getLeadUrl = (id: number) => {
 		return crmEndpointUrl + crmLeadPath + id;
-	};	
+	};
 
 	return {
 		getDealUrl,

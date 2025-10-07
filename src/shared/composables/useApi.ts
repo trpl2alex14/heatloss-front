@@ -1,6 +1,6 @@
 import { ref, computed, shallowRef, watch } from "vue";
 import axios from "axios";
-import { useMessage } from "@/shared/composables/useMessage";
+import { useMessage } from "@shared/composables/useMessage";
 import { useRouter } from "vue-router";
 
 export type ResponseData<T> = {
@@ -19,17 +19,17 @@ export const useApi = <T, K>(
 	const error = ref<string | null>(null);
 	const router = useRouter();
 
-	const getUrl = (id?: string | number) => {		
-		if(typeof endpoint === 'object'){				
+	const getUrl = (id?: string | number) => {
+		if(typeof endpoint === 'object'){
 			return router.resolve({
-				name: endpoint.name, 
+				name: endpoint.name,
 				params: id ? { id } : {}
 			}).href;
-		} 
+		}
 
 		return endpoint + (id || "");
 	};
-	
+
 	const loadData = async (params?: T | string | number | null, id?: string | number) => {
 		isLoading.value = true;
 		error.value = null;
@@ -43,7 +43,7 @@ export const useApi = <T, K>(
 
 		try {
 			const response = await axios.get(url, params ? {params} : {});
-						
+
 			if (response.data?.status !== "success") {
 				throw new Error(
 					response.data?.error ?? "Ошибка при загрузке данных"
@@ -67,10 +67,10 @@ export const useApi = <T, K>(
 	const saveData = async (route: string, params: T) => {
 		isLoading.value = true;
 		error.value = null;
-		
+
 		try {
 			const url = getUrl(route);
-			
+
 			const response = await axios.post(url, params);
 
 			if (response.data?.status !== "success") {
@@ -86,7 +86,7 @@ export const useApi = <T, K>(
 					? err.message
 					: "Ошибка при сохранении данных";
 			console.error("Ошибка сохранения данных:", err);
-			
+
 			data.value = null;
 		} finally {
 			isLoading.value = false;

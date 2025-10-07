@@ -1,6 +1,6 @@
-import type { Product } from "@/shared/types/produtcs";
-import type { ClientRequest, Attach } from "@/shared/types/client";
-import type { SurfaceType } from "@/features/directories/types";
+import type { Product } from "@shared/types/produtcs";
+import type { ClientRequest, Attach } from "@shared/types/client";
+import type { SurfaceType } from "@features/directories/types";
 
 export type RequestStatus = "working" | "completed" | "pending" | "cancelled";
 

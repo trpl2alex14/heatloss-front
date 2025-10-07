@@ -61,29 +61,29 @@
 
 <script setup lang="ts">
 import {ref, computed, onMounted, defineAsyncComponent} from "vue";
-import Head from "@/shared/components/SubHead.vue";
-import BaseButton from "@/shared/components/ui/BaseButton.vue";
-import RowCounter from "@/shared/components/RowCounter.vue";
-import BaseSearch from "@/shared/components/ui/BaseSearch.vue";
-import BaseDataTable from "@/shared/components/ui/BaseDataTable.vue";
-import BaseChip from "@/shared/components/ui/BaseChip.vue";
-import BaseSelectButton from "@/shared/components/ui/BaseSelectButton.vue";
-import TypeColumn from "@/shared/components/TypeColumn.vue";
-import type {TypeIconDef} from "@/shared/types/table";
-import {dropdownActions} from "@/features/directories/composables/useProductDropdownMenu";
-import {useTable} from "@/shared/composables/useTable";
-import {useTypes} from "@/shared/composables/useTypes";
+import Head from "@shared/components/SubHead.vue";
+import BaseButton from "@shared/components/ui/BaseButton.vue";
+import RowCounter from "@shared/components/RowCounter.vue";
+import BaseSearch from "@shared/components/ui/BaseSearch.vue";
+import BaseDataTable from "@shared/components/ui/BaseDataTable.vue";
+import BaseChip from "@shared/components/ui/BaseChip.vue";
+import BaseSelectButton from "@shared/components/ui/BaseSelectButton.vue";
+import TypeColumn from "@shared/components/TypeColumn.vue";
+import type {TypeIconDef} from "@shared/types/table";
+import {dropdownActions} from "@features/directories/composables/useProductDropdownMenu";
+import {useTable} from "@shared/composables/useTable";
+import {useTypes} from "@shared/composables/useTypes";
 import {useEquipmentData} from "@features/directories/composables/useEquipmentData";
-import type {EquipmentItem} from "@/features/directories/types/equipment";
+import type {EquipmentItem} from "@features/directories/types/equipment";
 import {useConfirm} from "@shared/composables/useConfirm.ts";
 import type {DynamicDialogInstance} from "primevue/dynamicdialogoptions";
-import {useDialog} from "primevue/usedialog";
+import {useDialog} from "primevue";
 import {useMessage} from "@shared/composables/useMessage.ts";
 import ConfirmDialog from "primevue/confirmdialog";
 import type {ActionValue} from "@shared/types/menu.ts";
 import {useEquipmentAction} from "@features/directories/composables/useEquipmentAction.ts";
 
-const ProxyDialog = defineAsyncComponent(() => import("@/shared/components/ProxyDialog.vue"));
+const ProxyDialog = defineAsyncComponent(() => import("@shared/components/ProxyDialog.vue"));
 
 const filterValue = ref("all");
 

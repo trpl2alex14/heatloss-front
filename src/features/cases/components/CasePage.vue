@@ -11,6 +11,6 @@
 </template>
 
 <script setup lang="ts">
-import Head from '@/shared/components/Head.vue';
+import Head from '@shared/components/Head.vue';
 //TODO
 </script>

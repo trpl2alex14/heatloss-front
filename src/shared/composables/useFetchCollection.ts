@@ -1,12 +1,12 @@
 import { ref, onMounted, computed, watch } from "vue";
-import { useMessage } from "@/shared/composables/useMessage";
+import { useMessage } from "@shared/composables/useMessage";
 import type {
 	SortOptions,
 	SearchOptions,
 	FilterOptions,
 	PaginationOptions,
-} from "@/shared/types/table";
-import { useApi, type ResponseData, type Endpoint } from "@/shared/composables/useApi";
+} from "@shared/types/table";
+import { useApi, type ResponseData, type Endpoint } from "@shared/composables/useApi";
 
 type LazyLoadOptions = {
 	page: number;

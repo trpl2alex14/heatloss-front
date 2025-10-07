@@ -16,7 +16,7 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import MultiSelect from "primevue/multiselect";
-import type { ColumnDef } from "@/shared/types/table";
+import type { ColumnDef } from "@shared/types/table";
 
 const props = defineProps({
 	modelValue: {

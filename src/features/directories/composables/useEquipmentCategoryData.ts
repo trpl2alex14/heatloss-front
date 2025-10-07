@@ -1,6 +1,6 @@
 import {computed} from "vue";
 import type {Category} from "@features/directories/types";
-import {useApi} from "@/shared/composables/useApi";
+import {useApi} from "@shared/composables/useApi";
 
 type ApiResponse = { data: Category[] };
 export const useEquipmentCategoryData = () => {

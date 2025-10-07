@@ -1,5 +1,5 @@
 import type { Equipment, EquipmentItem, Room } from "../types";
-import { useSettings } from "@/features/settings/composables/useSettings";
+import { useSettings } from "@features/settings/composables/useSettings";
 import radiatorLowPrice from "./radiatorLowPrice";
 
 export default (equipments: EquipmentItem[]) => {

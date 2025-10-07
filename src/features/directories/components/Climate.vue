@@ -96,8 +96,8 @@
 <script setup lang="ts">
 import {onMounted, watch} from "vue";
 import type {ClimateItem} from "../types";
-import {BaseInputNumber, BaseInputText, BaseSelectButton} from "@/shared/components";
-import BaseButton from "@/shared/components/ui/BaseButton.vue";
+import {BaseInputNumber, BaseInputText, BaseSelectButton} from "@shared/components";
+import BaseButton from "@shared/components/ui/BaseButton.vue";
 import {useForm} from "@features/directories/composables/useForm.ts";
 
 type Props = {

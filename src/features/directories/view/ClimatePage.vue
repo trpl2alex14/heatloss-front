@@ -29,25 +29,25 @@
 
 <script setup lang="ts">
 import { computed, onMounted, defineAsyncComponent } from "vue";
-import Head from "@/shared/components/SubHead.vue";
-import BaseButton from "@/shared/components/ui/BaseButton.vue";
-import RowCounter from "@/shared/components/RowCounter.vue";
-import BaseSearch from "@/shared/components/ui/BaseSearch.vue";
-import BaseDataTable from "@/shared/components/ui/BaseDataTable.vue";
-import { useTable } from "@/shared/composables/useTable";
+import Head from "@shared/components/SubHead.vue";
+import BaseButton from "@shared/components/ui/BaseButton.vue";
+import RowCounter from "@shared/components/RowCounter.vue";
+import BaseSearch from "@shared/components/ui/BaseSearch.vue";
+import BaseDataTable from "@shared/components/ui/BaseDataTable.vue";
+import { useTable } from "@shared/composables/useTable";
 import { useClimateData } from "@features/directories/composables/useClimateData";
-import { plural } from "@/shared/utils/text";
-import { dropdownActions } from "@/features/directories/composables/useClimateDropdownMenu";
-import type { ClimateItem } from "@/features/directories/types/climate";
-import type { ActionValue } from "@/shared/types/menu";
-import { useConfirm } from "@/shared/composables/useConfirm";
+import { plural } from "@shared/utils/text";
+import { dropdownActions } from "@features/directories/composables/useClimateDropdownMenu";
+import type { ClimateItem } from "@features/directories/types/climate";
+import type { ActionValue } from "@shared/types/menu";
+import { useConfirm } from "@shared/composables/useConfirm";
 import ConfirmDialog from "primevue/confirmdialog";
-import { useMessage } from "@/shared/composables/useMessage";
-import { useApiRequest } from "@/shared/composables/useApiRequest";
+import { useMessage } from "@shared/composables/useMessage";
+import { useApiRequest } from "@shared/composables/useApiRequest";
 import { useDialog } from "primevue/usedialog";
 import type { DynamicDialogInstance } from "primevue/dynamicdialogoptions";
 
-const ProxyDialog = defineAsyncComponent(() => import("@/shared/components/ProxyDialog.vue"));
+const ProxyDialog = defineAsyncComponent(() => import("@shared/components/ProxyDialog.vue"));
 
 const dialog = useDialog();
 

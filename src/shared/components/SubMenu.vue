@@ -16,7 +16,7 @@
 			>
 				<img
 					v-if="item.icon"
-					:src="`/src/assets/icons/${item.icon}`"
+					:src="item.icon"
 					:alt="item.title"
 					class="w-5 h-5 opacity-70"
 					:class="{ 'opacity-100': isActive(item.path) }"
@@ -30,8 +30,8 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useRoute } from "vue-router";
-import type { SubMenuItem } from "@/shared/types/submenu";
-import { useLink } from "@/shared/composables/useLink";
+import type { SubMenuItem } from "@shared/types/submenu";
+import { useLink } from "@shared/composables/useLink";
 
 const { link } = useLink();
 

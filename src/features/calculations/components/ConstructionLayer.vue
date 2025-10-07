@@ -74,16 +74,16 @@
 </template>
 
 <script setup lang="ts">
-import { computed, watch, defineExpose } from "vue";
-import BaseSelect from "@/shared/components/ui/BaseSelect.vue";
-import BaseToggleSwitch from "@/shared/components/ui/BaseToggleSwitch.vue";
-import BaseInputNumber from "@/shared/components/ui/BaseInputNumber.vue";
-import BaseButton from "@/shared/components/ui/BaseButton.vue";
-import TypeIcon from "@/shared/components/TypeColumn.vue";
-import { useTypes } from "@/shared/composables/useTypes";
+import { computed, watch } from "vue";
+import BaseSelect from "@shared/components/ui/BaseSelect.vue";
+import BaseToggleSwitch from "@shared/components/ui/BaseToggleSwitch.vue";
+import BaseInputNumber from "@shared/components/ui/BaseInputNumber.vue";
+import BaseButton from "@shared/components/ui/BaseButton.vue";
+import TypeIcon from "@shared/components/TypeColumn.vue";
+import { useTypes } from "@shared/composables/useTypes";
 import type { ConstructionLayer } from "../types";
-import type { MaterialItem } from "@/features/directories/types/materials";
-import { MaterialType } from "@/features/directories/types/materials";
+import type { MaterialItem } from "@features/directories/types/materials";
+import { MaterialType } from "@features/directories/types/materials";
 
 interface Props {
 	modelValue: ConstructionLayer;

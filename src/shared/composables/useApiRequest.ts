@@ -1,6 +1,6 @@
 import { useRouter, type LocationQueryRaw, type RouteParamsRawGeneric } from "vue-router";
 import axios, {type AxiosRequestConfig} from "axios";
-import { useMessage } from "@/shared/composables/useMessage.ts";
+import { useMessage } from "@shared/composables/useMessage.ts";
 
 export type RejectResponse = {
 	message: string,

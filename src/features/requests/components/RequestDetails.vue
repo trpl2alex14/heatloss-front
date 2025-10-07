@@ -172,16 +172,16 @@
 
 <script setup lang="ts">
 import BaseInputText from "@shared/components/ui/BaseInputText.vue";
-import Tag from "@/features/calculations/components/Tag.vue";
-import { useRequest } from "@/features/calculations/api/request";
+import Tag from "@features/calculations/components/Tag.vue";
+import { useRequest } from "@features/calculations/api/request";
 import { inject, onMounted, type Ref } from "vue";
 import RequestClient from "./RequestClient.vue";
-import { useTypes } from "@/shared/composables/useTypes";
-import TypeColumn from "@/shared/components/TypeColumn.vue";
+import { useTypes } from "@shared/composables/useTypes";
+import TypeColumn from "@shared/components/TypeColumn.vue";
 import { useStatus } from "../composables/useStatus";
 import BaseStatusTag from "@shared/components/ui/BaseStatusTag.vue";
-import BaseProgressBar from "@/shared/components/ui/BaseProgressBar.vue";
-import CalculationBtn from "@/shared/components/CalculationBtn.vue";
+import BaseProgressBar from "@shared/components/ui/BaseProgressBar.vue";
+import CalculationBtn from "@shared/components/CalculationBtn.vue";
 
 interface Dialog {
 	data: { id: number };

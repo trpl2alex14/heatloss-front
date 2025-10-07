@@ -62,11 +62,11 @@
 </template>
 
 <script setup lang="ts">
-import type { Attach, ClientRequest } from "@/shared/types/client";
+import type { Attach, ClientRequest } from "@shared/types/client";
 import BaseButton from "@shared/components/ui/BaseButton.vue";
 import BaseInputText from "@shared/components/ui/BaseInputText.vue";
 import BaseTextArea from "@shared/components/ui/BaseTextArea.vue";
-import { useCrm } from "@/shared/composables/useCrm";
+import { useCrm } from "@shared/composables/useCrm";
 
 type Props = {
 	client: ClientRequest;

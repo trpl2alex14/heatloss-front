@@ -64,20 +64,20 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import BaseButton from "@/shared/components/ui/BaseButton.vue";
-import BaseSearch from "@/shared/components/ui/BaseSearch.vue";
-import BaseDataTable from "@/shared/components/ui/BaseDataTable.vue";
-import BaseSelectButton from "@/shared/components/ui/BaseSelectButton.vue";
-import CalculationBtn from "@/shared/components/CalculationBtn.vue";
-import TypeColumn from "@/shared/components/TypeColumn.vue";
-import Head from "@/shared/components/Head.vue";
-import RowCounter from "@/shared/components/RowCounter.vue";
+import BaseButton from "@shared/components/ui/BaseButton.vue";
+import BaseSearch from "@shared/components/ui/BaseSearch.vue";
+import BaseDataTable from "@shared/components/ui/BaseDataTable.vue";
+import BaseSelectButton from "@shared/components/ui/BaseSelectButton.vue";
+import CalculationBtn from "@shared/components/CalculationBtn.vue";
+import TypeColumn from "@shared/components/TypeColumn.vue";
+import Head from "@shared/components/Head.vue";
+import RowCounter from "@shared/components/RowCounter.vue";
 import { dropdownActions } from "../composables/useDropdownMenu";
 import { useCaseData } from "../composables/useCaseData";
-import type { TypeImageDef, TypeLabelDef } from "@/shared/types/table";
+import type { TypeImageDef, TypeLabelDef } from "@shared/types/table";
 import type { CaseItem, CaseStatus } from "../types/case";
-import { useTypes } from "@/shared/composables/useTypes";
-import { useLazyTable } from "@/shared/composables/useLazyTable";
+import { useTypes } from "@shared/composables/useTypes";
+import { useLazyTable } from "@shared/composables/useLazyTable";
 import BuildingIcon from "@assets/icons/building.svg";
 import HouseIcon from "@assets/icons/house.svg";
 import FactoryIcon from "@assets/icons/factory.svg";

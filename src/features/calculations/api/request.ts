@@ -1,7 +1,7 @@
 import { computed } from "vue";
-import { useApi } from "@/shared/composables/useApi";
-import type { ClientRequest, Attach } from "@/shared/types/client";
-import type { RequestDetails } from "@/features/requests/types/request";
+import { useApi } from "@shared/composables/useApi";
+import type { ClientRequest, Attach } from "@shared/types/client";
+import type { RequestDetails } from "@features/requests/types/request";
 
 export const useRequest = (endpoint?: string) => {
 	const {
@@ -10,15 +10,15 @@ export const useRequest = (endpoint?: string) => {
 		loadData: loadRequestData,
 		error: requestError,
 	} = useApi<{}, RequestDetails>(endpoint || { name: 'api-request' });
-		
+
 	const requestData = computed<RequestDetails>(() => {
 		return requestDataRaw.value?.data ?? ({} as RequestDetails);
 	});
-	
+
 	const attachments = computed<Attach[]>(() => {
 		return requestData.value?.attachments ?? [];
 	});
-	
+
 	const client = computed<ClientRequest>(() => {
 		return requestData.value?.client ?? ({} as ClientRequest);
 	});
@@ -27,7 +27,7 @@ export const useRequest = (endpoint?: string) => {
 		return !isRequestLoading.value && !requestError.value && requestDataRaw.value?.data;
 	});
 
-	return { 
+	return {
 		requestData,
 		attachments,
 		client,

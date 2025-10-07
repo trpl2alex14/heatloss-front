@@ -1,6 +1,6 @@
 import type { ClimateItem } from "@features/directories/types/climate";
-import type { ColumnDef } from "@/shared/types/table";
-import { useFetchCollection } from "@/shared/composables/useFetchCollection";
+import type { ColumnDef } from "@shared/types/table";
+import { useFetchCollection } from "@shared/composables/useFetchCollection";
 import { onMounted } from "vue";
 
 const columns: ColumnDef[] = [

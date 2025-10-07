@@ -41,12 +41,12 @@ import {
 	BaseSelect,
 	BaseMultiSelect,
 	BaseInputText,
-} from "@/shared/components";
+} from "@shared/components";
 import type { CalculationDetails } from "../types";
-import { useTypes } from "@/shared/composables/useTypes";
-import type { SelectOption } from "@/shared/types/ui";
+import { useTypes } from "@shared/composables/useTypes";
+import type { SelectOption } from "@shared/types/ui";
 import { useTagsApi } from "@shared/api/tags.ts";
-import type { Tag } from "@/shared/types/ui";
+import type { Tag } from "@shared/types/ui";
 
 interface Props {
 	modelValue: CalculationDetails;

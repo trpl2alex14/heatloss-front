@@ -1,4 +1,4 @@
-import type { ActionDef } from "@/shared/types/menu";
+import type { ActionDef } from "@shared/types/menu";
 
 export const dropdownActions: ActionDef[] = [
 	{

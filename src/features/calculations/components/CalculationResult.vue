@@ -175,10 +175,10 @@ import BaseButton from "@shared/components/ui/BaseButton.vue";
 import BaseInputText from "@shared/components/ui/BaseInputText.vue";
 import BaseInputNumber from "@shared/components/ui/BaseInputNumber.vue";
 import type { CalculationResult, Construction } from "../types";
-import BaseTextArea from "@/shared/components/ui/BaseTextArea.vue";
-import { plural } from "@/shared/utils/text";
+import BaseTextArea from "@shared/components/ui/BaseTextArea.vue";
+import { plural } from "@shared/utils/text";
 import { computed } from "vue";
-import { useSettings } from "@/features/settings/composables/useSettings.ts";
+import { useSettings } from "@features/settings/composables/useSettings.ts";
 import { useRouter } from "vue-router";
 
 type Props = {
@@ -201,7 +201,7 @@ const getUrl = (name: string, id?: number) => {
 	return id && router.resolve({
 		name,
 		params: { id }
-	}).href || "";	
+	}).href || "";
 }
 
 const routeView = computed(() => {

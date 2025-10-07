@@ -2,8 +2,8 @@ import type { RequestItem } from "../types/request";
 import {
 	useFetchCollection,
 	type RequestDataOptions,
-} from "@/shared/composables/useFetchCollection";
-import type { ColumnDef } from "@/shared/types/table";
+} from "@shared/composables/useFetchCollection";
+import type { ColumnDef } from "@shared/types/table";
 
 const columns: ColumnDef[] = [
 	{

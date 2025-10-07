@@ -1,4 +1,4 @@
-import type { ActionDef } from "@/shared/types/menu";
+import type { ActionDef } from "@shared/types/menu";
 
 export const useDropdownMenu = () => {
 	const dropdownActions: ActionDef[] = [
@@ -26,7 +26,7 @@ export const useDropdownMenu = () => {
 		{
 			label: "Опубликовать",
 			icon: "pi pi-check",
-			name: 'public'	
+			name: 'public'
 		},
 		{
 			label: "В черновик",

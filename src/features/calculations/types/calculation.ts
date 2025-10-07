@@ -1,5 +1,5 @@
-import type { Product } from "@/shared/types/produtcs";
-import type { ClimateItem } from "@/features/directories/types";
+import type { Product } from "@shared/types/produtcs";
+import type { ClimateItem } from "@features/directories/types";
 import type { Construction } from "./construction";
 import type { Room, RoomResult } from "./room";
 import type { Equipment } from "./equipment";

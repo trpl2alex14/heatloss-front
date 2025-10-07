@@ -1,6 +1,6 @@
 import type { MaterialItem } from "@features/directories/types/materials";
-import { useFetchCollection, type RequestDataOptions } from "@/shared/composables/useFetchCollection";
-import type { ColumnDef } from "@/shared/types/table";
+import { useFetchCollection, type RequestDataOptions } from "@shared/composables/useFetchCollection";
+import type { ColumnDef } from "@shared/types/table";
 import { MaterialType } from "@features/directories/types/materials";
 import { computed } from "vue";
 

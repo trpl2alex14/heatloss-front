@@ -77,9 +77,9 @@ import type { CalculationItem } from "../types";
 import { useTypes } from "@shared/composables/useTypes.ts";
 import { useLazyTable } from "@shared/composables/useLazyTable.ts";
 import { statuses } from "../composables/useCalculationState.ts";
-import type { ActionValue } from "@/shared/types/menu.ts";
+import type { ActionValue } from "@shared/types/menu.ts";
 import { useRouter } from "vue-router";
-import { useMessage } from "@/shared/composables/useMessage.ts";
+import { useMessage } from "@shared/composables/useMessage.ts";
 import { useCalculationAction } from "../api/calculation.ts";
 
 const { productCategory } = useTypes();
@@ -150,7 +150,7 @@ const openPath = (name: string, id: number) => {
 	window.open(path.href, "_blank");
 };
 
-const publicCalculation = async (id: number) => {	
+const publicCalculation = async (id: number) => {
 	changeStateCalculation(id, "published", `Расчёт ${id} опубликован`)
 	.then(() => reload())
 	.catch(()=>warning(`Не удалось сменить статус расчёта ${id}`, 5000));

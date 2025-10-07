@@ -1,6 +1,6 @@
 import { computed } from "vue";
 import type { Surface } from "@features/directories/types/materials";
-import { useApi } from "@/shared/composables/useApi";
+import { useApi } from "@shared/composables/useApi";
 
 export const useSurfaceData = () => {
 	const { data, isLoading, error, loadData, clearError } = useApi<

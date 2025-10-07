@@ -122,12 +122,12 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
-import BaseSelect from "@/shared/components/ui/BaseSelect.vue";
-import BaseInputNumber from "@/shared/components/ui/BaseInputNumber.vue";
-import BaseInputText from "@/shared/components/ui/BaseInputText.vue";
-import BaseToggleSwitch from "@/shared/components/ui/BaseToggleSwitch.vue";
-import BaseButton from "@/shared/components/ui/BaseButton.vue";
-import EmptyBox from "@/shared/components/EmptyBox.vue";
+import BaseSelect from "@shared/components/ui/BaseSelect.vue";
+import BaseInputNumber from "@shared/components/ui/BaseInputNumber.vue";
+import BaseInputText from "@shared/components/ui/BaseInputText.vue";
+import BaseToggleSwitch from "@shared/components/ui/BaseToggleSwitch.vue";
+import BaseButton from "@shared/components/ui/BaseButton.vue";
+import EmptyBox from "@shared/components/EmptyBox.vue";
 import ConstructionLayer from "./ConstructionLayer.vue";
 import type {
 	Construction,
@@ -136,8 +136,8 @@ import type {
 import type {
 	MaterialItem,
 	Surface,
-} from "@/features/directories/types/materials";
-import type { ClimateItem } from "@/features/directories/types/climate";
+} from "@features/directories/types/materials";
+import type { ClimateItem } from "@features/directories/types/climate";
 import { useCalculator } from "../composables/useCalculator";
 
 interface Props {

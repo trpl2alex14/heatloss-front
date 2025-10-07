@@ -118,19 +118,19 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch, defineExpose } from "vue";
+import { computed, ref, watch } from "vue";
 import {
 	BaseSelect,
 	BaseSelectButton,
 	BaseInputNumber,
 	BaseToggleSwitch,
-} from "@/shared/components";
+} from "@shared/components";
 import type { CalculationDetails, UseSeason } from "../types";
-import type { SelectButtonOption } from "@/shared/types/ui";
-import { useClimateData } from "@/features/directories/composables/useClimateData";
-import type { ClimateItem } from "@/features/directories/types/climate";
-import { useSettings } from "@/features/settings/composables/useSettings";
-import { useMessage } from "@/shared/composables/useMessage";
+import type { SelectButtonOption } from "@shared/types/ui";
+import { useClimateData } from "@features/directories/composables/useClimateData";
+import type { ClimateItem } from "@features/directories/types/climate";
+import { useSettings } from "@features/settings/composables/useSettings";
+import { useMessage } from "@shared/composables/useMessage";
 
 interface Props {
 	modelValue: CalculationDetails;
@@ -253,7 +253,7 @@ const onCityChange = (value: string) => {
 
 const setCity = (value: string) => {
 	const city = findCity(value);
-	
+
 	if(!city){
 		error("Населённый пункт отсутствует в справочнике")
 		return

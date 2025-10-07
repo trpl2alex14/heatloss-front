@@ -12,7 +12,7 @@
 import { ref, computed } from "vue";
 import Menu from "primevue/menu";
 import Button from "primevue/button";
-import type { ActionDef } from "@/shared/types/menu";
+import type { ActionDef } from "@shared/types/menu";
 
 interface Props {
 	actions: ActionDef[];
@@ -28,8 +28,8 @@ const emit = defineEmits<{
 const menuItems = computed(() =>
 	props.actions.map((action) => ({
 		...action,
-		command: 'command' in action 
-			? () => action.command(props.id) 
+		command: 'command' in action
+			? () => action.command(props.id)
 			: () => 'name' in action && emit("action", { id: props.id, action: action.name }),
 	}))
 );

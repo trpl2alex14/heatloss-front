@@ -80,19 +80,19 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from "vue";
-import BaseSelectButton from "@/shared/components/ui/BaseSelectButton.vue";
-import BaseButton from "@/shared/components/ui/BaseButton.vue";
-import BaseInputNumber from "@/shared/components/ui/BaseInputNumber.vue";
-import EmptyBox from "@/shared/components/EmptyBox.vue";
+import BaseSelectButton from "@shared/components/ui/BaseSelectButton.vue";
+import BaseButton from "@shared/components/ui/BaseButton.vue";
+import BaseInputNumber from "@shared/components/ui/BaseInputNumber.vue";
+import EmptyBox from "@shared/components/EmptyBox.vue";
 import Construction from "./Construction.vue";
 import ConstructionSnip from "./ConstructionSnip.vue";
-import { useMaterialData } from "@/features/directories/composables/useMaterialData";
-import { useSurfaceData } from "@/features/directories/composables/useSurfaceData";
+import { useMaterialData } from "@features/directories/composables/useMaterialData";
+import { useSurfaceData } from "@features/directories/composables/useSurfaceData";
 import type { CalculationDetails, Construction as ConstructionType, ConstructionLayer } from "../types";
-import type { Construction as ConstructionFromRequest } from "@/features/requests/types/request";
+import type { Construction as ConstructionFromRequest } from "@features/requests/types/request";
 import type { MaterialItem, Surface } from "@features/directories/types/materials";
 import { useCalculator } from "../composables/useCalculator";
-import { useMessage } from "@/shared/composables/useMessage";
+import { useMessage } from "@shared/composables/useMessage";
 
 interface Props {
 	modelValue: CalculationDetails;

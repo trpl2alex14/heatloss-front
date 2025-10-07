@@ -1,6 +1,6 @@
 import { computed, ref, shallowRef } from "vue";
-import { useApi } from "@/shared/composables/useApi";
-import type { PromoCode } from "@/shared/types/ui";
+import { useApi } from "@shared/composables/useApi";
+import type { PromoCode } from "@shared/types/ui";
 
 // Глобальное состояние для кэширования данных
 const globalPromosData = shallowRef<{ data: PromoCode[] } | null>(null);

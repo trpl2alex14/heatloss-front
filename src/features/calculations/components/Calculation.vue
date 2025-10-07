@@ -9,18 +9,18 @@
 
 			<!-- Секция: Климат -->
 			<div class="my-8 border-t border-gray-100" ref="climateRef"></div>
-			<SectionClimat 
-				v-model="modelValueProxy" 
-				ref="sectionClimateRef" 
+			<SectionClimat
+				v-model="modelValueProxy"
+				ref="sectionClimateRef"
 			/>
 
 			<div
 				class="my-8 border-t border-gray-100"
 				ref="constructionsRef"
 			></div>
-			<SectionConstructions 
-				v-model="modelValueProxy" 
-				ref="sectionConstructionsRef" 
+			<SectionConstructions
+				v-model="modelValueProxy"
+				ref="sectionConstructionsRef"
 			/>
 
 			<div class="my-8 border-t border-gray-100" ref="roomsRef"></div>
@@ -45,15 +45,15 @@
 <script setup lang="ts">
 import { computed, useTemplateRef, watch } from "vue";
 import type { CalculationDetails, RoomFromRequest } from "../types";
-import type { Construction as ConstructionFromRequest} from "@/features/requests/types/request";
+import type { Construction as ConstructionFromRequest} from "@features/requests/types/request";
 import SectionProduct from "./SectionProduct.vue";
 import SectionClimat from "./SectionClimat.vue";
 import SectionConstructions from "./SectionConstructions.vue";
 import SectionRooms from "./SectionRooms.vue";
 import SectionEquipments from "./SectionEquipments.vue";
 import SectionOther from "./SectionOther.vue";
-import { useMessage } from "@/shared/composables/useMessage";
-import { useDebounce } from "@/shared/utils/debounce";
+import { useMessage } from "@shared/composables/useMessage";
+import { useDebounce } from "@shared/utils/debounce";
 
 interface Props {
 	modelValue: CalculationDetails;

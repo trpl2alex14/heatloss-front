@@ -370,22 +370,22 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import Head from "@/shared/components/Head.vue";
-import BaseButton from "@/shared/components/ui/BaseButton.vue";
-import BaseDataTable from "@/shared/components/ui/BaseDataTable.vue";
-import BaseSelectButton from "@/shared/components/ui/BaseSelectButton.vue";
-import BaseSelect from "@/shared/components/ui/BaseSelect.vue";
-import BaseMultiSelect from "@/shared/components/ui/BaseMultiSelect.vue";
-import BasePagination from "@/shared/components/ui/BasePagination.vue";
-import BaseSearch from "@/shared/components/ui/BaseSearch.vue";
-import BaseDatePicker from "@/shared/components/ui/BaseDatePicker.vue";
-import BaseProgressBar from "@/shared/components/ui/BaseProgressBar.vue";
-import BaseToggleSwitch from "@/shared/components/ui/BaseToggleSwitch.vue";
+import Head from "@shared/components/Head.vue";
+import BaseButton from "@shared/components/ui/BaseButton.vue";
+import BaseDataTable from "@shared/components/ui/BaseDataTable.vue";
+import BaseSelectButton from "@shared/components/ui/BaseSelectButton.vue";
+import BaseSelect from "@shared/components/ui/BaseSelect.vue";
+import BaseMultiSelect from "@shared/components/ui/BaseMultiSelect.vue";
+import BasePagination from "@shared/components/ui/BasePagination.vue";
+import BaseSearch from "@shared/components/ui/BaseSearch.vue";
+import BaseDatePicker from "@shared/components/ui/BaseDatePicker.vue";
+import BaseProgressBar from "@shared/components/ui/BaseProgressBar.vue";
+import BaseToggleSwitch from "@shared/components/ui/BaseToggleSwitch.vue";
 import Popover from "primevue/popover";
-import CalculationBtn from "@/shared/components/CalculationBtn.vue";
-import RowCounter from "@/shared/components/RowCounter.vue";
-import type { ColumnDef, TypeLabelDef } from "@/shared/types/table";
-import type { ActionDef } from "@/shared/types/menu";
+import CalculationBtn from "@shared/components/CalculationBtn.vue";
+import RowCounter from "@shared/components/RowCounter.vue";
+import type { ColumnDef, TypeLabelDef } from "@shared/types/table";
+import type { ActionDef } from "@shared/types/menu";
 import type {
 	ConstructionLayer as ConstructionLayerType,
 	Construction as ConstructionType,
@@ -393,19 +393,19 @@ import type {
 	RoomConstruction as RoomConstructionType,
 	Equipment,
 	Room,
-} from "@/features/calculations/types";
-import type { ClimateItem } from "@/features/directories/types/climate";
-import BaseChip from "@/shared/components/ui/BaseChip.vue";
-import TypeColumn from "@/shared/components/TypeColumn.vue";
-import ConstructionLayer from "@/features/calculations/components/ConstructionLayer.vue";
-import Construction from "@/features/calculations/components/Construction.vue";
-import SectionConstructions from "@/features/calculations/components/SectionConstructions.vue";
-import RoomConstruction from "@/features/calculations/components/RoomConstruction.vue";
-import RoomEquipment from "@/features/calculations/components/RoomEquipment.vue";
-import RoomComponent from "@/features/calculations/components/Room.vue";
-import EquipmentsPicker from "@/features/calculations/components/EquipmentsPicker.vue";
-import { useTypes } from "@/shared/composables/useTypes";
-import { useMaterialData } from "@/features/directories/composables/useMaterialData";
+} from "@features/calculations/types";
+import type { ClimateItem } from "@features/directories/types/climate";
+import BaseChip from "@shared/components/ui/BaseChip.vue";
+import TypeColumn from "@shared/components/TypeColumn.vue";
+import ConstructionLayer from "@features/calculations/components/ConstructionLayer.vue";
+import Construction from "@features/calculations/components/Construction.vue";
+import SectionConstructions from "@features/calculations/components/SectionConstructions.vue";
+import RoomConstruction from "@features/calculations/components/RoomConstruction.vue";
+import RoomEquipment from "@features/calculations/components/RoomEquipment.vue";
+import RoomComponent from "@features/calculations/components/Room.vue";
+import EquipmentsPicker from "@features/calculations/components/EquipmentsPicker.vue";
+import { useTypes } from "@shared/composables/useTypes";
+import { useMaterialData } from "@features/directories/composables/useMaterialData";
 
 const { productCategory } = useTypes();
 
