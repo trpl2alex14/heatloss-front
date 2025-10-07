@@ -4,7 +4,11 @@ import {
 	type RouteRecordRaw,
 	type RouteLocation
 } from "vue-router";
-import EmptyLayout from "@/layouts/EmptyLayout.vue";
+import EmptyLayout from "@layouts/EmptyLayout.vue";
+
+import MapIcon from "@assets/icons/map-pinned.svg";
+import BrickIcon from "@assets/icons/brick-wall.svg";
+import HeaterIcon from "@assets/icons/heater.svg";
 
 interface RouteMeta {
 	title: string;
@@ -225,21 +229,21 @@ const routes = [
 			{
 				path: "equipment",
 				name: "DirectoriesEquipment",
-				meta: { title: "Оборудование", icon: "heater.svg" },
+				meta: { title: "Оборудование", icon: HeaterIcon },
 				component: () =>
 					import("@features/directories/view/EquipmentPage.vue"),
 			},
 			{
 				path: "materials",
 				name: "DirectoriesMaterials",
-				meta: { title: "Огр. конструкции", icon: "brick-wall.svg" },
+				meta: { title: "Огр. конструкции", icon: BrickIcon },
 				component: () =>
 					import("@features/directories/view/MaterialsPage.vue"),
 			},
 			{
 				path: "climate",
 				name: "DirectoriesClimate",
-				meta: { title: "Климатология", icon: "map-pinned.svg" },
+				meta: { title: "Климатология", icon: MapIcon },
 				component: () =>
 					import("@features/directories/view/ClimatePage.vue"),
 			},
@@ -258,13 +262,13 @@ const routes = [
 					path: "/ui-kit",
 					name: "UiKit",
 					meta: { title: "UI", icon: "settings.svg" },
-					component: () => import("@/features/ui-kit/UiKitPage.vue"),
+					component: () => import("@features/ui-kit/UiKitPage.vue"),
 				},
 		  ]
 		: []),
 	{
 		path: '/:catchAll(.*)',
-		component: () => import("@/shared/components/NotFound.vue"),
+		component: () => import("@shared/components/NotFound.vue"),
 		meta: { layout: EmptyLayout }
 	},
 ];

@@ -93,6 +93,11 @@ import { useRoute, useRouter } from "vue-router";
 import { toRaw } from "vue";
 import { useSettings } from "@features/settings/composables/useSettings";
 
+import MapIcon from "@assets/icons/map-pinned.svg";
+import BrickIcon from "@assets/icons/brick-wall.svg";
+import HouseIcon from "@assets/icons/house.svg";
+import HeaterIcon from "@assets/icons/heater.svg";
+
 const debounce = useDebounce();
 
 const route = useRoute();
@@ -311,25 +316,25 @@ const subMenuItems: SubMenuItem[] = [
 	{
 		path: "#",
 		title: "Климат",
-		icon: "map-pinned.svg",
+		icon: MapIcon,
 		action: () => calculationRef.value?.scrollTo("climate"),
 	},
 	{
 		path: "#",
 		title: "Огр. конструкции",
-		icon: "brick-wall.svg",
+		icon: BrickIcon,
 		action: () => calculationRef.value?.scrollTo("constructions"),
 	},
 	{
 		path: "#",
 		title: "Помещения",
-		icon: "house.svg",
+		icon: HouseIcon,
 		action: () => calculationRef.value?.scrollTo("rooms"),
 	},
 	{
 		path: "#",
 		title: "Оборудование",
-		icon: "heater.svg",
+		icon: HeaterIcon,
 		action: () => calculationRef.value?.scrollTo("equipments"),
 	},
 ];
