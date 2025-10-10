@@ -1,7 +1,7 @@
 <template>
 	<div class="pt-6 flex flex-col gap-4">
 		<h2 class="text-xl bg-gray-200 px-2 py-1 rounded-md">Редактирование климата</h2>
-		<p v-if="errorMessage" class="text-md text-red-600">{{ errorMessage }}</p>
+		<p v-if="errorMessage" class="text-md text-(--p-form-field-invalid-border-color)">{{ errorMessage }}</p>
 		<div v-if="climate" class="flex flex-row gap-2">
 			<div class="flex flex-col gap-2">
 				<div class="flex flex-wrap gap-2">
@@ -54,7 +54,7 @@
 				</div>
 			</div>
 			<div class="flex flex-col gap-2 bg-gray-100 p-4 rounded-md">
-				<p class="text-center w-full">Нормотивное сопротевление</p>
+				<p class="text-center w-full">Нормативное сопротивление</p>
 				<div class="flex flex-col gap-2">
 					<BaseInputNumber
 						v-model="climate.floorNorm"
@@ -98,7 +98,7 @@ import {onMounted, watch} from "vue";
 import type {ClimateItem} from "../types";
 import {BaseInputNumber, BaseInputText, BaseSelectButton} from "@shared/components";
 import BaseButton from "@shared/components/ui/BaseButton.vue";
-import {useForm} from "@features/directories/composables/useForm.ts";
+import {useForm} from "@shared/composables/useForm.ts";
 
 type Props = {
 	id?: number;
@@ -130,7 +130,7 @@ onMounted(() => {
 	} else {
 		climate.value = {
 			humidity: "А",
-		};
+		} as ClimateItem;
 	}
 });
 
