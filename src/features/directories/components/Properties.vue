@@ -46,7 +46,7 @@
 <script setup lang="ts">
 import type {EquipmentProperty} from "@features/directories/types";
 import {BaseButton, BaseInputText} from "@shared/components";
-import type {ErrorFieldsResult} from "@features/directories/composables/useForm.ts";
+import type {ErrorFieldsResult} from "@shared/composables/useRejectResponse.ts";
 
 interface Props {
 	modelValue: EquipmentProperty[];
