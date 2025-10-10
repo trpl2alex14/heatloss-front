@@ -1,0 +1,9 @@
+{
+	"data": {
+		"id": 112,
+		"name": "Алексей Тестов",
+		"email": "test@example.com",
+		"phone": ""
+	},
+	"status": "success"
+}

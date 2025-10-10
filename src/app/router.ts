@@ -9,6 +9,8 @@ import EmptyLayout from "@layouts/EmptyLayout.vue";
 import MapIcon from "@assets/icons/map-pinned.svg";
 import BrickIcon from "@assets/icons/brick-wall.svg";
 import HeaterIcon from "@assets/icons/heater.svg";
+import UserIcon from "@assets/icons/user-round.svg";
+import PasswordIcon from "@assets/icons/key-round.svg";
 
 interface RouteMeta {
 	title: string;
@@ -152,6 +154,21 @@ const routes = [
 		path: '/data/categories.equipments.json', //TODO
 		redirect: '/'
 	},
+	{
+		name: 'api-profile',
+		path: '/data/profile.json', //TODO
+		redirect: '/'
+	},
+	{
+		name: 'api-profile-update',
+		path: '/data/profile.errors.json?:id', //TODO
+		redirect: '/'
+	},
+	{
+		name: 'api-password',
+		path: '/data/password.errors.json', //TODO
+		redirect: '/'
+	},
 	//PATH
 	//ROUTES
 	{
@@ -219,7 +236,7 @@ const routes = [
 		path: "/directories",
 		name: "Directories",
 		meta: { title: "Справочники", icon: "database.svg", hasSubMenu: true },
-		component: () => import("@features/directories/view/Layout.vue"),
+		component: () => import("@features/directories/components/Layout.vue"),
 		children: [
 			{
 				path: "",
@@ -254,7 +271,28 @@ const routes = [
 		name: "Settings",
 		meta: { title: "Настройки", icon: "settings.svg", bottom: true },
 		component: () =>
-			import("@features/settings/components/SettingsPage.vue"),
+			import("@features/settings/components/Layout.vue"),
+		children: [
+			{
+				path: "",
+				name: "SettingsIndex",
+				redirect: "/settings/profile",
+			},
+			{
+				path: "profile",
+				name: "SettingsProfile",
+				meta: { title: "Профиль", icon: UserIcon },
+				component: () =>
+					import("@features/settings/view/Profile.vue"),
+			},
+			{
+				path: "password",
+				name: "SettingsPassword",
+				meta: { title: "Пароль", icon: PasswordIcon },
+				component: () =>
+					import("@features/settings/view/Password.vue"),
+			},
+		]
 	},
 	...(isDev
 		? [
