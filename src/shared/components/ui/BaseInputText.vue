@@ -18,7 +18,8 @@
 			<InputGroupAddon v-if="clearable">
         		<Button icon="pi pi-times" class="h-full" text @click="modelValueProxy = ''"/>
     		</InputGroupAddon>
-		</InputGroup>		
+		</InputGroup>
+		<p v-if="fieldError" class="pl-2 pt-1 text-(--p-form-field-invalid-border-color)">{{fieldError}}</p>
 	</div>
 </template>
 
@@ -27,31 +28,24 @@ import { computed, useAttrs } from "vue";
 import InputText from "primevue/inputtext";
 import InputGroup from "primevue/inputgroup";
 
-const props = defineProps({
-	modelValue: {
-		type: [String, Number],
-		default: "",
-	},
-	label: {
-		type: String,
-		default: "",
-	},
-	placeholder: {
-		type: String,
-		default: "",
-	},
-	type: {
-		type: String,
-		default: "text",
-	},
-	disabled: {
-		type: Boolean,
-		default: false,
-	},
-	clearable: {
-		type: Boolean,
-		default: false,
-	},
+interface Props {
+	modelValue: string | number,
+	label?: string,
+	placeholder?: string,
+	type?: string,
+	disabled?: boolean,
+	clearable?: boolean,
+	fieldError?: string | undefined
+}
+
+const props = withDefaults(defineProps<Props>(), {
+	modelValue: "",
+	label: "",
+	placeholder: "",
+	type: "text",
+	disabled: false,
+	clearable: false,
+	fieldError: ""
 });
 
 const emit = defineEmits(["update:modelValue"]);
@@ -72,6 +66,6 @@ const inputAttrs = computed(() => {
 <style lang="scss">
 .p-inputtext {
 	--p-inputtext-disabled-background: var(--color-gray-200);
-	--p-inputtext-disabled-color: var(--color-gray-800);	
+	--p-inputtext-disabled-color: var(--color-gray-800);
 }
 </style>
