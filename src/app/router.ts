@@ -169,6 +169,12 @@ const routes = [
 		path: '/data/password.errors.json', //TODO
 		redirect: '/'
 	},
+
+	{
+		name: 'logout',
+		path: '/logout',
+		redirect: '/'
+	},
 	//PATH
 	//ROUTES
 	{

@@ -9,3 +9,7 @@ export function plural(value: number, words: string[], viewCount = false): strin
 
     return result;
 }
+
+export function endsWith(str: string, suffix: string): boolean {
+	return str.indexOf(suffix, str.length - suffix.length) !== -1;
+}

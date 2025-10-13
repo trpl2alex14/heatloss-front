@@ -48,13 +48,9 @@ import BaseButton from "@shared/components/ui/BaseButton.vue";
 import Head from "@shared/components/SubHead.vue";
 import {useForm} from "@shared/composables/useForm.ts";
 import {useMessage} from "@shared/composables/useMessage.ts";
+import type {User} from "@shared/types/user.ts";
 
-interface UserForm {
-	id?: number;
-	name: string;
-	email: string;
-	phone: string;
-}
+type UserForm  = MakeOptional<User, 'id'>;
 
 const isSaving = ref(false);
 

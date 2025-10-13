@@ -10,16 +10,21 @@
 					class="h-12"
 				/>
 			</div>
-			<SidebarMenu />
+			<SidebarMenu>
+				<template #footer>
+					<Divider/>
+					<UserMenuItem />
+				</template>
+			</SidebarMenu>
 		</div>
 		<main
 			class="flex-1 p-6 my-3 mr-3 pb-14 bg-white border-r border-gray-200 rounded-xl shadow-xl relative"
 		>
-			<Toast position="bottom-right" />
-			<DynamicDialog />
-			<slot />
+			<Toast position="bottom-right"/>
+			<DynamicDialog/>
+			<slot/>
 			<div class="text-xs text-gray-400 absolute bottom-6">
-				© grevolt.ru, 2008–2025
+				© grevolt.ru, 2013 – {{new Date().getFullYear()}}
 			</div>
 		</main>
 	</div>
@@ -29,4 +34,7 @@
 import SidebarMenu from "@shared/components/SidebarMenu.vue";
 import Toast from "primevue/toast";
 import DynamicDialog from "primevue/dynamicdialog";
+import Divider from "@shared/components/Divider.vue";
+import UserMenuItem from "@shared/components/UserMenuItem.vue";
+
 </script>

@@ -4,11 +4,11 @@ export type ActionSeparator = {
 
 export type ActionItem = {
 	label: string;
-	icon?: string;	
+	icon?: string;
 }
 
 export type ActionValue = {
-	id: number,
+	id?: number,
 	action: string
 }
 

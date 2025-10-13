@@ -19,13 +19,7 @@
 					:label="route.meta.title"
 					:icon-src="route.meta.iconSrc"
 				/>
-				<Divider />
-				<SidebarMenuItem
-					is-button
-					@click="console.log('show user menu')"
-					label="Пользователь"
-					:icon-src="userIcon"
-				/>
+				<slot name="footer" />
 			</div>
 		</nav>
 	</aside>
@@ -33,8 +27,6 @@
 
 <script setup lang="ts">
 import SidebarMenuItem from "./SidebarMenuItem.vue";
-import Divider from "./Divider.vue";
-import userIcon from "@assets/icons/user-round.svg";
 import useMenu from "@shared/composables/useMenu";
 
 const { topMenuRoutes, bottomMenuRoutes } = useMenu();
