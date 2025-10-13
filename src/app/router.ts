@@ -224,13 +224,13 @@ const routes = [
 		name: "Requests",
 		meta: { title: "Заявки", icon: "mails.svg" },
 		component: () =>
-			import("@features/requests/components/RequestsPage.vue"),
+			import("@features/requests/view/RequestsPage.vue"),
 	},
 	{
 		path: "/cases",
 		name: "Cases",
 		meta: { title: "Кейсы", icon: "book-open-check.svg" },
-		component: () => import("@features/cases/components/CasesPage.vue"),
+		component: () => import("@features/cases/view/CasesPage.vue"),
 	},
 	{
 		path: "/cases/create",

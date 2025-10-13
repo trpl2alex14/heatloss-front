@@ -1,15 +1,15 @@
 import { computed } from "vue";
-import { useApi } from "@shared/composables/useApi";
-import type { ClientRequest, Attach } from "@shared/types/client";
-import type { RequestDetails } from "@features/requests/types/request";
+import { useApiResource } from "@shared/composables/useApiResource.ts";
+import type { ClientRequest, Attach } from "@shared/types/client.ts";
+import type { RequestDetails } from "@features/requests/types/request.ts";
 
-export const useRequest = (endpoint?: string) => {
+export const useRequestResource = (endpoint?: string) => {
 	const {
 		data: requestDataRaw,
 		isLoading: isRequestLoading,
 		loadData: loadRequestData,
 		error: requestError,
-	} = useApi<{}, RequestDetails>(endpoint || { name: 'api-request' });
+	} = useApiResource<{}, RequestDetails>(endpoint || { name: 'api-request' });
 
 	const requestData = computed<RequestDetails>(() => {
 		return requestDataRaw.value?.data ?? ({} as RequestDetails);

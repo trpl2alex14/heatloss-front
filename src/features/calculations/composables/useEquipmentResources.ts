@@ -1,25 +1,25 @@
-import { computed, ref, shallowRef, watch, type Ref } from "vue";
-import { useApi } from "@shared/composables/useApi";
-import type { EquipmentItem } from "../types";
-import type { Product } from "@shared/types/produtcs";
+import {computed, ref, shallowRef, watch, type Ref} from "vue";
+import {useApiResource} from "@shared/composables/useApiResource.ts";
+import type {EquipmentItem} from "../types";
+import type {Product} from "@shared/types/produtcs.ts";
 
 // Глобальное состояние для кэширования данных
 const globalEquipmentsData = shallowRef<{ data: EquipmentItem[] } | null>(null);
 const isInitialized = ref(false);
 let initializedForProduct: Product | undefined;
 
-export const useEquipments = (product: Ref<Product>) => {
-	const api = useApi<{ product: Product }, { data: EquipmentItem[] }>({ name : 'api-equipments'});
+export const useEquipmentResources = (product: Ref<Product>) => {
+	const api = useApiResource<{ product: Product }, { data: EquipmentItem[] }>({name: 'api-equipments'});
 
 	watch(product, (newProduct, oldProduct) => {
-		if(newProduct !== oldProduct) {
+		if (newProduct !== oldProduct) {
 			loadDataOnce();
 		}
 	});
 
 	const isLoading = computed(() => api.isLoading.value);
 
-	const loadDataOnce = async (reload: boolean = false) => {
+	const loadDataOnce = (reload: boolean = false) => {
 		if (
 			(globalEquipmentsData.value || isInitialized.value)
 			&& initializedForProduct === product.value
@@ -32,18 +32,33 @@ export const useEquipments = (product: Ref<Product>) => {
 		initializedForProduct = product.value;
 		isInitialized.value = true;
 
-		await api.loadData({
+		api.loadData({
 			product: initializedForProduct
 		});
-
-		if (api.data.value) {
-			globalEquipmentsData.value = api.data.value;
-		}
-		if (api.error.value) {
-			globalEquipmentsData.value = null;
-			isInitialized.value = false;
-		}
 	};
+
+	watch(
+		() => api.data.value,
+		() => {
+			if(isInitialized.value && !globalEquipmentsData.value && api.data.value) {
+				globalEquipmentsData.value = api.data.value
+			}
+		}, {
+			deep: true
+		}
+	);
+
+	watch(
+		() => api.error.value,
+		() => {
+			if(api.error.value) {
+				globalEquipmentsData.value = null;
+				isInitialized.value = false;
+			}
+		}, {
+			deep: true
+		}
+	);
 
 	return {
 		data: computed(() => globalEquipmentsData.value),

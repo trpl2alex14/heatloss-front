@@ -1,6 +1,5 @@
-import {useRouter, type LocationQueryRaw, type RouteParamsRawGeneric} from "vue-router";
+import {type LocationQueryRaw, type RouteParamsRawGeneric, useRouter} from "vue-router";
 import axios, {type AxiosRequestConfig} from "axios";
-import {useMessage} from "@shared/composables/useMessage.ts";
 import {endsWith} from "@shared/utils/text.ts";
 
 export type RejectResponse = {
@@ -22,56 +21,60 @@ const hasRedirect = (url: string, response: any): boolean => {
 	return false;
 }
 
-export const useApiRequest = <DefResponse = any>() => {
+const request = async <Response>(
+	url: string,
+	action: "get" | "delete" | "post" = "get",
+	params?: any,
+	config?: AxiosRequestConfig<any>,
+	raw?: boolean
+): Promise<Response | undefined> => {
+	return new Promise(async (resolve, reject) => {
+		const rejectResponse: RejectResponse = {
+			message: 'Ошибка сервера',
+			fields: {}
+		}
+		let result;
+		try {
+			if(action === 'get'){
+				result = await axios.get(url, {params, ...config});
+			} else {
+				result = await axios[action](url, params, config);
+			}
+			//Если ответ с redirect
+			if (result && hasRedirect(url, result)) {
+				location.href = result?.request?.responseURL || '/';
+				return;
+			}
+
+			if (result.data.status === "success") {
+				resolve((raw ? result.data : result.data.data) || {});
+			} else if (result.data.errors) {
+				rejectResponse.message = result.data.message || rejectResponse.message;
+				rejectResponse.fields = result.data.errors
+			}
+		} catch (e) {
+			rejectResponse.message = "Сервер вернул: " + (e instanceof Error ? e.message : "ошибку");
+
+			//Не авторизованный запрос или истекла
+			if (e && typeof e === 'object' && 'status' in e && e.status === 401) {
+				location.href = '/';
+				return;
+			}
+		}
+		reject(rejectResponse);
+	});
+};
+
+export const useApiRequest = <DefResponse = any>(raw?: boolean) => {
 	const router = useRouter();
-	const {error} = useMessage();
-
-	const request = async <Response>(
-		url: string,
-		action: "get" | "delete" | "post" = "get",
-		params?: any,
-		config?: AxiosRequestConfig<any>
-	): Promise<Response | undefined> => {
-		return new Promise(async (resolve, reject) => {
-			const rejectResponse: RejectResponse = {
-				message: 'Ошибка сервера',
-				fields: {}
-			}
-			try {
-				const result = await axios[action](url, params, config);
-				//Если ответ с redirect
-				if (result && hasRedirect(url, result)) {
-					location.href = result?.request?.responseURL || '/';
-					return;
-				}
-
-				if (result.data.status === "success") {
-					resolve(result.data.data || {});
-				} else if (result.data.errors) {
-					rejectResponse.message = result.data.message || rejectResponse.message;
-					rejectResponse.fields = result.data.errors
-				}
-			} catch (e) {
-				error("Сервер вернул: " + (e instanceof Error ? e.message : "ошибку"));
-
-				//Не авторизованный запрос или истекла
-				if (e && typeof e === 'object' && 'status' in e && e.status === 401) {
-					location.href = '/';
-					return;
-				}
-			}
-			reject(rejectResponse);
-		});
-	};
 
 	const get = <Response = DefResponse>(name: string, params?: RouteParamsRawGeneric, query?: LocationQueryRaw) => {
 		const path = router.resolve({
 			name,
-			params,
-			query,
+			params
 		});
 
-		return request<Response>(path.href, "get");
+		return request<Response>(path.href, "get", query, undefined, raw);
 	};
 
 	const drop = (name: string, params?: RouteParamsRawGeneric) => {
@@ -89,7 +92,7 @@ export const useApiRequest = <DefResponse = any>() => {
 			params,
 		});
 
-		return request<Response>(path.href, "post", data, config);
+		return request<Response>(path.href, "post", data, config, raw);
 	};
 
 	return {

@@ -84,8 +84,8 @@ import {
 import type { SelectButtonOption } from "@shared/types/ui";
 import type { SubMenuItem } from "@shared/types/submenu.ts";
 import { useCalculator } from "@features/calculations/composables/useCalculator.ts";
-import { useRequest } from "@features/calculations/api/request";
-import { useFetchCalculation, useSaveCalculation } from "@features/calculations/api/calculation";
+import { useRequestResource } from "@features/calculations/composables/useRequestResource.ts";
+import { useCalculationResource } from "@features/calculations/composables/useCalculationResource.ts";
 import { useLocalHistory } from "@features/calculations/composables/useLocalHistory";
 import { useDebounce } from "@shared/utils/debounce";
 import type { CalculationSaved } from "@features/calculations/types";
@@ -116,9 +116,8 @@ const { seasonTag, frostProtectionTag, allowedTags = [], isMansardaTag } = useSe
 
 const { result: calculationResult, calculation, title, subTitle, resetCalculation, isCorrect } = useCalculator();
 
-const { isLoading, loadCalculationData } = useFetchCalculation(calculation);
-const { requestData, attachments, client, hasRequest, loadRequestData } = useRequest();
-const { saveCalculation } = useSaveCalculation();
+const { isLoading, loadCalculationData, saveCalculation } = useCalculationResource(calculation);
+const { requestData, attachments, client, hasRequest, loadRequestData } = useRequestResource();
 
 const requestId = computed(() => {
 	return calculation.value.requestId || Number(route.query.request);
@@ -214,7 +213,7 @@ const save = async () => {
 	if (id) {
 		needSave.value = false;
 		notSaveAuto = true;
-		router.push({name: "calculation", params: { id }});
+		router.push({name: "calculation", params: {id}});
 	}
 };
 

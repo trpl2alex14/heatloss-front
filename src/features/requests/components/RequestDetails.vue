@@ -173,7 +173,7 @@
 <script setup lang="ts">
 import BaseInputText from "@shared/components/ui/BaseInputText.vue";
 import Tag from "@features/calculations/components/Tag.vue";
-import { useRequest } from "@features/calculations/api/request";
+import { useRequestResource } from "@features/calculations/composables/useRequestResource.ts";
 import { inject, onMounted, type Ref } from "vue";
 import RequestClient from "./RequestClient.vue";
 import { useTypes } from "@shared/composables/useTypes";
@@ -193,7 +193,7 @@ const { productCategory } = useTypes();
 
 const dialogRef = inject("dialogRef") as Ref<Dialog>;
 
-const { requestData: request, attachments, client, loadRequestData } = useRequest();
+const { requestData: request, attachments, client, loadRequestData } = useRequestResource();
 
 onMounted(() => {
 	if (dialogRef && dialogRef.value?.data) {

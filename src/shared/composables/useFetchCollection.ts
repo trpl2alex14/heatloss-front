@@ -6,7 +6,7 @@ import type {
 	FilterOptions,
 	PaginationOptions,
 } from "@shared/types/table";
-import { useApi, type ResponseData, type Endpoint } from "@shared/composables/useApi";
+import { useApiResource, type ResponseData, type Endpoint } from "@shared/composables/useApiResource.ts";
 
 type LazyLoadOptions = {
 	page: number;
@@ -58,7 +58,7 @@ export const useFetchCollection = <T>(endpoint: Endpoint, autoLoad = true) => {
 		error,
 		loadData: loadDataApi,
 		clearError,
-	} = useApi<RequestDataOptions<T>, ResponseCollection<T>>(endpoint);
+	} = useApiResource<RequestDataOptions<T>, ResponseCollection<T>>(endpoint);
 
 	const defPagination = ref<PaginationOptions>({
 		page: 1,
@@ -66,7 +66,7 @@ export const useFetchCollection = <T>(endpoint: Endpoint, autoLoad = true) => {
 		total: 0,
 	});
 
-	const loadData = async (params?: RequestDataOptions<T>) => {
+	const loadData = (params?: RequestDataOptions<T>) => {
 		loadDataApi(requestParams(params));
 	};
 

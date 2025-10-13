@@ -1,11 +1,12 @@
 import {computed} from "vue";
 import type {Category} from "@features/directories/types";
-import {useApi} from "@shared/composables/useApi";
+import {useApiResource} from "@shared/composables/useApiResource.ts";
 
 type ApiResponse = { data: Category[] };
+
 export const useMaterialCategoryData = () => {
 	const {data, isLoading, error, loadData, clearError}
-		= useApi<void, ApiResponse>({name: 'api-directories-material-categories'});
+		= useApiResource<void, ApiResponse>({name: 'api-directories-material-categories'});
 
 	return {
 		categories: computed(() => data.value?.data || []),

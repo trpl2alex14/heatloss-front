@@ -77,7 +77,7 @@
 <script setup lang="ts">
 import { computed, onMounted, watch } from "vue";
 import type { CalculationDetails } from "../types";
-import { usePromos } from "../api/promos";
+import { usePromoResources } from "../composables/usePromoResources.ts";
 import BaseSelect from "@shared/components/ui/BaseSelect.vue";
 import BaseInputNumber from "@shared/components/ui/BaseInputNumber.vue";
 import BaseTextArea from "@shared/components/ui/BaseTextArea.vue";
@@ -104,7 +104,7 @@ const modelValueProxy = computed<CalculationDetails>({
 });
 
 // API для промокодов
-const { data: promosData, isLoading, loadData } = usePromos();
+const { data: promosData, isLoading, loadData } = usePromoResources();
 
 watch(modelValueProxy, (value) => {
 	if (value.powerPrice === undefined || value.powerPrice === null) {

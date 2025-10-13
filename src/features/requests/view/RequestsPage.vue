@@ -67,37 +67,37 @@
 
 <script setup lang="ts">
 import { computed, defineAsyncComponent, markRaw } from "vue";
-import BaseSearch from "@shared/components/ui/BaseSearch.vue";
-import BaseDataTable from "@shared/components/ui/BaseDataTable.vue";
-import BaseChip from "@shared/components/ui/BaseChip.vue";
-import BaseSelectButton from "@shared/components/ui/BaseSelectButton.vue";
-import BaseDatePicker from "@shared/components/ui/BaseDatePicker.vue";
-import BaseProgressBar from "@shared/components/ui/BaseProgressBar.vue";
-import CalculationBtn from "@shared/components/CalculationBtn.vue";
-import TypeColumn from "@shared/components/TypeColumn.vue";
-import Head from "@shared/components/Head.vue";
-import RowCounter from "@shared/components/RowCounter.vue";
-import { dropdownActions } from "../composables/useDropdownMenu";
-import { useRequestData } from "../composables/useRequestData";
-import type { RequestItem } from "../types/request";
-import { useTypes } from "@shared/composables/useTypes";
-import { useLazyTable } from "@shared/composables/useLazyTable";
-import { plural } from "@shared/utils/text";
+import BaseSearch from "../../../shared/components/ui/BaseSearch.vue";
+import BaseDataTable from "../../../shared/components/ui/BaseDataTable.vue";
+import BaseChip from "../../../shared/components/ui/BaseChip.vue";
+import BaseSelectButton from "../../../shared/components/ui/BaseSelectButton.vue";
+import BaseDatePicker from "../../../shared/components/ui/BaseDatePicker.vue";
+import BaseProgressBar from "../../../shared/components/ui/BaseProgressBar.vue";
+import CalculationBtn from "../../../shared/components/CalculationBtn.vue";
+import TypeColumn from "../../../shared/components/TypeColumn.vue";
+import Head from "../../../shared/components/Head.vue";
+import RowCounter from "../../../shared/components/RowCounter.vue";
+import { dropdownActions } from "../composables/useDropdownMenu.ts";
+import { useRequestData } from "../composables/useRequestData.ts";
+import type { RequestItem } from "../types/request.ts";
+import { useTypes } from "@shared/composables/useTypes.ts";
+import { useLazyTable } from "@shared/composables/useLazyTable.ts";
+import { plural } from "@shared/utils/text.ts";
 import type { ActionValue } from "@shared/types/menu.ts";
 import { useRouter } from "vue-router";
 import { useMessage } from "@shared/composables/useMessage.ts";
-import { useApiRequest } from "@shared/composables/useApiRequest";
+import { useApiRequest } from "@shared/composables/useApiRequest.ts";
 import { useDialog } from "primevue/usedialog";
-import { useStatus } from "../composables/useStatus";
-import { useConfirm } from "@shared/composables/useConfirm";
+import { useStatus } from "../composables/useStatus.ts";
+import { useConfirm } from "@shared/composables/useConfirm.ts";
 import ConfirmDialog from 'primevue/confirmdialog';
 
 const { confirmDelete } = useConfirm();
 
 const dialog = useDialog();
 
-const RequestDetails = defineAsyncComponent(() => import("./RequestDetails.vue"));
-const RequestAction = defineAsyncComponent(() => import("./RequestActions.vue"));
+const RequestDetails = defineAsyncComponent(() => import("../components/RequestDetails.vue"));
+const RequestAction = defineAsyncComponent(() => import("../components/RequestActions.vue"));
 
 const { info, warning } = useMessage();
 
@@ -165,7 +165,7 @@ const menuActions = ({ id, action }: ActionValue) => {
 				},
 				emits: {
 					onDelete: () => {
-						dropRequest(id);
+						id && dropRequest(id);
 					},
 					onCreate: () => {
 						router.push({ name: "calculation-create", query: { request: id } });
@@ -178,7 +178,7 @@ const menuActions = ({ id, action }: ActionValue) => {
 			break;
 		case "delete":
 			confirmDelete(null).then(()=> {
-				dropRequest(id);
+				id && dropRequest(id);
 			});
 			break;
 	}

@@ -1,13 +1,13 @@
-import { computed, ref, shallowRef } from "vue";
-import { useApi } from "../composables/useApi.ts";
+import {computed, ref, shallowRef, watch} from "vue";
+import { useApiResource } from "./useApiResource.ts";
 import type { Tag } from "../types/ui.ts";
 
 // Глобальное состояние для кэширования данных
 const globalTagsData = shallowRef<{ data: Tag[] } | null>(null);
 const isInitialized = ref(false);
 
-export const useTagsApi = (group?: string) => {
-	const api = useApi<{ group?: string }, { data: Tag[] }>({ name: 'api-tags' });
+export const useTags = (group?: string) => {
+	const api = useApiResource<{ group?: string }, { data: Tag[] }>({ name: 'api-tags' });
 
 	// Создаем индекс для быстрого поиска тегов по label
 	const tagsIndex = computed(() => {
@@ -22,18 +22,23 @@ export const useTagsApi = (group?: string) => {
 	});
 
 	const loadDataOnce = async () => {
-		if (globalTagsData.value || isInitialized.value) {
+		if (globalTagsData.value && isInitialized.value) {
 			return;
 		}
 
 		isInitialized.value = true;
 
-		await api.loadData(group ? { group } : null);
-
-		if (api.data.value) {
-				globalTagsData.value = api.data.value;
-		}
+		api.loadData(group ? { group } : null);
 	};
+
+	watch(
+		() => api.data.value,
+		() => {
+			if(isInitialized.value && !globalTagsData.value && api.data.value) {
+				globalTagsData.value = api.data.value;
+			}
+		}
+	)
 
 	return {
 		data: computed(() => globalTagsData.value || api.data.value),

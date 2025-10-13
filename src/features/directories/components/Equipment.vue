@@ -104,7 +104,7 @@ import {useForm} from "@shared/composables/useForm.ts";
 import {useTypes} from "@shared/composables/useTypes.ts";
 import BaseImageUpload from "@shared/components/ui/BaseImageUpload.vue";
 import {useEquipmentCategoryData} from "@features/directories/composables/useEquipmentCategoryData.ts";
-import {useTagsApi} from "@shared/api/tags.ts";
+import {useTags} from "@shared/composables/useTags.ts";
 import type {SelectOption, Tag} from "@shared/types/ui.ts";
 import Properties from "@features/directories/components/Properties.vue";
 import {useSettings} from "@features/settings/composables/useSettings.ts";
@@ -129,7 +129,7 @@ const {categories, loadCategoriesData, isLoading: isLoadingCategories} = useEqui
 
 const {radiatorCategory, regulatorCategory, powerProperty, maxPowerProperty} = useSettings();
 
-const {data: tags, loadData: loadTags} = useTagsApi('equipment');
+const {data: tags, loadData: loadTags} = useTags('equipment');
 
 loadTags();
 
@@ -153,7 +153,7 @@ const product = computed(() =>
 );
 
 const unknownTags = computed(() => {
-	return entity.value.tags?.filter((tag: string) => !tags.value?.data.some((i: Tag) => i.label === tag)) || [];
+	return entity.value.tags?.filter((tag: string) => !tags.value?.data?.some((i: Tag) => i.label === tag)) || [];
 })
 
 const tagsOptions = computed<SelectOption[]>(() => {
