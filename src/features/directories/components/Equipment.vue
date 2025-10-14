@@ -153,11 +153,11 @@ const product = computed(() =>
 );
 
 const unknownTags = computed(() => {
-	return entity.value.tags?.filter((tag: string) => !tags.value?.data?.some((i: Tag) => i.label === tag)) || [];
+	return entity.value.tags?.filter((tag: string) => !tags.value?.some((i: Tag) => i.label === tag)) || [];
 })
 
 const tagsOptions = computed<SelectOption[]>(() => {
-	const list = tags.value?.data || [];
+	const list = tags.value || [];
 	const missing = unknownTags.value?.map((tag: string) => ({
 		label: tag,
 		value: tag,

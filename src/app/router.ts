@@ -27,11 +27,12 @@ interface IAppRoute {
 
 export type AppRoute = IAppRoute & RouteRecordRaw;
 
-// Используем import.meta.env.MODE для совместимости с Vite
-const isDev = import.meta.env.MODE !== "production";
+// Используем для UI kit
+const isDev = import.meta.env.MODE !== "production" && false;
+const isFrontTest = false;
 
 const routes = [
-	//API
+	//API test
 	{
 		name: 'api-request',
 		//path: '/api/requests/:id'
@@ -86,7 +87,7 @@ const routes = [
 	},
 	{
 		name: 'api-tags',
-		path: '/data/tags.json', //TODO
+		path: isFrontTest ? '/data/tags.json' : '/api/tags',
 		redirect: '/'
 	},
 	{
@@ -169,7 +170,6 @@ const routes = [
 		path: '/data/password.errors.json', //TODO
 		redirect: '/'
 	},
-
 	{
 		name: 'logout',
 		path: '/logout',

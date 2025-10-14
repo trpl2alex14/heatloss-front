@@ -80,7 +80,7 @@ const { data, loadData } = useTags('calculation');
 loadData();
 
 const tagsOptions = computed<SelectOption[]>(() => {
-	const list = data.value?.data || [];
+	const list = data.value || [];
 	return list.map((t: Tag) => ({
 		label: t.label,
 		value: t.label,

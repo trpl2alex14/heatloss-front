@@ -19,7 +19,6 @@
 import { computed, onMounted } from "vue";
 import BaseChip from "@shared/components/ui/BaseChip.vue";
 import { useTags } from "@shared/composables/useTags.ts";
-import type { Tag } from "@shared/types/ui";
 
 interface Props {
 	label: string;
@@ -30,7 +29,7 @@ const props = defineProps<Props>();
 
 const { isLoading, loadData, tagsIndex } = useTags();
 
-const tag = computed<Tag | null>(() => {
+const tag = computed(() => {
 	return (
 		tagsIndex.value.get(props.label) || {
 			label: props.label,

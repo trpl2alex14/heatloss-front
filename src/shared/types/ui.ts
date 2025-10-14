@@ -16,6 +16,7 @@ export interface SelectOption {
 export interface Tag {
 	icon?: string;
 	label: string;
+	group: 'calculation' | 'equipment' | 'all'
 }
 
 export interface PromoCode {

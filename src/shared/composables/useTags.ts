@@ -28,7 +28,7 @@ export const useTags = (group?: string) => {
 
 		isInitialized.value = true;
 
-		api.loadData(group ? { group } : null);
+		api.loadData();
 	};
 
 	watch(
@@ -41,7 +41,11 @@ export const useTags = (group?: string) => {
 	)
 
 	return {
-		data: computed(() => globalTagsData.value || api.data.value),
+		data: computed(
+			() => (group && Array.isArray(globalTagsData.value?.data)
+				?  globalTagsData.value.data.filter((tag)=>tag.group === group || tag.group === 'all')
+				: globalTagsData.value?.data )
+				|| []),
 		isLoading: computed(() => api.isLoading.value),
 		error: computed(() => api.error.value),
 		tagsIndex,
