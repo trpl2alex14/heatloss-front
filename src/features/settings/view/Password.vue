@@ -3,15 +3,16 @@
 		<Head title="Смена пароля" subtitle="Рекомендуем использовать длинный пароль"/>
 
 		<form class="max-w-md mt-8 space-y-6">
-			<BaseInputText
+			<BasePassword
 				v-model="form.currentPassword"
 				label="Текущий пароль"
 				placeholder="пароль"
 				class="w-full"
 				:invalid="isInvalidField('currentPassword')"
 				:field-error="getErrorFieldMessage('currentPassword')"
+				:feedback="false"
 			/>
-			<BaseInputText
+			<BasePassword
 				v-model="form.newPassword"
 				label="Новый пароль"
 				placeholder="пароль"
@@ -19,13 +20,15 @@
 				type="email"
 				:invalid="isInvalidField('newPassword')"
 				:field-error="getErrorFieldMessage('newPassword')"
+				promptLabel="Сложность пароля" weakLabel="Простой" mediumLabel="Средний" strongLabel="Надежный"
 			/>
-			<BaseInputText
+			<BasePassword
 				v-model="confirmPassword"
 				label="Подтвердите пароль"
 				placeholder="пароль"
 				class="w-full"
 				:invalid="form.newPassword !== confirmPassword"
+				:feedback="false"
 			/>
 			<BaseButton
 				:loading="isSaving"
@@ -42,11 +45,13 @@
 import {ref, watch} from "vue";
 
 import BaseInputText from "@shared/components/ui/BaseInputText.vue";
+import BasePassword from "@shared/components/ui/BasePassword.vue";
 import BaseButton from "@shared/components/ui/BaseButton.vue";
 import Head from "@shared/components/SubHead.vue";
 import {useApiRequest} from "@shared/composables/useApiRequest.ts";
 import {useRejectResponse} from "@shared/composables/useRejectResponse.ts";
 import {useMessage} from "@shared/composables/useMessage.ts";
+import {serialize} from "@shared/utils/serialize.ts";
 
 interface PasswordForm {
 	currentPassword: string;
@@ -87,7 +92,7 @@ const onSave = async () => {
 	if (isSaving.value) return;
 	isSaving.value = true;
 
-	post('api-password', undefined, form.value)
+	post('api-password', undefined, serialize(form.value))
 		.then(()=>info('Пароль изменён'))
 		.catch(response => {
 			errors.value = {...response}
