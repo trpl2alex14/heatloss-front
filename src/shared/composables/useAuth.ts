@@ -2,15 +2,17 @@ import type {User} from "@shared/types/user.ts";
 import {computed, ref} from "vue";
 import {useApiRequest} from "@shared/composables/useApiRequest.ts";
 
-export const useAuth = () => {
-	const user = ref<User>();
-	const isLoading = ref(false);
+const user = ref<User>();
+const isLoading = ref(false);
 
+export const useAuth = () => {
 	const { get, post } = useApiRequest<User>();
 
 	const fetch = async () => {
 		isLoading.value = true;
-		user.value = await get('api-profile');
+		get('api-profile')
+			.then((result)=>user.value = result)
+			.finally(()=>isLoading.value = false);
 	}
 
 	const shortName = computed(() => {
@@ -34,6 +36,7 @@ export const useAuth = () => {
 		user,
 		isLoading,
 		shortName,
-		logout
+		logout,
+		reload: fetch
 	}
 }

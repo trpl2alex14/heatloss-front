@@ -157,12 +157,12 @@ const routes = [
 	},
 	{
 		name: 'api-profile',
-		path: '/data/profile.json', //TODO
+		path: isFrontTest ? '/data/profile.json' : '/api/profile',
 		redirect: '/'
 	},
 	{
 		name: 'api-profile-update',
-		path: '/data/profile.errors.json?:id', //TODO
+		path: isFrontTest ? '/data/profile.errors.json?:id' : '/api/profile/:id',
 		redirect: '/'
 	},
 	{

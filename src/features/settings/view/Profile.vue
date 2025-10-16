@@ -49,6 +49,7 @@ import Head from "@shared/components/SubHead.vue";
 import {useForm} from "@shared/composables/useForm.ts";
 import {useMessage} from "@shared/composables/useMessage.ts";
 import type {User} from "@shared/types/user.ts";
+import {useAuth} from "@shared/composables/useAuth.ts";
 
 type UserForm  = MakeOptional<User, 'id'>;
 
@@ -62,6 +63,7 @@ const {entity: userForm, fetchEntity, save, isInvalidField, errorMessage, getErr
 fetchEntity();
 
 const {error, info} = useMessage();
+const {reload} = useAuth();
 
 watch(errorMessage, (value) => {
 	value && error(value) ;
@@ -75,7 +77,8 @@ const onSave = async () => {
 	isSaving.value = false;
 
 	if(result){
-		info('Данные обновлены')
+		info('Данные обновлены');
+		void reload();
 	}
 };
 </script>
