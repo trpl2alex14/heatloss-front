@@ -13,3 +13,7 @@ export function plural(value: number, words: string[], viewCount = false): strin
 export function endsWith(str: string, suffix: string): boolean {
 	return str.indexOf(suffix, str.length - suffix.length) !== -1;
 }
+
+export function snake(str:string): string {
+	return str.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`);
+}
