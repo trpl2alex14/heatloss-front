@@ -1,5 +1,5 @@
 import {type LocationQueryRaw, type RouteParamsRawGeneric, useRouter} from "vue-router";
-import axios, {type AxiosRequestConfig} from "axios";
+import axios, {AxiosError, type AxiosRequestConfig} from "axios";
 import {endsWith} from "@shared/utils/text.ts";
 
 export type RejectResponse = {
@@ -55,10 +55,15 @@ const request = async <Response>(
 		} catch (e) {
 			rejectResponse.message = "Сервер вернул: " + (e instanceof Error ? e.message : "ошибку");
 
-			//Не авторизованный запрос или истекла
+			//Редирект: не авторизованный запрос или истекла сессия
 			if (e && typeof e === 'object' && 'status' in e && e.status === 401) {
 				location.href = '/';
 				return;
+			}
+
+			if (e instanceof AxiosError && e.response){
+				rejectResponse.message = e.response.data.message || rejectResponse.message;
+				rejectResponse.fields = e.response.data.errors || [];
 			}
 		}
 		reject(rejectResponse);
