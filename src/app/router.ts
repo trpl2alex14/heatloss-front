@@ -81,16 +81,6 @@ const routes = [
 		redirect: '/'
 	},
 	{
-		name: 'api-promos',
-		path: '/data/promos.json', //TODO
-		redirect: '/'
-	},
-	{
-		name: 'api-tags',
-		path: isFrontTest ? '/data/tags.json' : '/api/tags',
-		redirect: '/'
-	},
-	{
 		name: 'api-directories-equipments',
 		path: '/data/equipments.json', //TODO
 		redirect: '/'
@@ -132,17 +122,12 @@ const routes = [
 	},
 	{
 		name: 'api-directories-climates',
-		path: '/data/climates.json', //TODO
+		path: isFrontTest ? '/data/climates.json' : '/api/climates',
 		redirect: '/'
 	},
 	{
 		name: 'api-directories-materials',
 		path: '/data/materials.json', //TODO
-		redirect: '/'
-	},
-	{
-		name: 'api-directories-surfaces',
-		path: '/data/surfaces.json', //TODO
 		redirect: '/'
 	},
 	{
@@ -153,6 +138,21 @@ const routes = [
 	{
 		name: 'api-directories-equipment-categories',
 		path: '/data/categories.equipments.json', //TODO
+		redirect: '/'
+	},
+	{
+		name: 'api-promos',
+		path: isFrontTest ? '/data/promos.json' : '/api/promos',
+		redirect: '/'
+	},
+	{
+		name: 'api-tags',
+		path: isFrontTest ? '/data/tags.json' : '/api/tags',
+		redirect: '/'
+	},
+	{
+		name: 'api-directories-surfaces',
+		path: isFrontTest ? '/data/surfaces.json' : '/api/surfaces',
 		redirect: '/'
 	},
 	{
@@ -167,7 +167,7 @@ const routes = [
 	},
 	{
 		name: 'api-password',
-		path: '/data/password.errors.json', //TODO
+		path: isFrontTest ? '/data/password.errors.json' : '/api/password',
 		redirect: '/'
 	},
 	{
@@ -204,12 +204,12 @@ const routes = [
 			{
 				name: 'calculation-view',
 				path: 'view',
-				redirect: (to:RouteLocation) => '/calculations/view/' + to.params.id  //TODO
+				redirect: (to:RouteLocation) => '/view/' + to.params.id
 			},
 			{
 				name: 'calculation-pdf',
 				path: 'pdf',
-				redirect: (to:RouteLocation) => '/calculations/pdf/' + to.params.id  //TODO
+				redirect: (to:RouteLocation) => '/pdf/' + to.params.id
 			},
 		]
 	},
