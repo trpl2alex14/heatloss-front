@@ -78,7 +78,7 @@ onMounted(() => {
 const dropClimate = (id: number) => {
 	drop("api-climate", { id })
 		.then((value) => {
-			value && info("", 5000, `Город/регион ${value.id} удален`);
+			value && info("", 5000, `Город/регион "${value.id}" удален`);
 			loadClimateData();
 		})
 		.catch(() => warning(`Не удалось удалить ${id}`, 5000));
@@ -113,6 +113,10 @@ const openClimateDialog = (id?: number) => {
 };
 
 const menuActions = ({ id, action }: ActionValue) => {
+	if(!id) {
+		return;
+	}
+
 	switch (action) {
 		case "edit":
 			openClimateDialog(id);
