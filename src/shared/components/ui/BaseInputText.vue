@@ -29,7 +29,7 @@ import InputText from "primevue/inputtext";
 import InputGroup from "primevue/inputgroup";
 
 interface Props {
-	modelValue: string | number,
+	modelValue?: string | number,
 	label?: string,
 	placeholder?: string,
 	type?: string,
