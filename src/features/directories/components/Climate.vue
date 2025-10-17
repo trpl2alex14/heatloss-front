@@ -35,6 +35,9 @@
 						label="Мин. температура"
 						suffix="°C"
 						class="flex-1"
+						:min="-80"
+						:max="50"
+						:minFractionDigits="1"
 						:invalid="isInvalidField('minTemp')"
 					/>
 					<BaseInputNumber
@@ -42,6 +45,9 @@
 						label="Средняя"
 						suffix="°C"
 						class="flex-1"
+						:min="-50"
+						:max="50"
+						:minFractionDigits="2"
 						:invalid="isInvalidField('avgTemp')"
 					/>
 					<BaseInputNumber
@@ -49,6 +55,8 @@
 						label="Сезон"
 						suffix="дней"
 						class="flex-1"
+						:min="1"
+						:max="365"
 						:invalid="isInvalidField('heatingSeason')"
 					/>
 				</div>
@@ -61,6 +69,9 @@
 						label="Пол"
 						suffix="(м²*С°)/Вт"
 						class="flex-1"
+						:min="0.1"
+						:max="10"
+						:minFractionDigits="2"
 						:invalid="isInvalidField('floorNorm')"
 					/>
 					<BaseInputNumber
@@ -68,14 +79,20 @@
 						label="Стены"
 						suffix="(м²*С°)/Вт"
 						class="flex-1"
+						:min="0.1"
+						:max="10"
+						:minFractionDigits="2"
 						:invalid="isInvalidField('wallNorm')"
 					/>
 					<BaseInputNumber
-						v-model="climate.floorNorm"
+						v-model="climate.roofNorm"
 						label="Кровля"
 						suffix="(м²*С°)/Вт"
 						class="flex-1"
-						:invalid="isInvalidField('floorNorm')"
+						:min="0.1"
+						:max="10"
+						:minFractionDigits="2"
+						:invalid="isInvalidField('roofNorm')"
 					/>
 				</div>
 			</div>

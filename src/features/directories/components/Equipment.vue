@@ -58,6 +58,8 @@
 						label="Стоимость"
 						suffix="₽"
 						class="w-1/2"
+						:min="0"
+						:minFractionDigits="1"
 						:invalid="isInvalidField('price')"
 					/>
 				</div>

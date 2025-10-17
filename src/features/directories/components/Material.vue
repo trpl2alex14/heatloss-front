@@ -66,6 +66,8 @@
 						label="Коэфф. А"
 						suffix=""
 						class="flex-1"
+						:min="0"
+						:minFractionDigits="3"
 						:invalid="isInvalidField('a')"
 					/>
 					<BaseInputNumber
@@ -74,6 +76,8 @@
 						label="Коэфф. Б"
 						suffix=""
 						class="flex-1"
+						:min="0"
+						:minFractionDigits="3"
 						:invalid="isInvalidField('b')"
 					/>
 					<BaseInputNumber
@@ -82,6 +86,8 @@
 						label="Сопротивление"
 						suffix="(м²*С°)/Вт"
 						class="flex-1"
+						:min="0"
+						:minFractionDigits="3"
 						:invalid="isInvalidField('r')"
 					/>
 				</div>
