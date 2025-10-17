@@ -88,7 +88,7 @@ export const useApiRequest = <DefResponse = any>(raw?: boolean) => {
 			params,
 		});
 
-		return request<{ id: number }>(path.href, "delete");
+		return request<{ id: number|string }>(path.href, "delete");
 	};
 
 	const post = <Response = DefResponse>(name: string, params?: RouteParamsRawGeneric, data?: any, config?: AxiosRequestConfig<any>) => {
