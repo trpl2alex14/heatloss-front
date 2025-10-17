@@ -85,16 +85,7 @@ const routes = [
 		path: '/data/equipments.json', //TODO
 		redirect: '/'
 	},
-	{
-		name: 'api-climate',
-		path: '/data/climate.json?:id', //TODO
-		redirect: '/'
-	},
-	{
-		name: 'api-climate-create',
-		path: '/data/climate.create.json', //TODO
-		redirect: '/'
-	},
+
 	{
 		name: 'api-material',
 		path: '/data/material.get.json?:id', //TODO
@@ -121,11 +112,6 @@ const routes = [
 		redirect: '/'
 	},
 	{
-		name: 'api-directories-climates',
-		path: isFrontTest ? '/data/climates.json' : '/api/climates',
-		redirect: '/'
-	},
-	{
 		name: 'api-directories-materials',
 		path: '/data/materials.json', //TODO
 		redirect: '/'
@@ -138,6 +124,21 @@ const routes = [
 	{
 		name: 'api-directories-equipment-categories',
 		path: '/data/categories.equipments.json', //TODO
+		redirect: '/'
+	},
+	{
+		name: 'api-directories-climates',
+		path: isFrontTest ? '/data/climates.json' : '/api/climates',
+		redirect: '/'
+	},
+	{
+		name: 'api-climate',
+		path: isFrontTest ? '/data/climate.json?:id' : '/api/climates/:id',
+		redirect: '/'
+	},
+	{
+		name: 'api-climate-create',
+		path: isFrontTest ? '/data/climate.create.json' : '/api/climates/create',
 		redirect: '/'
 	},
 	{
