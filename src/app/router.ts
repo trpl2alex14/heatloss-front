@@ -85,17 +85,6 @@ const routes = [
 		path: '/data/equipments.json', //TODO
 		redirect: '/'
 	},
-
-	{
-		name: 'api-material',
-		path: '/data/material.get.json?:id', //TODO
-		redirect: '/'
-	},
-	{
-		name: 'api-material-create',
-		path: '/data/material.create.json', //TODO
-		redirect: '/'
-	},
 	{
 		name: 'api-equipment',
 		path: '/data/equipment.get.json?:id', //TODO
@@ -112,11 +101,6 @@ const routes = [
 		redirect: '/'
 	},
 	{
-		name: 'api-directories-materials',
-		path: '/data/materials.json', //TODO
-		redirect: '/'
-	},
-	{
 		name: 'api-directories-material-categories',
 		path: '/data/categories.json', //TODO
 		redirect: '/'
@@ -124,6 +108,21 @@ const routes = [
 	{
 		name: 'api-directories-equipment-categories',
 		path: '/data/categories.equipments.json', //TODO
+		redirect: '/'
+	},
+	{
+		name: 'api-material',
+		path: isFrontTest ? '/data/material.get.json?:id' : '/api/materials/:id',
+		redirect: '/'
+	},
+	{
+		name: 'api-material-create',
+		path: isFrontTest ? '/data/material.create.json' : '/api/materials/create',
+		redirect: '/'
+	},
+	{
+		name: 'api-directories-materials',
+		path: isFrontTest ? '/data/materials.json' : '/api/materials',
 		redirect: '/'
 	},
 	{
