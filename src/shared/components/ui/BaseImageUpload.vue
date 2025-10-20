@@ -11,7 +11,7 @@
 			class="p-button-text"
 			:chooseLabel="src ? 'Изменить изображение' : 'Выбрать изображение'"
 			choose-icon="pi pi-upload"
-			invalidFileTypeMessage="Невыерный тип файла"
+			invalidFileTypeMessage="Неверный тип файла"
 		/>
 		<div v-if="src" class="absolute top-4 right-4">
 			<BaseButton
@@ -19,7 +19,7 @@
 				text
 				severity="secondary"
 				class="text-(--p-primary-color)!"
-				@click="src = null"
+				@click="onDrop"
 				/>
 		</div>
 	</div>
@@ -35,7 +35,8 @@ interface Props {
 
 const props = defineProps<Props>();
 const emit = defineEmits<{
-	(e: 'upload', file: string): void
+	(e: 'upload', file: any): void,
+	(e: 'drop'): void
 }>();
 
 const src = ref(props.src || null);
@@ -51,12 +52,18 @@ function onFileSelect(event: any) {
 	const reader = new FileReader();
 
 	reader.onload = async (e:any) => {
-		src.value = e.target.result;
+		src.value =e.target.result;
 		if(src.value) {
-			emit('upload', src.value);
+			emit('upload',  src.value);
 		}
 	};
 
 	reader.readAsDataURL(file);
+}
+
+function onDrop() {
+	src.value = null;
+	emit('drop');
+	emit('upload', null);
 }
 </script>
