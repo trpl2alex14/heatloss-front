@@ -59,13 +59,13 @@ export const useForm = <Entity>(routes: Routes, def?: Entity) => {
 		return null;
 	}
 
-	const save = async (id?: number) => {
+	const save = async (id?: number, cb? :(entity: Entity) => any) => {
 		isChanged.value = false;
 		errors.value = null;
 
 		const name = (id ? routes.update : routes.create) || routes.get;
 		const params = id ? {id} : undefined;
-		return post<Entity>(name, params, makeFormData(entity.value), {
+		return post<Entity>(name, params, makeFormData(cb ? cb(entity.value) : entity.value), {
 			headers: {
 				'Content-Type': 'multipart/form-data'
 			}
