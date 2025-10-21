@@ -66,7 +66,7 @@ export const useMaterialData = () => {
 		const params: RequestDataOptions<MaterialItem> = {};
 		if(filterValue && filterValue !== "all"){
 			params.filter = {
-				category: filterValue,
+				type: filterValue,
 			};
 		}
 
