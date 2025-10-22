@@ -13,7 +13,7 @@
 				<template v-if="modelValueProxy.needDelivery">
 					<div class="w-120">
 						<BaseInputText
-						v-model="modelValueProxy.diliveryInfo"
+						v-model="modelValueProxy.deliveryInfo"
 						label="Информация о доставке"
 						placeholder="Введите информацию о доставке..."
 						/>
@@ -113,14 +113,14 @@ watch(modelValueProxy, (value) => {
 });
 
 watch(() => modelValueProxy.value.city, (value) => {
-	if (value && !modelValueProxy.value.diliveryInfo) {
-		modelValueProxy.value.diliveryInfo = "Доставка в г." + value;
+	if (value && !modelValueProxy.value.deliveryInfo) {
+		modelValueProxy.value.deliveryInfo = "Доставка в г." + value;
 	}
 });
 
 watch(() => modelValueProxy.value.needDelivery, (value) => {
 	if (!value) {
-		modelValueProxy.value.diliveryInfo = "";
+		modelValueProxy.value.deliveryInfo = "";
 		modelValueProxy.value.deliveryCost = 0;
 	}
 });

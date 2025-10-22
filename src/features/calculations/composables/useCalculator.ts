@@ -250,7 +250,7 @@ export const useCalculator = () => {
 			totalHeatLoss: totalHeatLoss.value,
 			constructions: constructions.value,
 			powerPrice: calculation.value.powerPrice || powerPrice,
-			diliveryInfo: calculation.value.diliveryInfo || "",
+			deliveryInfo: calculation.value.deliveryInfo || "",
 			comment: calculation.value.comment || "",
 			rooms: rooms.value,
 		};
