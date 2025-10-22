@@ -4,7 +4,7 @@ import type { Construction } from "./construction";
 import type { Room, RoomResult } from "./room";
 import type { Equipment } from "./equipment";
 
-export type CalculationStatus = "published" | "working" | "case" | "hide";
+export type CalculationStatus = "published" | "working" | "case" | "hidden";
 export type UseSeason = "permanent" | "seasonal" | "freeze";
 export type RoomConstructionMethod = "auto" | "windows" | "manual";
 
@@ -56,7 +56,7 @@ export interface CalculationDetails {
 	comment?: string;
 	promoCode?: string;
 	deliveryCost?: number;
-	diliveryInfo?: string;
+	deliveryInfo?: string;
 	needDelivery?: boolean;
 }
 
@@ -88,7 +88,7 @@ export interface CalculationResult {
 
 	powerPrice?: number;
 
-	diliveryInfo?: string;
+	deliveryInfo?: string;
 	comment?: string;
 
 	rooms?: RoomResult[];

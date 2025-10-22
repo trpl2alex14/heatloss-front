@@ -138,7 +138,7 @@ const dropdownMenu = (id: number) => {
 			);
 		})
 		.filter((a) => {
-			return !("name" in a) || a.name !== "draft" || a.status !== "hide";
+			return !("name" in a) || a.name !== "draft" || a.status !== "hidden";
 		})
 		.filter((a) => {
 			return !("name" in a) || a.name !== "case" || a.status === "published";
@@ -157,7 +157,7 @@ const publicCalculation = async (id: number) => {
 };
 
 const draftCalculation = async (id: number) => {
-	changeStateCalculation(id, "hide", `Расчёт ${id} скрыт`)
+	changeStateCalculation(id, "hidden", `Расчёт ${id} скрыт`)
 		.then(() => reload())
 		.catch(() => warning(`Не удалось сменить статус расчёта ${id}`, 5000));
 };
