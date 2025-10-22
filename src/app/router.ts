@@ -76,38 +76,38 @@ const routes = [
 		redirect: '/'
 	},
 	{
+		name: 'api-equipment-status',
+		path: isFrontTest ? '/data/equipment.get.json?:id' : '/api/equipments/:id/status',
+		redirect: '/'
+	},
+	{
 		name: 'api-equipments',
-		path: '/data/equipments.api.json', //TODO
+		path: isFrontTest ? '/data/equipments.api.json' : '/api/equipments',
 		redirect: '/'
 	},
 	{
 		name: 'api-directories-equipments',
-		path: '/data/equipments.json', //TODO
+		path: isFrontTest ? '/data/equipments.json' : '/api/equipments?all',
 		redirect: '/'
 	},
 	{
 		name: 'api-equipment',
-		path: '/data/equipment.get.json?:id', //TODO
+		path: isFrontTest ? '/data/equipment.get.json?:id' : '/api/equipments/:id',
 		redirect: '/'
 	},
 	{
 		name: 'api-equipment-create',
-		path: '/data/equipment.create.json', //TODO
-		redirect: '/'
-	},
-	{
-		name: 'api-equipment-status',
-		path: '/data/equipment.get.json?:id', //TODO
+		path: isFrontTest ? '/data/equipment.create.json' : '/api/equipments/create',
 		redirect: '/'
 	},
 	{
 		name: 'api-directories-material-categories',
-		path: '/data/categories.json', //TODO
+		path: isFrontTest ? '/data/categories.json' : '/api/categories/material',
 		redirect: '/'
 	},
 	{
 		name: 'api-directories-equipment-categories',
-		path: '/data/categories.equipments.json', //TODO
+		path: isFrontTest ? '/data/categories.equipments.json' : '/api/categories/equipment',
 		redirect: '/'
 	},
 	{
