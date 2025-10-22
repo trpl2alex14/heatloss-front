@@ -66,7 +66,7 @@
 						>
 					</template>
 					<template v-else-if="col.type === 'slot'" #body="{ data }">
-						<slot :name="`slot-${col.key}`" :data="data" :col="col" />
+						<slot :name="`slot-${col.key}`" :data="data" :col="col" :value="data[col.key]" />
 					</template>
 					<template
 						v-else-if="statuses && col.type === 'status'"

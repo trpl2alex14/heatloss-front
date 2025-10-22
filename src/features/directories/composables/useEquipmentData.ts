@@ -57,6 +57,7 @@ const columns: ColumnDef[] = [
 	},
 	{
 		key: "characteristics",
+		type: "slot",
 		label: "Характеристики",
 		sort: 8,
 		hidden: true,

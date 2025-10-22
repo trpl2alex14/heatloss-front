@@ -45,6 +45,11 @@
 			<template #slot-product="{ data }">
 				<TypeColumn :type="data.product" :types="productCategory"/>
 			</template>
+			<template #slot-characteristics="{ value }">
+				<template v-for="property in value.split(';')">
+					<span class="block text-sm">{{property}}</span>
+				</template>
+			</template>
 			<template #slot-tags="{ data }">
 				<div class="flex flex-wrap gap-1">
 					<BaseChip
