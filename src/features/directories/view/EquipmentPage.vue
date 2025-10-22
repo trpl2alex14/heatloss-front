@@ -175,7 +175,7 @@ const openEquipmentDialog = (id?: number) => {
 				},
 				save: () => {
 					openDialog.close();
-					loadEquipmentData();
+					loadEquipmentData(filterValue.value);
 				},
 			},
 		},
@@ -183,6 +183,9 @@ const openEquipmentDialog = (id?: number) => {
 };
 
 const menuActions = ({id, action}: ActionValue) => {
+	if(!id){
+		return;
+	}
 	switch (action) {
 		case "edit":
 			openEquipmentDialog(id);
@@ -190,14 +193,14 @@ const menuActions = ({id, action}: ActionValue) => {
 		case 'public':
 			changeStateEquipment(id, 'published')
 				.then(() => {
-					loadEquipmentData();
+					loadEquipmentData(filterValue.value);
 				})
 				.catch(() => warning(`Не удалось опубликовать ${id}`, 5000));
 			break;
 		case 'hide':
 			changeStateEquipment(id, 'hidden')
 				.then(() => {
-					loadEquipmentData();
+					loadEquipmentData(filterValue.value);
 				})
 				.catch(() => warning(`Не удалось скрыть ${id}`, 5000));
 			break;
@@ -205,7 +208,7 @@ const menuActions = ({id, action}: ActionValue) => {
 			confirmDelete(null).then(() => {
 				dropEquipment(id)
 					.then(() => {
-						loadEquipmentData();
+						loadEquipmentData(filterValue.value);
 					})
 					.catch(() => warning(`Не удалось удалить ${id}`, 5000));
 			});

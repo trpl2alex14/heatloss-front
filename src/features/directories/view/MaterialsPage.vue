@@ -119,7 +119,7 @@ const dropMaterial = (id: number) => {
 	drop("api-material", {id})
 		.then((value) => {
 			value && info("", 5000, `Материал ${value.id} удален`);
-			loadMaterialData();
+			loadMaterialData(filterValue.value);
 		})
 		.catch(() => warning(`Не удалось удалить ${id}`, 5000));
 };
@@ -145,7 +145,7 @@ const openMaterialDialog = (id?: number) => {
 				},
 				save: () => {
 					openDialog.close();
-					loadMaterialData();
+					loadMaterialData(filterValue.value);
 				},
 			},
 		},
@@ -153,6 +153,10 @@ const openMaterialDialog = (id?: number) => {
 };
 
 const menuActions = ({id, action}: ActionValue) => {
+	if(!id){
+		return;
+	}
+
 	switch (action) {
 		case "edit":
 			openMaterialDialog(id);
