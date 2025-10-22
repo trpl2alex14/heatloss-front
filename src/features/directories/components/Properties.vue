@@ -65,7 +65,7 @@ const isError = (index: number, field: string) => {
 }
 
 const drop = (index: number) => {
-	props.modelValue.splice(index);
+	props.modelValue.splice(index, 1);
 }
 
 const add = () => {
