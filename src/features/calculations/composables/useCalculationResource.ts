@@ -5,13 +5,17 @@ import {useMessage} from "@shared/composables/useMessage.ts";
 import {useApiRequest} from "@shared/composables/useApiRequest.ts"
 
 export const useCalculationResource = (calculationData: Ref<CalculationDetails>) => {
-	const {data, isLoading, error, loadData} = useApiResource<{}, CalculationDetails>({name: "api-calculation"});
+	const {data, isLoading, error, loadData}
+		= useApiResource<{}, CalculationDetails>({name: "api-calculation"});
 	const {post} = useApiRequest();
 	const {info} = useMessage();
 
 	watch(data, (newData) => {
 		if (newData && newData.data) {
-			calculationData.value = newData.data;
+			calculationData.value = {
+				...calculationData.value,
+				...newData.data
+			};
 		}
 	});
 

@@ -12,14 +12,36 @@ import type { SurfaceType } from "@features/directories/types";
 const { powerPrice, tagsForTitle } = useSettings();
 const calculation = ref<CalculationDetails>({
 	useSeason: "permanent",
-} as CalculationDetails);
+	product: "all",
+	constructions: [],
+	date: '',
+	status: "working",
+	city: '',
+	requiredTemp: 0,
+	freezeTemp: 0,
+	calculateMethod: "detailed",
+	rooms: [],
+	roomConstructionMethod: "manual",
+	equipment: [],
+});
 
 export const useCalculator = () => {
 
 	const resetCalculation = () => {
 		calculation.value = {
 			useSeason: "permanent",
-		} as CalculationDetails;
+			product: "all",
+			constructions: [],
+			date: '',
+			status: "working",
+			city: '',
+			requiredTemp: 0,
+			freezeTemp: 0,
+			calculateMethod: "detailed",
+			rooms: [],
+			roomConstructionMethod: "manual",
+			equipment: [],
+		};
 	};
 
 	const getTypeObject = computed(() => {

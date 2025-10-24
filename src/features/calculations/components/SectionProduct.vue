@@ -17,7 +17,6 @@
 				:options="productOptions"
 				optionLabel="label"
 				optionValue="value"
-				defaultValue="all"
 				label="Продукт"
 				placeholder="не выбран"
 				class="w-64"
@@ -62,10 +61,7 @@ const emit = defineEmits<{
 }>();
 
 const localModel = computed<CalculationDetails>({
-	get: () => {
-		props.modelValue.product = props.modelValue?.product || "all";
-		return props.modelValue;
-	},
+	get: () =>  props.modelValue,
 	set: (val) => emit("update:modelValue", val),
 });
 

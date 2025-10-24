@@ -79,25 +79,7 @@ const alertConstructions = () => {
 };
 
 const modelValueProxy = computed<CalculationDetails>({
-	get: () => {
-		if (props.modelValue.constructions === undefined) {
-			props.modelValue.constructions = [];
-		}
-		if (props.modelValue.calculateMethod === undefined) {
-			props.modelValue.calculateMethod = "detailed";
-		}
-		if (props.modelValue.rooms === undefined) {
-			props.modelValue.rooms = [];
-		}
-		if (props.modelValue.equipment === undefined) {
-			props.modelValue.equipment = [];
-		}
-		if (props.modelValue.roomConstructionMethod === undefined) {
-			props.modelValue.roomConstructionMethod = "auto";
-		}
-
-		return props.modelValue;
-	},
+	get: () =>  props.modelValue,
 	set: (value) => emit("update:modelValue", value),
 });
 
