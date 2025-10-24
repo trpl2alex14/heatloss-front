@@ -1,4 +1,4 @@
-import {computed, ref, shallowRef, watch, type Ref} from "vue";
+import {computed, ref, type Ref, shallowRef, watch} from "vue";
 import {useApiResource} from "@shared/composables/useApiResource.ts";
 import type {EquipmentItem} from "../types";
 import type {Product} from "@shared/types/produtcs.ts";
@@ -6,10 +6,10 @@ import type {Product} from "@shared/types/produtcs.ts";
 // Глобальное состояние для кэширования данных
 const globalEquipmentsData = shallowRef<{ data: EquipmentItem[] } | null>(null);
 const isInitialized = ref(false);
-let initializedForProduct: Product | undefined;
+let initializedForProduct: Product;
 
 export const useEquipmentResources = (product: Ref<Product>) => {
-	const api = useApiResource<{ product: Product }, { data: EquipmentItem[] }>({name: 'api-equipments'});
+	const api = useApiResource<any, { data: EquipmentItem[] }>({name: 'api-equipments'});
 
 	watch(product, (newProduct, oldProduct) => {
 		if (newProduct !== oldProduct) {
@@ -32,15 +32,19 @@ export const useEquipmentResources = (product: Ref<Product>) => {
 		initializedForProduct = product.value;
 		isInitialized.value = true;
 
-		api.loadData({
-			product: initializedForProduct
-		});
+		api.loadData(initializedForProduct && initializedForProduct !== 'all'
+			? {
+				filter: {
+					product: initializedForProduct
+				}
+			}
+			: null);
 	};
 
 	watch(
 		() => api.data.value,
 		() => {
-			if(isInitialized.value && !globalEquipmentsData.value && api.data.value) {
+			if (isInitialized.value && api.data.value) {
 				globalEquipmentsData.value = api.data.value
 			}
 		}, {
@@ -51,7 +55,7 @@ export const useEquipmentResources = (product: Ref<Product>) => {
 	watch(
 		() => api.error.value,
 		() => {
-			if(api.error.value) {
+			if (api.error.value) {
 				globalEquipmentsData.value = null;
 				isInitialized.value = false;
 			}
