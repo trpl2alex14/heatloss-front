@@ -59,20 +59,17 @@ const routes = [
 	},
 	{
 		name: 'api-calculation-status',
-		//path: '/api/calculations/:id/status',  //TODO
-		path: '/data/calculation.public.json?:id',
+		path: isFrontTest ? '/data/calculation.public.json?:id' : '/api/calculations/:id/status',
 		redirect: '/'
 	},
 	{
 		name: 'api-calculation',
-		//path: '/api/calculations/:id',  //TODO
-		path: '/data/calculations.111.json?:id?',
+		path: isFrontTest ? '/data/calculations.111.json?:id?' : '/api/calculations/:id?',
 		redirect: '/'
 	},
 	{
 		name: 'api-calculations',
-		//path: '/api/calculations',  //TODO
-		path: '/data/calculations.lazy.json',
+		path: isFrontTest ? '/data/calculations.lazy.json' : '/api/calculations',
 		redirect: '/'
 	},
 	{

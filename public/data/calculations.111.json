@@ -3,9 +3,11 @@
 		"id": 111,
 		"date": "2025-04-12",
 		"status": "working",
+		"product": "fleyt",
 		"area": 133,
 		"city": "Москва",
 		"requestId": 1222,
+		"tags": ["дом"],
 		"constructions": [
 			{
 				"id": 1,
