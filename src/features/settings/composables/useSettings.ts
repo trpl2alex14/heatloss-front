@@ -17,7 +17,7 @@ export const useSettings = () => {
 		maxPowerProperty: 'max_power', //терморегуляторы
 
 		regulatorCategory: ['Терморегулятор', 'Терморегуляторы'],
-		radiatorCategory: ['Конвекторы', 'Радиаторы'],
+		radiatorCategory: ['Конвекторы', 'Радиаторы', 'Конвектор', 'Радиатор'],
 
 		needRemoteControlTag: 'дистанционное управление',
 		wifiTag: 'wifi',
