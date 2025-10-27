@@ -140,8 +140,7 @@ export const useCalculator = () => {
 	});
 
 	const totalHeatLoss = computed(() => {
-		//todo: rooms heatloss or constructions heatloss
-		return (
+		let heatLoss = (
 			Math.round(
 				constructions.value.reduce(
 					(acc, item) => acc + (item.heatLoss || 0),
@@ -149,6 +148,19 @@ export const useCalculator = () => {
 				) * 10
 			) / 10
 		);
+
+		if(!heatLoss) {
+			heatLoss = (
+				Math.round(
+					calculation.value.rooms?.reduce(
+						(acc, item) => acc + item.heatLoss,
+						0
+					) * 10
+				) / 10
+			);
+		}
+
+		return heatLoss;
 	});
 
 	const tempDiff = computed(() => {
@@ -223,7 +235,7 @@ export const useCalculator = () => {
 			floor: item.floor,
 			volume:  Math.round(item.area * getRoomHeight(item) * 10) / 10,
 			heatLoss: Math.round(item.heatLoss * 10) / 10,
-			baseHeat: Math.round(item.baseHeat || 0 * 10) / 10,
+			baseHeat: Math.round((item.baseHeat || 0) * 10) / 10,
 			equipment: item.equipment,
 			windows: item.roomConstructions.reduce((acc, item) => acc + (item.count || 0), 0),
 		})) || [];
