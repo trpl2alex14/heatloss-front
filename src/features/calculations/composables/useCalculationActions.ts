@@ -18,7 +18,7 @@ export const useCalculationActions = () => {
 	};
 
 	const deleteCalculation = async (id: number) => {
-		return drop('calculation', {id})
+		return drop('api-calculation', {id})
 			.then((value: any) => {
 				if (typeof value === 'object' && 'id' in value) {
 					const id = value.id;
@@ -29,7 +29,7 @@ export const useCalculationActions = () => {
 	};
 
 	const copyCalculation = async (id: number) => {
-		return post('calculation', {id}, {action: "copy"})
+		return post('api-calculation', {id}, {action: "copy"})//todo ?
 			.then((value: any) => {
 				if (typeof value === 'object' && 'id' in value) {
 					const id = value.newId;

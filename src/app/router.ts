@@ -1,8 +1,7 @@
 import {
 	createRouter,
 	createWebHistory,
-	type RouteRecordRaw,
-	type RouteLocation
+	type RouteRecordRaw
 } from "vue-router";
 import EmptyLayout from "@layouts/EmptyLayout.vue";
 
@@ -201,12 +200,12 @@ const routes = [
 			{
 				name: 'calculation-view',
 				path: 'view',
-				redirect: (to:RouteLocation) => '/view/' + to.params.id
+				redirect: '/'
 			},
 			{
 				name: 'calculation-pdf',
 				path: 'pdf',
-				redirect: (to:RouteLocation) => '/pdf/' + to.params.id
+				redirect: '/'
 			},
 		]
 	},
