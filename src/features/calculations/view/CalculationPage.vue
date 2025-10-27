@@ -21,7 +21,7 @@
 					<div class="flex flex-col gap-2">
 						<BaseButton v-if="needSave" icon="save" class="w-full" label="Сохранить" @click="save" />
 						<BaseButton
-							v-if="isCorrect"
+							v-if="isCorrect && calculation.status !=='published'"
 							icon="eye"
 							class="w-full"
 							label="Опубликовать"
@@ -61,7 +61,7 @@
 							/>
 						</div>
 						<div v-else>
-							<CalculationResult :result="calculationResult" :is-correct="isCorrect" />
+							<CalculationResult :result="calculationResult" :is-correct="isCorrect && !needSave" />
 						</div>
 					</div>
 				</div>
@@ -196,7 +196,6 @@ const autoSaveCalculation = (calculation: CalculationSaved) => {
 	}
 
 	historyKey.value = setLocalHistory(calculation);
-	//TODO: отправить на сервер(auto sava)?
 };
 
 const openLocalHistory = (key: string) => {
@@ -252,7 +251,6 @@ const copyRooms = () => {
 					diffHeight = diffHeight > 0 && diffHeight < height ? diffHeight : 0;
 
 					return {
-						//todo: format
 						...room,
 						height: height,
 						minHeight: isMansard ? (room.minHeight ? room.minHeight : height - diffHeight) : undefined,
