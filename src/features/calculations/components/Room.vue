@@ -303,28 +303,23 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
+import {computed, ref, watch} from "vue";
 import {
-	BaseSelectButton,
-	BaseInputText,
-	BaseInputNumber,
 	BaseButton,
+	BaseInputNumber,
+	BaseInputText,
+	BaseSelectButton,
 	BaseToggleSwitch,
 	EmptyBox,
 } from "@shared/components";
-import type { Product } from "@shared/types/produtcs";
-import { useDebounce } from "@shared/utils/debounce";
+import type {Product} from "@shared/types/produtcs";
+import {useDebounce} from "@shared/utils/debounce";
 import Popover from "primevue/popover";
 import RoomConstruction from "./RoomConstruction.vue";
 import RoomEquipment from "./RoomEquipment.vue";
-import type {
-	Room,
-	Construction,
-	RoomConstruction as RoomConstructionType,
-	RoomConstructionMethod,
-} from "../types";
-import { useAutoEquip } from "../composables/useAutoEquip";
-import { useEquipRules } from "../composables/useEquipRules";
+import type {Construction, Room, RoomConstruction as RoomConstructionType, RoomConstructionMethod,} from "../types";
+import {useAutoEquip} from "../composables/useAutoEquip";
+import {useEquipRules} from "../composables/useEquipRules";
 
 interface Props {
 	modelValue: Room;
@@ -583,10 +578,9 @@ const removeRoomConstruction = (index: number) => {
 const toggleConstructionPopover = (event: Event) => {
 	// Инициализируем selectedConstructions при открытии popover
 	props.constructions.forEach((construction) => {
-		const isSelected = props.modelValue.roomConstructions.some(
+		selectedConstructions.value[construction.id] = props.modelValue.roomConstructions.some(
 			(rc) => rc.id === construction.id
 		);
-		selectedConstructions.value[construction.id] = isSelected;
 	});
 	constructionPopoverRef.value.toggle(event);
 };
@@ -726,7 +720,7 @@ watch(equipments, (newEquipments, oldEquipments) => {
 	}
 
 	for(let i = 0; i < newEquipments?.data.length; i++) {
-		if(newEquipments?.data[i].id !== oldEquipments?.data[i].id) {
+		if(newEquipments?.data[i].id !== oldEquipments?.data[i]?.id) {
 			autoEquip();
 		}
 	}
