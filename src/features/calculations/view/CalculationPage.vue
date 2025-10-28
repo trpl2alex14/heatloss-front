@@ -34,6 +34,7 @@
 			</div>
 			<div class="w-full min-w-0">
 				<Calculation v-if="!isLoading" v-model="calculation" ref="calculationRef" />
+				<Preloader v-else />
 			</div>
 			<div class="w-140 flex-shrink-0">
 				<div class="border border-gray-300 p-3 rounded-xl sticky top-4">
@@ -97,6 +98,7 @@ import MapIcon from "@assets/icons/map-pinned.svg";
 import BrickIcon from "@assets/icons/brick-wall.svg";
 import HouseIcon from "@assets/icons/house.svg";
 import HeaterIcon from "@assets/icons/heater.svg";
+import Preloader from "@shared/components/Preloader.vue";
 
 const debounce = useDebounce();
 
