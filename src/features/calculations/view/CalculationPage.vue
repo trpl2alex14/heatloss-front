@@ -98,6 +98,7 @@ import MapIcon from "@assets/icons/map-pinned.svg";
 import BrickIcon from "@assets/icons/brick-wall.svg";
 import HouseIcon from "@assets/icons/house.svg";
 import HeaterIcon from "@assets/icons/heater.svg";
+import {useActualPriceEquipments} from "@features/calculations/composables/useActualPriceEquipments.ts";
 import Preloader from "@shared/components/Preloader.vue";
 
 const debounce = useDebounce();
