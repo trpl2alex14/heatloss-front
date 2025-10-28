@@ -19,26 +19,27 @@ export const useCalculationResource = (calculationData: Ref<CalculationDetails>)
 		}
 	});
 
-	const saveCalculation = async (id: number | string | CalculationSaved, params?: CalculationSaved) => {
+	const saveCalculation = async (id: number | string | CalculationSaved, params?: CalculationSaved): Promise<number | null> => {
 		if (typeof id === "object") {
 			params = id;
 			id = 0;
 		}
 
-		return post('api-calculation', id ? {id} : {}, params)
-			.then((value: any) => {
-				if (typeof value === 'object' && 'id' in value) {
-					const id = value.id;
-					info("", 5000, `Расчёт ${id} сохранён`);
-					return id;
-				}
-			});
+		const result = await post('api-calculation', id ? {id} : {}, params);
+
+		if (typeof result === 'object' && 'id' in result) {
+			const id = result.id;
+			info("", 5000, `Расчёт ${id} сохранён`);
+			return id;
+		}
+
+		return null;
 	};
 
 	return {
 		isLoading,
 		error,
-		loadCalculationData: (id: number | string) => loadData(id),
+		loadCalculationData: loadData,
 		saveCalculation,
 	};
 };

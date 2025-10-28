@@ -20,7 +20,7 @@ export const useApiResource = <ReqParams, ResponseEntity>(
 	const isLoading = ref(false);
 	const error = ref<string | null>(null);
 
-	const loadData = (params?: ReqParams & LocationQueryRaw | string | number | null, id?: string | number): void => {
+	const loadData = (params?: ReqParams & LocationQueryRaw | string | number | null, id?: string | number): Promise<void> => {
 		isLoading.value = true;
 		error.value = null;
 
@@ -31,14 +31,19 @@ export const useApiResource = <ReqParams, ResponseEntity>(
 
 		const routeName = typeof endpoint === 'object' ? endpoint.name : endpoint + (id || "");
 
-		get(routeName, {id}, params && typeof params === 'object' ? params : undefined)
-			.then((response?: ResponseEntity) => {
-				if(response){
-					data.value = response;
-				}
-			})
-			.catch((reject: RejectResponse) => error.value = reject.message)
-			.finally(() => isLoading.value = false);
+		return new Promise<void>((resolve) => {
+			get(routeName, {id}, params && typeof params === 'object' ? params : undefined)
+				.then((response?: ResponseEntity) => {
+					if(response){
+						data.value = response;
+					}
+				})
+				.catch((reject: RejectResponse) => error.value = reject.message)
+				.finally(() => {
+					isLoading.value = false;
+					resolve();
+				});
+		});
 	};
 
 	const saveData = (route: string, params: ReqParams): void => {
