@@ -111,6 +111,7 @@ const calculationRef = useTemplateRef("calculationRef");
 let notSaveAuto = false;
 const needSave = ref(false);
 const historyKey = ref("");
+let isLoaded = ref(true);
 
 const { setLocalHistory, getLocalHistory, getLocalHistoryList } = useLocalHistory();
 const historyList = ref(getLocalHistoryList());
@@ -121,6 +122,8 @@ const { result: calculationResult, calculation, title, subTitle, resetCalculatio
 
 const { isLoading, loadCalculationData, saveCalculation } = useCalculationResource(calculation);
 const { requestData, attachments, client, hasRequest, loadRequestData } = useRequestResource();
+
+const { updatePrice } = useActualPriceEquipments(calculation);
 
 const requestId = computed(() => {
 	return calculation.value.requestId || Number(route.query.request);
@@ -134,20 +137,41 @@ watch(requestId, (newId) => {
 	immediate: true
 });
 
+const updatedWatcher = () =>
+	watch(
+		calculation,
+		(newCalculation) => {
+			needSave.value = true;
+
+			debounce(() => {
+				autoSaveCalculation({
+					key: newCalculation.id?.toString() || historyKey.value,
+					calculation: toRaw(newCalculation),
+					result: { ...calculationResult.value },
+				});
+			}, 3000);
+		},
+		{ deep: true }
+	);
+
+
 watch(
 	() => route.params,
-	({ id, key }, oldValue) => {
-		if((id || key) && id === oldValue?.id && key === oldValue?.key){
-			return ;
+	async ({id, key}, oldValue) => {
+		if ((id || key) && id === oldValue?.id && key === oldValue?.key) {
+			return;
 		}
 
 		notSaveAuto = true;
+		needSave.value = false;
 
 		if (id) {
-			loadCalculationData(+id);
-			setTimeout(() => {
-				needSave.value = false;
-			}, 1000);
+			isLoaded.value = false;
+
+			await loadCalculationData(+id);
+			await updatePrice();
+
+			isLoaded.value = true;
 		} else if (key && typeof key === "string") {
 			const calculationHistory = getLocalHistory(key);
 			if (calculationHistory) {
@@ -155,33 +179,19 @@ watch(
 				calculation.value = {
 					...calculationHistory.calculation,
 				};
+				await updatePrice();
 			} else {
 				resetCalculation();
 			}
 		} else {
 			historyKey.value = "";
 			resetCalculation();
-			setTimeout(() => {
-				needSave.value = false;
-			}, 100);
 		}
+
+		//fix watch after load
+		setTimeout(()=>updatedWatcher(), 1000);
 	},
 	{ immediate: true }
-);
-
-watch(
-	calculation,
-	(newCalculation) => {
-		needSave.value = true;
-		debounce(() => {
-			autoSaveCalculation({
-				key: newCalculation.id?.toString() || historyKey.value,
-				calculation: toRaw(newCalculation),
-				result: { ...calculationResult.value },
-			});
-		}, 3000);
-	},
-	{ deep: true }
 );
 
 watch(historyKey, () => {
