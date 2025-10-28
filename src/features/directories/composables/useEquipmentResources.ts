@@ -8,18 +8,18 @@ const globalEquipmentsData = shallowRef<{ data: EquipmentItem[] } | null>(null);
 const isInitialized = ref(false);
 let initializedForProduct: Product;
 
-export const useEquipmentResources = (product: Ref<Product>) => {
+export const useEquipmentResources = (product: Ref<Product> = ref('all')) => {
 	const api = useApiResource<any, { data: EquipmentItem[] }>({name: 'api-equipments'});
 
 	watch(product, (newProduct, oldProduct) => {
 		if (newProduct !== oldProduct) {
-			loadDataOnce();
+			void loadDataOnce();
 		}
 	});
 
 	const isLoading = computed(() => api.isLoading.value);
 
-	const loadDataOnce = (reload: boolean = false) => {
+	const loadDataOnce = async (reload: boolean = false) => {
 		if (
 			(globalEquipmentsData.value || isInitialized.value)
 			&& initializedForProduct === product.value
@@ -32,7 +32,7 @@ export const useEquipmentResources = (product: Ref<Product>) => {
 		initializedForProduct = product.value;
 		isInitialized.value = true;
 
-		api.loadData(initializedForProduct && initializedForProduct !== 'all'
+		await api.loadData(initializedForProduct && initializedForProduct !== 'all'
 			? {
 				filter: {
 					product: initializedForProduct

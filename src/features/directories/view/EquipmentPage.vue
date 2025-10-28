@@ -87,6 +87,7 @@ import {useMessage} from "@shared/composables/useMessage.ts";
 import ConfirmDialog from "primevue/confirmdialog";
 import type {ActionValue} from "@shared/types/menu.ts";
 import {useEquipmentAction} from "@features/directories/composables/useEquipmentAction.ts";
+import {useEquipmentResources} from "@features/directories/composables/useEquipmentResources.ts";
 
 const ProxyDialog = defineAsyncComponent(() => import("@shared/components/ProxyDialog.vue"));
 
@@ -128,6 +129,7 @@ const {searchValue, pagination, tableData, onPageChange, onSortChange} =
 	});
 
 const {dropEquipment, changeStateEquipment} = useEquipmentAction();
+const {refresh} = useEquipmentResources();
 
 const pagedDataTransformed = computed(() => {
 	return tableData.value.map((row) => ({
@@ -176,6 +178,7 @@ const openEquipmentDialog = (id?: number) => {
 				save: () => {
 					openDialog.close();
 					loadEquipmentData(filterValue.value);
+					refresh();
 				},
 			},
 		},
