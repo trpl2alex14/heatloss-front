@@ -29,7 +29,7 @@ const requestParams = <T>(params?: RequestDataOptions<T>) => {
 	if (params?.search && params.search.searchValue) {
 		options.search = {
 			fields: params.search.searchFields,
-			value: JSON.stringify(params.search.searchValue),
+			value: params.search.searchValue,
 		};
 	}
 	if (params?.sort && params.sort.sortField && params.sort.sortOrder) {
@@ -43,6 +43,7 @@ const requestParams = <T>(params?: RequestDataOptions<T>) => {
 		const offset = (params.lazyLoad.page - 1) * params.lazyLoad.pageSize;
 		if (offset > 0) {
 			options.offset = offset;
+			options.page = params.lazyLoad.page;
 		}
 	}
 	if (params?.filter && Object.keys(params.filter).length > 0) {
