@@ -1,11 +1,7 @@
-import type { RequestDataOptions } from "@shared/composables/useFetchCollection.ts";
-import type {
-	FilterOptions,
-	PaginationOptions,
-	SortOptions,
-} from "@shared/types/table";
-import { onMounted, reactive, ref, watch } from "vue";
-import { useDebounce } from "@shared/utils/debounce";
+import type {RequestDataOptions} from "@shared/composables/useFetchCollection.ts";
+import type {FilterOptions, PaginationOptions, SortOptions,} from "@shared/types/table";
+import {onMounted, reactive, ref, watch} from "vue";
+import {useDebounce} from "@shared/utils/debounce";
 
 const debounce = useDebounce();
 
@@ -84,8 +80,7 @@ export const useLazyTable = <T>(
 		) {
 			delete (requestData.filter as FilterOptions<T>)[options.dateField];
 		} else {
-			(requestData.filter as FilterOptions<T>)[options.dateField] =
-				value || [];
+			(requestData.filter as FilterOptions<T>)[options.dateField] = value || [];
 		}
 
 		loadDataDebounced(requestData as RequestDataOptions<T>);
@@ -104,7 +99,7 @@ export const useLazyTable = <T>(
 		if (value === "all") {
 			delete (requestData.filter as FilterOptions<T>)[
 				options.filterField
-			];
+				];
 		} else {
 			(requestData.filter as FilterOptions<T>)[options.filterField] =
 				value;
