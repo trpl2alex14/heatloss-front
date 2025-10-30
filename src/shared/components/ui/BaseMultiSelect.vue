@@ -11,6 +11,8 @@
 			:display="display"
 			:filter="filter"
 			class="w-full"
+			emptyFilterMessage="Нет совпадений"
+			emptyMessage="- пусто -"
 			v-bind="multiSelectAttrs"
 		>
 			<template #option="slotProps">
@@ -19,6 +21,7 @@
 						v-if="slotProps.option.icon"
 						:src="slotProps.option.icon"
 						class="w-4 h-4 object-cover"
+						alt
 					/>
 					<span>{{ slotProps.option[optionLabel] }}</span>
 				</div>
@@ -34,6 +37,7 @@
 import { computed, useAttrs } from "vue";
 import MultiSelect from "primevue/multiselect";
 import type { SelectOption } from "@shared/types/ui";
+import Select from "primevue/select";
 
 const props = defineProps({
 	modelValue: {

@@ -8,6 +8,8 @@
 			:placeholder="placeholder"
 			:disabled="disabled"
 			:class="computedClass"
+			emptyFilterMessage="Нет совпадений"
+			emptyMessage="- пусто -"
 			class="w-full"
 			v-bind="selectAttrs"
 			ref="selectRef"
