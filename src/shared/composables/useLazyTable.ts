@@ -97,12 +97,9 @@ export const useLazyTable = <T>(
 		}
 
 		if (value === "all") {
-			delete (requestData.filter as FilterOptions<T>)[
-				options.filterField
-				];
+			delete (requestData.filter as FilterOptions<T>)[options.filterField];
 		} else {
-			(requestData.filter as FilterOptions<T>)[options.filterField] =
-				value;
+			(requestData.filter as FilterOptions<T>)[options.filterField] = value;
 		}
 
 		loadDataDebounced(requestData as RequestDataOptions<T>);
