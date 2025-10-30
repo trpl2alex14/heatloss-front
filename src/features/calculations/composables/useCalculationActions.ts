@@ -29,11 +29,11 @@ export const useCalculationActions = () => {
 	};
 
 	const copyCalculation = async (id: number) => {
-		return post('api-calculation', {id}, {action: "copy"})//todo ?
+		return post('api-calculation-copy', {id}, {action: "copy"})
 			.then((value: any) => {
 				if (typeof value === 'object' && 'id' in value) {
-					const id = value.newId;
-					info("", 5000, `Расчёт ${id} скопирован в ${id}`);
+					const newId = value.id;
+					info("", 5000, `Расчёт ${id} скопирован в ${newId}`);
 					return id;
 				}
 			});

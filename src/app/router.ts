@@ -62,6 +62,11 @@ const routes = [
 		redirect: '/'
 	},
 	{
+		name: 'api-calculation-copy',
+		path: isFrontTest ? '/data/calculation.public.json?:id' : '/api/calculations/:id/copy',
+		redirect: '/'
+	},
+	{
 		name: 'api-calculation',
 		path: isFrontTest ? '/data/calculations.111.json?:id?' : '/api/calculations/:id?',
 		redirect: '/'
@@ -206,7 +211,7 @@ const routes = [
 				name: 'calculation-pdf',
 				path: 'pdf',
 				redirect: '/'
-			},
+			}
 		]
 	},
 	{
