@@ -218,7 +218,7 @@ const openLocalHistory = (key: string) => {
 const save = async () => {
 	const id = await saveCalculation(calculation.value.id || "", {
 		key: calculation.value.id?.toString() || "",
-		calculation: { ...calculation.value },
+		calculation: { ...calculation.value, requestId: requestId.value },
 		result: { ...calculationResult.value },
 	});
 

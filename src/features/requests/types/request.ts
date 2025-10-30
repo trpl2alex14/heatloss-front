@@ -2,7 +2,7 @@ import type { Product } from "@shared/types/produtcs";
 import type { ClientRequest, Attach } from "@shared/types/client";
 import type { SurfaceType } from "@features/directories/types";
 
-export type RequestStatus = "working" | "completed" | "pending" | "cancelled";
+export type RequestStatus = "working" | "completed" | "pending" | "cancelled" | "processed";
 
 export type ConstructionType = SurfaceType;
 

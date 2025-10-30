@@ -16,7 +16,7 @@
 				<RequestClient :client="client" :attachments="attachments" />
 			</div>
 		</div>
-		<div class="flex flex-col gap-2">
+		<div class="flex flex-col gap-2 flex-1">
 			<!-- Теги объекта -->
 			<div class="flex flex-wrap gap-1">
 				<Tag

@@ -35,13 +35,13 @@ const routes = [
 	{
 		name: 'api-request',
 		//path: '/api/requests/:id'
-		path: '/data/requests.1222.json?:id', //TODO
+		path: isFrontTest ? '/data/requests.1222.json?:id' : '/api/requests/:id',
 		redirect: '/'
 	},
 	{
 		name: 'api-requests',
 		//path: '/api/requests/:id'
-		path: '/data/requests.json', //TODO
+		path: isFrontTest ? '/data/requests.json' : '/api/requests',
 		redirect: '/'
 	},
 	{

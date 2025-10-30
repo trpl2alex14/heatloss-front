@@ -128,7 +128,7 @@ const pagedDataTransformed = computed(() => {
 		...row,
 		date: new Date(row.date),
 		progress:
-			row.progress === 100 && row.calculation
+			row.calculation
 				? {
 						url: `/calculations/${row.calculation}`,
 						label: `${row.calculation}`,
