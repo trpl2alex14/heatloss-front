@@ -179,7 +179,11 @@ const menuAction = ({id, action}: ActionValue) => {
 			break;
 		case "link":
 			const path = router.resolve({name: "calculation-view", params: {id}});
-			navigator.clipboard.writeText(baseUrl + path.fullPath);
+			if(window.isSecureContext){
+				navigator.clipboard.writeText(baseUrl + path.fullPath);
+			}else{
+				console.log(baseUrl + path.fullPath);
+			}
 			info("", 3000, "Ссылка скопирована");
 			break;
 		case "public":
