@@ -87,6 +87,7 @@ const columns: ColumnDef[] = [
 const filterOptions = [
 	{ label: "Все", value: "all" },
 	{ label: "Заполняются", value: "pending" },
+	{ label: "Заполнены", value: "processed" },
 	{ label: "В работе", value: "working" },
 	{ label: "Обработаны", value: "completed" },
 ];
