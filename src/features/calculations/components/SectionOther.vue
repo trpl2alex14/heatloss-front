@@ -107,8 +107,14 @@ const modelValueProxy = computed<CalculationDetails>({
 const { data: promosData, isLoading, loadData } = usePromoResources();
 
 watch(modelValueProxy, (value) => {
-	if (value.powerPrice === undefined || value.powerPrice === null) {
+	if (value.powerPrice === undefined || value.powerPrice == null) {
 		value.powerPrice = powerPrice;
+	}
+});
+
+watch(() => modelValueProxy.value.promoCode, (value) => {
+	if (value) {
+		modelValueProxy.value.promoInfo = promosData.value.data.find((i:PromoCode)=>i.code === value)?.description;
 	}
 });
 
@@ -125,7 +131,7 @@ watch(() => modelValueProxy.value.needDelivery, (value) => {
 	}
 });
 
-// Опции для селекта промокодов
+// Опции для промокодов
 const promoOptions = computed(() => {
 	const options = [
 		{

@@ -13,7 +13,7 @@ export type {
 export type { ConstructionLayer, Construction } from "./construction";
 
 // Типы помещений
-export type { RoomConstruction, Room, RoomFromRequest } from "./room";
+export type { RoomConstruction, Room, RoomFromRequest, RoomResult } from "./room";
 
 // Типы оборудования
 export type { Equipment, EquipmentItem } from "./equipment";

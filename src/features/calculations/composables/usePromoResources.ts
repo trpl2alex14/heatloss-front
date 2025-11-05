@@ -16,7 +16,7 @@ export const usePromoResources = () => {
 
 		isInitialized.value = true;
 
-		api.loadData();
+		void api.loadData();
 	};
 
 	watch(

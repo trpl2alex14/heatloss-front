@@ -287,6 +287,8 @@ export const useCalculator = () => {
 			deliveryInfo: calculation.value.deliveryInfo || "",
 			comment: calculation.value.comment || "",
 			rooms: rooms.value,
+			promoCode: calculation.value.promoCode || "",
+			promoInfo: calculation.value.promoInfo || undefined
 		};
 	});
 

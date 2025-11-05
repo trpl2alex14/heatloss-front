@@ -1,8 +1,8 @@
 import type { Product } from "@shared/types/produtcs";
 import type { ClimateItem } from "@features/directories/types";
-import type { Construction } from "./construction";
-import type { Room, RoomResult } from "./room";
-import type { Equipment } from "./equipment";
+import type { Construction } from "./index.ts";
+import type { Room, RoomResult } from "./index.ts";
+import type { Equipment } from "./index.ts";
 
 export type CalculationStatus = "published" | "working" | "case" | "hidden";
 export type UseSeason = "permanent" | "seasonal" | "freeze";
@@ -58,6 +58,7 @@ export interface CalculationDetails {
 	deliveryCost?: number;
 	deliveryInfo?: string;
 	needDelivery?: boolean;
+	promoInfo?: string;
 }
 
 export interface CalculationResult {
@@ -92,6 +93,9 @@ export interface CalculationResult {
 	comment?: string;
 
 	rooms?: RoomResult[];
+
+	promoCode?: string;
+	promoInfo?: string;
 }
 
 export interface CalculationSaved {
