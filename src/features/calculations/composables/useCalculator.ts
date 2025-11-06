@@ -4,7 +4,7 @@ import type {
 	CalculationResult,
 	Equipment,
 	Room,
-	Construction,
+	Construction, RoomConstruction,
 } from "../types";
 import { useSettings } from "@features/settings/composables/useSettings.ts";
 import type { SurfaceType } from "@features/directories/types";
@@ -182,12 +182,37 @@ export const useCalculator = () => {
 		return Math.round((averageHeatLoss.value * 24 * 30) / 100) / 10;
 	});
 
+	const constructionsInRooms = computed(() => {
+		const constructions = new Map<number|string,RoomConstruction>();
+		calculation.value.rooms.forEach((room: Room) => {
+			room.roomConstructions.forEach((construction: RoomConstruction) => {
+				if(!construction.enabled) {
+					return;
+				}
+
+				if(constructions.has(construction.id)) {
+					const hasConstruction = constructions.get(construction.id);
+					hasConstruction && (hasConstruction.area += construction.area);
+				}else{
+					constructions.set(construction.id, {...construction});
+				}
+			})
+		});
+
+		return constructions;
+	});
+
+	const getConstructionAreaFromRooms = (id: number): number => {
+		return constructionsInRooms.value.get(id)?.area || 0;
+	}
+
 	const constructionsDetailed = () => {
 		if (!calculation.value.constructions) return [];
 		return calculation.value.constructions.map((item) => ({
 			...item,
+			area: item.area || getConstructionAreaFromRooms(item.id),
 			heatLoss: calculatedHeatLoss(
-				item.area,
+				item.area || getConstructionAreaFromRooms(item.id),
 				item.calculatedResistance,
 				tempDiff.value
 			),

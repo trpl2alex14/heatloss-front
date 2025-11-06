@@ -8,7 +8,7 @@
 		<!-- Название конструкции (только для чтения) -->
 		<div class="flex-1">
 			<BaseInputText
-				:model-value="construction?.name || ''"
+				:model-value="(construction?.id || '') + ' ' + (construction?.name || '')"
 				label="Конструкция"
 				:disabled="true"
 				:readonly="true"
@@ -85,6 +85,7 @@ import {
 } from "@shared/components";
 import type { RoomConstruction, Construction } from "../types";
 import { useCalculator } from "../composables/useCalculator";
+import {useSettings} from "@features/settings/composables/useSettings.ts";
 
 interface Props {
 	modelValue: RoomConstruction;
@@ -101,6 +102,8 @@ interface Emits {
 
 const props = defineProps<Props>();
 const emit = defineEmits<Emits>();
+
+const { windowMultiplayer } = useSettings();
 
 // Проверяем, является ли конструкция окном
 const isWindowType = computed(() => {
@@ -154,7 +157,7 @@ const calculatedHeatLoss = computed(() => {
 	const resistance = props.construction.calculatedResistance;
 	const heatLoss = getHeatLoss(area, resistance, tempDiff.value);
 
-	return heatLoss + (heatLoss * (props.modelValue.count || 0) * 0.05); //+5% на каждое окно
+	return heatLoss + (heatLoss * (props.modelValue.count || 0) * windowMultiplayer); //+% на каждое окно
 });
 
 // Синхронизируем теплопотери при изменении параметров

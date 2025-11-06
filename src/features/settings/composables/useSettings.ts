@@ -4,6 +4,7 @@ export const useSettings = () => {
 		comfortTemp: 23,
 		freezeTemp: 5,
 		powerPrice: 3.6,
+		windowMultiplayer: 0.05,  //+5% на каждое окно
 		tagsForTitle: ['дом', 'квартира', 'ком. объект'],
 
 		seasonTag: 'весна и осень',
