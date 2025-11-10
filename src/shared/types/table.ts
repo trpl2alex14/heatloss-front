@@ -19,7 +19,6 @@ export interface TypeLabelDef {
 		| "warn"
 		| "secondary"
 		| "danger"
-		| "danger"
 		| "contrast";
 }
 

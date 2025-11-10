@@ -32,7 +32,7 @@
 .bg:after {
 	display: block;
 	width: 150px;
-	background: linear-gradient(to right, transparent 0%, #f5f5f5 50%, transparent 100%);
+	background: linear-gradient(to right, transparent 0%, #f1f1f1 50%, transparent 100%);
 	animation: load 2s cubic-bezier(0.4, 0.0, 0.2, 1) infinite;
 }
 
