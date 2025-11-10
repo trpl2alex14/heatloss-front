@@ -34,26 +34,37 @@ const routes = [
 	//API test
 	{
 		name: 'api-request',
-		//path: '/api/requests/:id'
 		path: isFrontTest ? '/data/requests.1222.json?:id' : '/api/requests/:id',
 		redirect: '/'
 	},
 	{
 		name: 'api-requests',
-		//path: '/api/requests/:id'
 		path: isFrontTest ? '/data/requests.json' : '/api/requests',
 		redirect: '/'
 	},
 	{
 		name: 'api-case',
-		//path: '/api/requests/:id'
-		path: '/data/case.1.json?', //TODO
+		path: isFrontTest ? '/data/case.1.json?' : '/api/cases/:id',
 		redirect: '/'
 	},
 	{
 		name: 'api-cases',
-		//path: '/api/requests/:id'
-		path: '/data/cases.json', //TODO
+		path: isFrontTest ? '/data/cases.json' : '/api/cases',
+		redirect: '/'
+	},
+	{
+		name: 'api-case-create',
+		path: isFrontTest ? '/data/case.create.json' : '/api/cases/create',
+		redirect: '/'
+	},
+	{
+		name: 'api-case-status',
+		path: isFrontTest ? '/data/case.1.json?:id' : '/api/cases/:id/status',
+		redirect: '/'
+	},
+	{
+		name: 'api-calculation-short',
+		path: isFrontTest ? '/data/case.1.json?' : '/api/calculations/:id/short',
 		redirect: '/'
 	},
 	{
@@ -229,7 +240,7 @@ const routes = [
 	},
 	{
 		path: "/cases",
-		name: "Cases",
+		name: "cases",
 		meta: { title: "Кейсы", icon: "book-open-check.svg" },
 		component: () => import("@features/cases/view/CasesPage.vue"),
 	},

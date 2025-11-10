@@ -26,3 +26,4 @@ export { default as BaseSelect } from "./ui/BaseSelect.vue";
 export { default as BaseMultiSelect } from "./ui/BaseMultiSelect.vue";
 export { default as BaseToggleSwitch } from "./ui/BaseToggleSwitch.vue";
 export { default as EmptyBox } from "./EmptyBox.vue";
+export { default as BaseImageUpload } from "./ui/BaseImageUpload.vue";

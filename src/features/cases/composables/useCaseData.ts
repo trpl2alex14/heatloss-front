@@ -1,9 +1,12 @@
-import type { CaseItem } from "@features/cases/types/case";
+import {type CaseItem, type CaseStatus, CategoryType} from "@features/cases/types/CaseTypes.ts";
 import {
 	useFetchCollection,
 	type RequestDataOptions,
 } from "@shared/composables/useFetchCollection";
-import type { ColumnDef } from "@shared/types/table";
+import type {ColumnDef, TypeImageDef} from "@shared/types/table";
+import FactoryIcon from "@assets/icons/factory.svg";
+import HouseIcon from "@assets/icons/house.svg";
+import BuildingIcon from "@assets/icons/building.svg";
 
 const columns: ColumnDef[] = [
 	{
@@ -42,7 +45,7 @@ const columns: ColumnDef[] = [
 		key: "image",
 		label: "Фото",
 		type: "slot",
-		style: "width: 150px; height: 84px;",
+		style: "width: 150px;",
 		sort: 5,
 		hidden: true,
 	},
@@ -98,10 +101,28 @@ const columns: ColumnDef[] = [
 	},
 ];
 
-const filterOptions = [
+const filterOptions: {label: string, value: CaseStatus | 'all'}[] = [
 	{ label: "Все", value: "all" },
 	{ label: "Опубликованы", value: "published" },
-	{ label: "Скрытые", value: "hide" },
+	{ label: "Скрытые", value: "hidden" },
+];
+
+const categoryTypes: TypeImageDef[] = [
+	{
+		key: CategoryType.Business,
+		label: "Коммерческие",
+		image: FactoryIcon,
+	},
+	{
+		key: CategoryType.House,
+		label: "Частные дома",
+		image: HouseIcon,
+	},
+	{
+		key: CategoryType.Home,
+		label: "Квартиры, лоджии",
+		image: BuildingIcon,
+	},
 ];
 
 export const useCaseData = () => {
@@ -120,6 +141,7 @@ export const useCaseData = () => {
 
 	return {
 		columns,
+		categoryTypes,
 		filterOptions,
 		caseData,
 		isLoading,

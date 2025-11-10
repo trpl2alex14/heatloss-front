@@ -81,12 +81,14 @@ import type {ActionValue} from "@shared/types/menu.ts";
 import {useRouter} from "vue-router";
 import {useMessage} from "@shared/composables/useMessage.ts";
 import {useCalculationActions} from "../composables/useCalculationActions.ts";
+import {useCaseDialog} from "@features/cases";
 
 const {productCategory} = useTypes();
 const {dropdownActions} = useDropdownMenu();
 const router = useRouter();
 const {info, warning} = useMessage();
 const {changeStateCalculation, deleteCalculation, copyCalculation} = useCalculationActions();
+const {openCaseDialog} = useCaseDialog();
 
 const baseUrl = window.location.origin;
 
@@ -193,7 +195,10 @@ const menuAction = ({id, action}: ActionValue) => {
 			draftCalculation(id);
 			break;
 		case "case":
-			router.push({name: "case-create", query: {calculation: id}});
+			openCaseDialog({
+				calculation: id,
+				onSave: () => router.push({name: 'cases'})
+			});
 			break;
 		case "copy":
 			copyCalculation(id)
