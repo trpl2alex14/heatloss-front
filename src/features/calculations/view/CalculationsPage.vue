@@ -87,7 +87,7 @@ const {productCategory} = useTypes();
 const {dropdownActions} = useDropdownMenu();
 const router = useRouter();
 const {info, warning} = useMessage();
-const {changeStateCalculation, deleteCalculation, copyCalculation} = useCalculationActions();
+const {changeStateCalculation, deleteCalculation, copyCalculation, calculationViewPath} = useCalculationActions();
 const {openCaseDialog} = useCaseDialog();
 
 const baseUrl = window.location.origin;
@@ -164,14 +164,14 @@ const draftCalculation = async (id: number) => {
 		.catch(() => warning(`Не удалось сменить статус расчёта ${id}`, 5000));
 };
 
-const menuAction = ({id, action}: ActionValue) => {
+const menuAction = async ({id, action}: ActionValue) => {
 	if (id === undefined) {
 		return;
 	}
 
 	switch (action) {
 		case "edit":
-			router.push({name: "calculation", params: {id}});
+			void router.push({name: "calculation", params: {id}});
 			break;
 		case "view":
 			openPath("calculation-view", id);
@@ -180,19 +180,23 @@ const menuAction = ({id, action}: ActionValue) => {
 			openPath("calculation-pdf", id);
 			break;
 		case "link":
-			const path = router.resolve({name: "calculation-view", params: {id}});
+			const path = await calculationViewPath(id);
+			if(!path){
+				warning(`Ссылка на расчёт ${id} не доступна`, 5000);
+				return;
+			}
 			if(window.isSecureContext){
-				navigator.clipboard.writeText(baseUrl + path.fullPath);
+				void navigator.clipboard.writeText(path);
 			}else{
-				console.log(baseUrl + path.fullPath);
+				console.log(path);
 			}
 			info("", 3000, "Ссылка скопирована");
 			break;
 		case "public":
-			publicCalculation(id);
+			void publicCalculation(id);
 			break;
 		case "draft":
-			draftCalculation(id);
+			void draftCalculation(id);
 			break;
 		case "case":
 			openCaseDialog({

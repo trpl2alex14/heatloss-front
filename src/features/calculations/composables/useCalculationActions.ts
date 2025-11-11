@@ -4,7 +4,7 @@ import {useApiRequest} from "@shared/composables/useApiRequest.ts"
 
 export const useCalculationActions = () => {
 	const {info} = useMessage();
-	const {drop, post} = useApiRequest();
+	const {drop, post, get} = useApiRequest();
 
 	const changeStateCalculation = async (id: number, status: CalculationStatus, successMsg?: string) => {
 		return post('api-calculation-status', {id}, {status})
@@ -39,9 +39,19 @@ export const useCalculationActions = () => {
 			});
 	};
 
+	const calculationViewPath = async (id: number) => {
+		return get('api-calculation-short', {id})
+			.then((value: any) => {
+				if (typeof value === 'object' && 'view' in value) {
+					return value.view;
+				}
+			});
+	};
+
 	return {
 		changeStateCalculation,
 		deleteCalculation,
 		copyCalculation,
+		calculationViewPath
 	};
 };
