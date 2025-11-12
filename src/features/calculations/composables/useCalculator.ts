@@ -86,7 +86,7 @@ export const useCalculator = () => {
 		const allEquipment: Equipment[] = [];
 
 		calculationData.rooms?.forEach((room) => {
-			room.equipment?.forEach((item) => {
+			room.equipment?.forEach((item: Equipment) => {
 				allEquipment.push({ ...item });
 			});
 		});
@@ -153,7 +153,7 @@ export const useCalculator = () => {
 			heatLoss = (
 				Math.round(
 					calculation.value.rooms?.reduce(
-						(acc, item) => acc + item.heatLoss,
+						(acc: number, item: Room) => acc + item.heatLoss,
 						0
 					) * 10
 				) / 10
@@ -244,16 +244,16 @@ export const useCalculator = () => {
 	});
 
 	const totalArea = computed(() => {
-		return (
+		return Math.round( 10 *
 			calculation.value.rooms?.reduce(
-				(acc, item) => acc + item.area,
+				(acc: number, item: Room) => acc + item.area,
 				0
 			) || 0
-		);
+		) / 10;
 	});
 
 	const rooms = computed(() => {
-		return calculation.value.rooms?.map((item) => ({
+		return calculation.value.rooms?.map((item: Room) => ({
 			id: item.id,
 			name: item.name,
 			area: item.area,
@@ -262,14 +262,14 @@ export const useCalculator = () => {
 			heatLoss: Math.round(item.heatLoss * 10) / 10,
 			baseHeat: Math.round((item.baseHeat || 0) * 10) / 10,
 			equipment: item.equipment,
-			windows: item.roomConstructions.reduce((acc, item) => acc + (item.count || 0), 0),
+			windows: item.roomConstructions.reduce((acc: number, item: RoomConstruction) => acc + (item.count || 0), 0),
 		})) || [];
 	});
 
 	// Получение максимального этажа из всех помещений
 	const getMaxFloor = (): number => {
 		if (!calculation.value.rooms.length) return 1;
-		return Math.max(...calculation.value.rooms.map((room) => room.floor));
+		return Math.max(...calculation.value.rooms.map((room: Room) => room.floor));
 	};
 
 	const getRoomHeight = (item: Room) => {
@@ -280,7 +280,7 @@ export const useCalculator = () => {
 	const totalVolume = computed(() => {
 		return Math.round((
 			calculation.value.rooms?.reduce(
-				(acc, item) => acc + item.area * getRoomHeight(item),
+				(acc: number, item: Room) => acc + item.area * getRoomHeight(item),
 				0
 			) || 0
 		) * 10) / 10;
