@@ -70,8 +70,8 @@ import BaseSelectButton from "@shared/components/ui/BaseSelectButton.vue";
 import Room from "./Room.vue";
 import EmptyBox from "@shared/components/EmptyBox.vue";
 import type {
-	CalculationDetails,
-	Room as RoomType,
+	CalculationDetails, Equipment,
+	Room as RoomType, RoomConstruction,
 	RoomConstructionMethod,
 	RoomFromRequest
 } from "../types";
@@ -163,16 +163,17 @@ const getNextRoomId = (): number => {
 
 const newRoom = () => {
 	const id = getNextRoomId();
+	const lastRoom = props.modelValue.rooms.length ? props.modelValue.rooms[props.modelValue.rooms.length - 1] : null;
 	const newRoom: RoomType = {
 		id: id,
 		name: `Комната ${id}`,
 		area: 0,
-		floor: 1,
+		floor: lastRoom?.floor || 1,
 		width: 0,
 		length: 0,
-		height: 2.5,
-		minHeight: 2.5,
-		isMansard: false,
+		height: lastRoom?.height || 2.5,
+		minHeight: lastRoom?.minHeight || 2.5,
+		isMansard: lastRoom?.isMansard || false,
 		heatLoss: 0,
 		baseHeat: 0,
 		roomConstructions: [],
@@ -250,7 +251,7 @@ const addEquipment = (index: number) => {
 			product: props.modelValue.product,
 			roomId: props.modelValue.rooms[index].id,
 			roomName: props.modelValue.rooms[index].name,
-			exclude: props.modelValue.rooms[index].equipment?.map((equipment) => equipment.id) || [],
+			exclude: props.modelValue.rooms[index].equipment?.map((equipment: Equipment) => equipment.id) || [],
 		},
 		onClose: (value) => {
 			if (!value?.data || !Array.isArray(value.data) || value.data.length === 0) {
@@ -344,12 +345,12 @@ const hasRoomsConstructionsChanges = (
 		}
 
 		const sortedCurrentRoomConstructions =
-			currentRoom.roomConstructions.sort((a, b) => a.id - b.id);
+			currentRoom.roomConstructions.sort((a: RoomConstruction, b: RoomConstruction) => a.id - b.id);
 
 		// Сравниваем содержимое roomConstructions
 		return updatedRoom.roomConstructions
-			.sort((a, b) => a.id - b.id)
-			.some((updatedConstruction, constIndex) => {
+			.sort((a: RoomConstruction, b: RoomConstruction) => a.id - b.id)
+			.some((updatedConstruction: RoomConstruction, constIndex: number) => {
 				const currentConstruction =
 					sortedCurrentRoomConstructions[constIndex];
 				if (!currentConstruction) return true;
