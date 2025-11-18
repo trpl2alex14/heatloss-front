@@ -1,8 +1,9 @@
 <template>
 	<div class="flex flex-col gap-2">
 		<!-- Кнопки действий -->
-		<div v-if="result.id && isCorrect" class="flex gap-x-4">
+		<div v-if="result.ulid && isCorrect" class="flex gap-x-4">
 			<BaseButton
+				v-if="isPublic"
 				label="Ссылка на расчёт"
 				as="a"
 				text
@@ -184,6 +185,7 @@ import { useRouter } from "vue-router";
 type Props = {
 	result: CalculationResult;
 	isCorrect?: boolean;
+	isPublic?: boolean;
 };
 
 const props = defineProps<Props>();

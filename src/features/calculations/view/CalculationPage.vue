@@ -62,7 +62,11 @@
 							/>
 						</div>
 						<div v-else>
-							<CalculationResult :result="calculationResult" :is-correct="isCorrect && !needSave" />
+							<CalculationResult
+								:result="calculationResult"
+								:is-correct="isCorrect"
+								:is-public="calculation.status === 'published' || calculation.status === 'case'"
+							/>
 						</div>
 					</div>
 				</div>
@@ -223,6 +227,7 @@ const save = async () => {
 	});
 
 	if (id) {
+		calculation.value.id = id;
 		needSave.value = false;
 		notSaveAuto = true;
 		router.push({name: "calculation", params: {id}});

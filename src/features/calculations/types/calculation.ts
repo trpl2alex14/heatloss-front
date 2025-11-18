@@ -59,10 +59,13 @@ export interface CalculationDetails {
 	deliveryInfo?: string;
 	needDelivery?: boolean;
 	promoInfo?: string;
+
+	resultUlid?: string;
 }
 
 export interface CalculationResult {
 	id?: number;
+	ulid?: string;
 
 	averagePower: number;
 	averageExpenses: number;

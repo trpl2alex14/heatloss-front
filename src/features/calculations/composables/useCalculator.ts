@@ -289,6 +289,7 @@ export const useCalculator = () => {
 	const result = computed<CalculationResult>(() => {
 		return {
 			id: calculation.value.id || 0,
+			ulid: calculation.value.resultUlid || undefined,
 			power: totalEquipmentPower.value / 1000,
 			equipmentCost: totalEquipmentCost.value,
 			equipment: totalEquipment.value,
@@ -313,7 +314,7 @@ export const useCalculator = () => {
 			comment: calculation.value.comment || "",
 			rooms: rooms.value,
 			promoCode: calculation.value.promoCode || "",
-			promoInfo: calculation.value.promoInfo || undefined
+			promoInfo: calculation.value.promoInfo || undefined,
 		};
 	});
 
