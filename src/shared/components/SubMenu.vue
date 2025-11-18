@@ -46,7 +46,7 @@ const route = useRoute();
 const menuItems = computed(() => props.items);
 
 const isActive = (path: string) => {
-	return route.path === path || route.path.startsWith(path + "/");
+	return path && (route.path === path || route.path.startsWith(path + "/"));
 };
 
 const action = (item: SubMenuItem) => {

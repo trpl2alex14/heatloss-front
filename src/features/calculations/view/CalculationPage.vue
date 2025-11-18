@@ -324,25 +324,25 @@ const rightBoxTabs = computed<SelectButtonOption[]>(() => {
 
 const subMenuItems: SubMenuItem[] = [
 	{
-		path: "#",
+		path: "",
 		title: "Климат",
 		icon: MapIcon,
 		action: () => calculationRef.value?.scrollTo("climate"),
 	},
 	{
-		path: "#",
+		path: "",
 		title: "Огр. конструкции",
 		icon: BrickIcon,
 		action: () => calculationRef.value?.scrollTo("constructions"),
 	},
 	{
-		path: "#",
+		path: "",
 		title: "Помещения",
 		icon: HouseIcon,
 		action: () => calculationRef.value?.scrollTo("rooms"),
 	},
 	{
-		path: "#",
+		path: "",
 		title: "Оборудование",
 		icon: HeaterIcon,
 		action: () => calculationRef.value?.scrollTo("equipments"),
