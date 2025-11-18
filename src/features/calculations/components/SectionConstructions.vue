@@ -174,6 +174,7 @@ const duplicateConstruction = (index: number) => {
 	const constructionToDuplicate = props.modelValue.constructions[index];
 	const duplicatedConstruction: ConstructionType = {
 		...constructionToDuplicate,
+		id: constructionId++,
 		name: `${constructionToDuplicate.name} (копия)`,
 	};
 
