@@ -22,7 +22,7 @@ export const useAutoDistribution = (rooms: Room[], constructions: Construction[]
 	const getRoomConstructionsById = (room: Room, ids: number[]): RoomConstruction[] => {
 		const newRoomConstructions: RoomConstruction[] = [];
 
-		room.roomConstructions?.forEach((construction) => {
+		room.roomConstructions?.forEach((construction: RoomConstruction) => {
 			if (ids.includes(construction.id)) {
 				newRoomConstructions.push(construction);
 			}
@@ -42,7 +42,10 @@ export const useAutoDistribution = (rooms: Room[], constructions: Construction[]
 
 	const getUnlockedConstructions = (room: Room): RoomConstruction[] => {
 		const idsUnlockedConstructions =
-			room.roomConstructions?.filter((c) => c.unlocked).map((construction) => construction.id) || [];
+			room.roomConstructions
+				?.filter((c: RoomConstruction) => c.unlocked)
+				.map((construction: RoomConstruction) => construction.id)
+			|| [];
 
 		return getRoomConstructionsById(room, idsUnlockedConstructions);
 	};
@@ -80,8 +83,8 @@ export const useAutoDistribution = (rooms: Room[], constructions: Construction[]
 			.map(
 				(room) =>
 					room.roomConstructions
-						?.filter((c) => c.unlocked)
-						.map((c) => ({
+						?.filter((c: RoomConstruction) => c.unlocked)
+						.map((c: RoomConstruction) => ({
 							id: c.id,
 							area: c.area,
 							areaMultiplier: getAreaMultiplier(
@@ -113,8 +116,11 @@ export const useAutoDistribution = (rooms: Room[], constructions: Construction[]
 		return rooms.map((room) => {
 			// Очищаем существующие конструкции
 			const newRoomConstructions: RoomConstruction[] = mode === "windows" ? getWindowConstructions(room) : [];
+			const unlockedConstructions: RoomConstruction[] = getUnlockedConstructions(room);
 
-			newRoomConstructions.push(...getUnlockedConstructions(room));
+			const excludeIds = newRoomConstructions.map((c: RoomConstruction) => c.id);
+
+			newRoomConstructions.push(...unlockedConstructions.filter((c: RoomConstruction) => !excludeIds.includes(c.id)));
 
 			// Получаем все конструкции
 			constructions.forEach((construction) => {
@@ -151,10 +157,10 @@ export const useAutoDistribution = (rooms: Room[], constructions: Construction[]
 
 					if (construction.surface?.type === "window") {
 						const windows = room.roomConstructions
-							.filter((rC) => rC.id === construction.id);
+							.filter((rC: RoomConstruction) => rC.id === construction.id);
 
 						count = windows.length > 0 ?
-							windows.reduce((acc, rC) => acc + (rC?.count || 0), 0)
+							windows.reduce((acc: number, rC: RoomConstruction) => acc + (rC?.count || 0), 0)
 							: (room.defaultWindows || 1);
 					}
 
