@@ -101,7 +101,7 @@
 			</template>
 			<Column v-if="expandable" expander style="max-width: 0.5rem" />
 			<template v-if="expandable" #expansion="slotProps">
-				<div class="p-4">
+				<div class="p-0">
 					<slot name="expansion" :data="slotProps.data" />
 				</div>
 			</template>

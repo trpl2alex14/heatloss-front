@@ -68,6 +68,11 @@ const routes = [
 		redirect: '/'
 	},
 	{
+		name: 'api-calculation-result',
+		path: isFrontTest ? '/data/case.1.json?' : '/api/calculations/:id/result',
+		redirect: '/'
+	},
+	{
 		name: 'api-calculation-status',
 		path: isFrontTest ? '/data/calculation.public.json?:id' : '/api/calculations/:id/status',
 		redirect: '/'
