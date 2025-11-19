@@ -35,8 +35,9 @@
 			@sort="onSortChange"
 			responsiveLayout="scroll"
 			class="w-full data-table-fix"
+			@row-dblclick="(e: any)=>emit('db-click', e.index)"
 		>
-			<Column v-if="expandable" expander style="width: 1rem" />
+
 			<template v-for="col in sortedColumns" :key="col.key">
 				<Column
 					:field="col.key"
@@ -78,7 +79,7 @@
 						v-else-if="actions && col.type === 'actions'"
 						#body="{ data }"
 					>
-						<div class="flex justify-end w-full">
+						<div class="flex justify-start w-auto">
 							<BaseDropdownMenu
 								:actions="computedActions(data.id)"
 								:id="data.id"
@@ -98,6 +99,7 @@
 					</template>
 				</Column>
 			</template>
+			<Column v-if="expandable" expander style="max-width: 0.5rem" />
 			<template v-if="expandable" #expansion="slotProps">
 				<div class="p-4">
 					<slot name="expansion" :data="slotProps.data" />
@@ -144,20 +146,21 @@ const computedActions = (id: number)=>{
 };
 
 const sortedColumns = computed(() => {
-	const colums = viewColumns.value.sort(
+	const columns = viewColumns.value.sort(
 		(a, b) => (a?.sort || 90) - (b?.sort || 90)
 	);
 
 	return props.actions
 		? [
-				...colums,
 				{
 					key: "table-actions",
 					label: "",
 					type: "actions",
+					style: "max-width: 20px;"
 				} as ColumnDef,
+				...columns,
 		  ]
-		: colums;
+		: columns;
 });
 
 const getColumnStyle = (col: ColumnDef) => {
@@ -182,6 +185,7 @@ const emit = defineEmits([
 	"update:pagination",
 	"update:sort",
 	"action",
+	"db-click"
 ]);
 
 const onSortChange = (e: any) => {

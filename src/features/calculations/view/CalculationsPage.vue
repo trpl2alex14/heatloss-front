@@ -19,6 +19,7 @@
 			@update:pagination="onPageChange"
 			@update:sort="onSortChange"
 			@action="menuAction"
+			@db-click="editByIndex"
 		>
 			<template #top-left>
 				<BaseSelectButton v-model="filterValue" :options="filterOptions" @update:model-value="onFilterChange"/>
@@ -89,8 +90,6 @@ const router = useRouter();
 const {info, warning} = useMessage();
 const {changeStateCalculation, deleteCalculation, copyCalculation, calculationViewPath} = useCalculationActions();
 const {openCaseDialog} = useCaseDialog();
-
-const baseUrl = window.location.origin;
 
 const searchFields: (keyof CalculationItem)[] = ["id", "city"];
 
@@ -163,6 +162,11 @@ const draftCalculation = async (id: number) => {
 		.then(() => reload())
 		.catch(() => warning(`Не удалось сменить статус расчёта ${id}`, 5000));
 };
+
+const editByIndex = (index: number) => {
+	const id = calculationData.value[index].id;
+	void router.push({name: "calculation", params: {id}});
+}
 
 const menuAction = async ({id, action}: ActionValue) => {
 	if (id === undefined) {

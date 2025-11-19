@@ -88,7 +88,7 @@ const columns: ColumnDef[] = [
 		label: "Дата",
 		type: "date",
 		sortable: true,
-		style: "width: 100px;",
+		style: "width: 110px;",
 		sort: 11,
 	},
 ];
