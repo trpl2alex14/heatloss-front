@@ -10,7 +10,8 @@ import { useSettings } from "@features/settings/composables/useSettings.ts";
 import type { SurfaceType } from "@features/directories/types";
 
 const { powerPrice, tagsForTitle } = useSettings();
-const calculation = ref<CalculationDetails>({
+
+const defCalc: CalculationDetails = {
 	useSeason: "permanent",
 	product: "all",
 	constructions: [],
@@ -23,24 +24,17 @@ const calculation = ref<CalculationDetails>({
 	rooms: [],
 	roomConstructionMethod: "manual",
 	equipment: [],
+};
+
+const calculation = ref<CalculationDetails>({
+	...defCalc
 });
 
 export const useCalculator = () => {
 
 	const resetCalculation = () => {
 		calculation.value = {
-			useSeason: "permanent",
-			product: "all",
-			constructions: [],
-			date: '',
-			status: "working",
-			city: '',
-			requiredTemp: 0,
-			freezeTemp: 0,
-			calculateMethod: "detailed",
-			rooms: [],
-			roomConstructionMethod: "manual",
-			equipment: [],
+			...defCalc
 		};
 	};
 

@@ -70,7 +70,7 @@ export const useMaterialData = () => {
 			};
 		}
 
-		loadData(params);
+		return loadData(params);
 	};
 
 	return {

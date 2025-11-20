@@ -30,6 +30,13 @@ export const useSettings = () => {
 
 		crmEndpointUrl: "https://kouzi.bitrix24.ru/crm/",
 		crmLeadPath: "lead/details/",
-		crmDealPath: "deal/details/"
+		crmDealPath: "deal/details/",
+
+		defaultSurfaces: [
+			'Стена наружная',
+			'Крыша наклонная',
+			'Пол (граничит с улицей)',
+			'Окно'
+		]
 	};
 }

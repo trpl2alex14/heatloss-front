@@ -68,12 +68,12 @@ export const useFetchCollection = <T>(endpoint: Endpoint, autoLoad = true) => {
 	});
 
 	const loadData = (params?: RequestDataOptions<T>) => {
-		loadDataApi(requestParams(params));
+		return loadDataApi(requestParams(params));
 	};
 
 	if (autoLoad) {
 		onMounted(() => {
-			loadData();
+			void loadData();
 		});
 	}
 

@@ -88,20 +88,21 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from "vue";
+import {computed, onMounted, ref, watch} from "vue";
 import BaseSelectButton from "@shared/components/ui/BaseSelectButton.vue";
 import BaseButton from "@shared/components/ui/BaseButton.vue";
 import BaseInputNumber from "@shared/components/ui/BaseInputNumber.vue";
 import EmptyBox from "@shared/components/EmptyBox.vue";
 import Construction from "./Construction.vue";
 import ConstructionSnip from "./ConstructionSnip.vue";
-import { useMaterialData } from "@features/directories/composables/useMaterialData";
-import { useSurfaceData } from "@features/directories/composables/useSurfaceData";
-import type { CalculationDetails, Construction as ConstructionType, ConstructionLayer } from "../types";
-import type { Construction as ConstructionFromRequest } from "@features/requests/types/request";
-import type { MaterialItem, Surface } from "@features/directories/types/materials";
-import { useCalculator } from "../composables/useCalculator";
-import { useMessage } from "@shared/composables/useMessage";
+import {useMaterialData} from "@features/directories/composables/useMaterialData";
+import {useSurfaceData} from "@features/directories/composables/useSurfaceData";
+import type {CalculationDetails, Construction as ConstructionType, ConstructionLayer} from "../types";
+import type {Construction as ConstructionFromRequest} from "@features/requests/types/request";
+import type {MaterialItem, Surface, SurfaceType} from "@features/directories/types/materials";
+import {useCalculator} from "../composables/useCalculator";
+import {useMessage} from "@shared/composables/useMessage";
+import {useSettings} from "@features/settings/composables/useSettings.ts";
 
 interface Props {
 	modelValue: CalculationDetails;
@@ -117,31 +118,27 @@ const emit = defineEmits<Emits>();
 const area = ref(1);
 const oldConstructions = ref();
 
-const { warning } = useMessage();
+const {warning} = useMessage();
 // Загрузка материалов
-const { materialData, loadMaterialData, isLoading: isLoadingMaterial } = useMaterialData();
+const {materialData, loadMaterialData, isLoading: isLoadingMaterial} = useMaterialData();
 
 // Загрузка поверхностей
-const { surfaces, loadSurfaceData, isLoading: isLoadingSurface } = useSurfaceData();
+const {surfaces, loadSurfaceData, isLoading: isLoadingSurface} = useSurfaceData();
 
-const { computedTempDiff, getSnipResistance } = useCalculator();
+const { defaultSurfaces } = useSettings();
+
+const {computedTempDiff, getSnipResistance} = useCalculator();
 // Опции для метода расчета
 const calculateMethodOptions = [
-	{ label: "Детальный расчёт", value: "detailed" },
-	{ label: "Считать упрощенно", value: "snip" },
-	{ label: "Указать теплопотери", value: "simple" },
+	{label: "Детальный расчёт", value: "detailed"},
+	{label: "Считать упрощенно", value: "snip"},
+	{label: "Указать теплопотери", value: "simple"},
 ];
 
 // Вычисляемое свойство для метода расчета
 const calculateMethod = computed({
 	get: () => props.modelValue.calculateMethod,
-	set: (value: "detailed" | "simple" | "snip") => {
-		emit("update:modelValue", {
-			...props.modelValue,
-			calculateMethod: value,
-			constructions: makeConstructionsForMethod(value),
-		});
-	},
+	set: (value: "detailed" | "simple" | "snip") => updateConstructionsForMethod(value),
 });
 
 // Методы для работы с конструкциями
@@ -194,56 +191,48 @@ const duplicateConstruction = (index: number) => {
 };
 
 // Загрузка данных при монтировании компонента
-onMounted(() => {
-	loadMaterialData();
-	loadSurfaceData();
+onMounted(async () => {
+	await Promise.all([loadMaterialData(), loadSurfaceData()])
+	if (!props.modelValue.constructions || props.modelValue.constructions.length === 0) {
+		updateConstructionsForMethod('detailed');
+	}
 });
+
+const updateConstructionsForMethod = (value: "detailed" | "snip" | "simple") => {
+	if (props.modelValue.calculateMethod === "detailed" && props.modelValue.constructions.length > 0) {
+		oldConstructions.value = props.modelValue.constructions;
+	}
+
+	emit("update:modelValue", {
+		...props.modelValue,
+		calculateMethod: value,
+		constructions: makeConstructionsForMethod(value),
+	});
+}
 
 const makeConstructionsForMethod = (method: "detailed" | "snip" | "simple") => {
 	let constructions = [];
 
 	if (method === "snip") {
-		constructions = [
-			{
-				id: 1,
-				layers: [],
-				name: "Стены",
-				snipResistance: getSnipResistance("wall"),
-				calculatedResistance: getSnipResistance("wall"),
-				area: 0,
-				surface: {
-					id: 1,
-					name: "Стены",
-					type: "wall",
-				},
-			},
-			{
-				id: 2,
-				layers: [],
-				name: "Кровля",
-				snipResistance: getSnipResistance("roof"),
-				calculatedResistance: getSnipResistance("roof"),
-				area: 0,
-				surface: {
-					id: 2,
-					name: "Кровля",
-					type: "roof",
-				},
-			},
-			{
-				id: 3,
-				layers: [],
-				name: "Пол",
-				snipResistance: getSnipResistance("floor"),
-				calculatedResistance: getSnipResistance("floor"),
-				area: 0,
-				surface: {
-					id: 3,
-					name: "Пол",
-					type: "floor",
-				},
-			},
+		const surfaces: { key: SurfaceType, label: string }[] = [
+			{key: 'wall', label: 'Стены'},
+			{key: 'roof', label: 'Кровля'},
+			{key: 'floor', label: 'Пол'},
 		];
+
+		constructions = surfaces.map((surface, index) => ({
+			id: index + 1,
+			layers: [],
+			name: surface.label,
+			snipResistance: getSnipResistance(surface.key),
+			calculatedResistance: getSnipResistance(surface.key),
+			area: props.modelValue.calculateMethod !== 'snip' ? 0 : props.modelValue.constructions[index]?.area || 0,
+			surface: {
+				id: index + 1,
+				name: surface.label,
+				type: surface.key,
+			},
+		}));
 	} else if (method == "simple") {
 		constructions = [
 			{
@@ -263,23 +252,36 @@ const makeConstructionsForMethod = (method: "detailed" | "snip" | "simple") => {
 		];
 	} else if (oldConstructions.value) {
 		constructions = oldConstructions.value;
+	} else {
+		constructions = defaultSurfaces.map((name: string, index) => {
+			const surface: Surface = surfaces.value && surfaces.value.find((surface: Surface) => surface.name === name);
+			if(!surface) {
+				return null;
+			}
+
+			return {
+				id: index + 1,
+				layers: [],
+				name: name,
+				snipResistance: getSnipResistance(surface.type),
+				calculatedResistance: 0,
+				area: 0,
+				surface: surface,
+			}
+		}).filter((v) => !!v);
 	}
 
 	return constructions;
 };
 
 watch(
-	() => calculateMethod.value,
-	(value, oldValue) => {
-		if (value === null) {
-			calculateMethod.value = "detailed";
-		}
-
-		if (oldValue === "detailed" && props.modelValue.constructions.length > 0) {
-			oldConstructions.value = props.modelValue.constructions;
+	() => props.modelValue.city,
+	() => {
+		if (props.modelValue.calculateMethod === 'snip') {
+			updateConstructionsForMethod('snip');
 		}
 	}
-);
+)
 
 watch(
 	[() => props.modelValue.baseHeatLoss, () => area.value, () => computedTempDiff.value],
@@ -300,11 +302,11 @@ const addConstructions = (constructions: ConstructionFromRequest[]) => {
 	let id = 0;
 	const newConstructions: ConstructionType[] = constructions.map((construction) => {
 		let surface = surfaces.value.find((item: Surface) => item.id === construction.surfaceId);
-		if(!surface) {
+		if (!surface) {
 			surface = surfaces.value.find((item: Surface) => item.name === construction.label);
 		}
 
-		if(!surface) {
+		if (!surface) {
 			warning("Отсутствует поверхность: " + construction.label, 20000);
 		}
 
@@ -315,7 +317,7 @@ const addConstructions = (constructions: ConstructionFromRequest[]) => {
 			area: construction.area,
 			layers: construction.materials.map((material) => {
 				const layer = materialData.value.find((m: MaterialItem) => m.id === material.id);
-				if(!layer) {
+				if (!layer) {
 					warning("Материал отсутствует: " + material.name, 20000);
 					return null;
 				}
@@ -326,7 +328,7 @@ const addConstructions = (constructions: ConstructionFromRequest[]) => {
 					thickness: material.width,
 					type: layer.type,
 				};
-			}).filter((v)=>v) as ConstructionLayer[],
+			}).filter((v) => v) as ConstructionLayer[],
 			snipResistance: getSnipResistance(surface?.type || "other"),
 		};
 	});

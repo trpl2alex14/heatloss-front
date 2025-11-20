@@ -62,7 +62,7 @@
 						:key="index"
 						v-model="modelValue.layers[index]"
 						:materials="filteredMaterials"
-						:humidity="climate.humidity"
+						:humidity="climate.humidity || 'А'"
 						@remove="removeLayer(index)"
 					/>
 

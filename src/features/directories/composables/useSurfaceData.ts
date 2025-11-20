@@ -9,7 +9,7 @@ export const useSurfaceData = () => {
 	>({name: 'api-directories-surfaces' });
 
 	const loadSurfaceData = () => {
-		void loadData();
+		return loadData();
 	};
 
 	return {
