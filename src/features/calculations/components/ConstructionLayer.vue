@@ -15,6 +15,7 @@
 				placeholder="Выберите материал"
 				label="Материал"
 				filter
+				autoFilterFocus
 				:disabled="!modelValue.enabled"
 				:pt="{
 					label: {
