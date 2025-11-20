@@ -25,27 +25,29 @@
 
 		<!-- Список помещений -->
 		<div class="flex flex-col gap-8">
-			<Room
-				v-for="(room, index) in modelValue.rooms"
-				:key="room.id"
-				v-model="modelValue.rooms[index]"
-				:constructions="modelValue.constructions"
-				:min-temp="modelValue?.climate?.minTemp || 0"
-				:required-temp="modelValue.requiredTemp"
-				:floors="getMaxFloor()"
-				:room-construction-method="constructionMode"
-				:is-first="index === 0"
-				:is-last="index === modelValue.rooms.length - 1"
-				:product="modelValue.product || 'all'"
-				:tags="modelValue.tags"
-				@move-up="moveRoomUp(index)"
-				@move-down="moveRoomDown(index)"
-				@duplicate="duplicateRoom(index)"
-				@remove="removeRoom(index)"
-				@add-floor="addFloor(index)"
-				@add-equipment="addEquipment(index)"
-				class="shadow-md shadow-gray-300 hover:shadow-lg transition-shadow"
-			/>
+			<TransitionGroup name="room-fade">
+				<Room
+					v-for="(room, index) in modelValue.rooms"
+					:key="room.id"
+					v-model="modelValue.rooms[index]"
+					:constructions="modelValue.constructions"
+					:min-temp="modelValue?.climate?.minTemp || 0"
+					:required-temp="modelValue.requiredTemp"
+					:floors="getMaxFloor()"
+					:room-construction-method="constructionMode"
+					:is-first="index === 0"
+					:is-last="index === modelValue.rooms.length - 1"
+					:product="modelValue.product || 'all'"
+					:tags="modelValue.tags"
+					@move-up="moveRoomUp(index)"
+					@move-down="moveRoomDown(index)"
+					@duplicate="duplicateRoom(index)"
+					@remove="removeRoom(index)"
+					@add-floor="addFloor(index)"
+					@add-equipment="addEquipment(index)"
+					class="shadow-md shadow-gray-300 hover:shadow-lg transition-shadow"
+				/>
+			</TransitionGroup>
 
 			<EmptyBox
 				v-if="modelValue.rooms.length === 0"
@@ -401,3 +403,26 @@ defineExpose({
 	addRooms
 });
 </script>
+
+
+<style lang="css">
+/* 1. объявление transition */
+.room-fade-move,
+.room-fade-enter-active,
+.room-fade-leave-active {
+	transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);
+}
+
+/* 2. объявление enter from и leave to состояний */
+.room-fade-enter-from,
+.room-fade-leave-to {
+	opacity: 0;
+	transform: scaleY(0.01) translate(30px, 0);
+}
+
+/* 3. убедитесь, что элементы удалены из потока layout,
+      чтобы можно было правильно рассчитать анимацию перемещения */
+.room-fade-leave-active {
+	position: absolute;
+}
+</style>
