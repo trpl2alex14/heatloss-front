@@ -46,7 +46,7 @@
 						class="mb-2"
 						optionDisabled="disabled"
 					/>
-					<div class="max-h-[80vh] overflow-y-auto">
+					<div class="max-h-[95dvh] overflow-y-auto">
 						<div v-if="tab == 'client'">
 							<ClientDetails :client="client" :attachments="attachments" />
 						</div>
@@ -230,7 +230,7 @@ const save = async () => {
 		calculation.value.id = id;
 		needSave.value = false;
 		notSaveAuto = true;
-		router.push({name: "calculation", params: {id}});
+		void router.push({name: "calculation", params: {id}});
 	}
 };
 
