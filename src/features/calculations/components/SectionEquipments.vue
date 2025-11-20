@@ -2,10 +2,10 @@
 	<div class="flex flex-col gap-3.5">
 		<!-- Заголовок секции -->
 		<div class="flex flex-col gap-1.5">
-			<h3 class="text-xl font-normal text-gray-900">
+			<h3 class="text-2xl font-normal text-gray-900">
 				Дополнительное оборудование
 			</h3>
-			<p class="text-sm font-normal text-gray-600">
+			<p class="text-md font-normal text-gray-600">
 				Перечень дополнительного оборудования для отопления помещений
 			</p>
 		</div>
@@ -31,7 +31,7 @@
 				label="Добавить оборудование"
 				severity="primary"
 				@click="addEquipment"
-				class="self-end"
+				class="self-start"
 			/>
 		</div>
 	</div>

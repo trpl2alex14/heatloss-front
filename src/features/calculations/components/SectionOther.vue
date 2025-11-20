@@ -2,7 +2,7 @@
 	<div class="section-other">
 		<!-- Заголовок секции -->
 		<div class="mb-5">
-			<h3 class="text-xl font-normal text-gray-900">
+			<h3 class="text-2xl font-normal text-gray-900">
 				Дополнительная информация
 			</h3>
 		</div>

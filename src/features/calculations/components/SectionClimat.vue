@@ -2,8 +2,8 @@
 	<div class="space-y-4">
 		<!-- Заголовок секции -->
 		<div>
-			<h3 class="text-xl font-normal text-gray-900">Климат</h3>
-			<p class="text-sm text-gray-600 mt-1">
+			<h3 class="text-2xl font-normal text-gray-900">Климат</h3>
+			<p class="text-md text-gray-600 mt-1">
 				Укажите населенный пункт или укажите температуру
 			</p>
 		</div>

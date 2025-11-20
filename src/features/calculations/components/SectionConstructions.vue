@@ -1,17 +1,21 @@
 <template>
-	<div class="flex flex-col gap-3.5" v-if="!isLoadingMaterial && !isLoadingSurface">
+	<div
+		v-if="!isLoadingMaterial && !isLoadingSurface"
+		class="flex flex-col gap-3.5 bg-neutral-800 rounded-xl p-4 -mx-4"
+	>
 		<!-- Заголовок секции -->
 		<div class="flex flex-col gap-1.5">
-			<h3 class="text-xl font-normal text-gray-900">Ограждающие конструкции</h3>
-			<p class="text-sm font-normal text-gray-600">
-				Добавьте все ограждающие конструкции, которые есть на объекте и укажите их площади, для расчёта
+			<h3 class="text-2xl font-normal text-white">Ограждающие конструкции</h3>
+			<p class="text-md font-normal text-gray-400">
+				Добавьте все ограждающие конструкции, которые есть на объекте и укажите их площади,<br> для расчёта
 				теплопотерь через них.
 			</p>
 		</div>
 
 		<!-- Переключатель метода расчета -->
-		<div class="flex">
+		<div class="flex mb-4">
 			<BaseSelectButton
+				class="shadow-md shadow-gray-950"
 				v-model="calculateMethod"
 				:options="calculateMethodOptions"
 				option-label="label"
@@ -21,8 +25,9 @@
 		</div>
 
 		<!-- Список конструкций -->
-		<div v-if="calculateMethod === 'detailed' && modelValue.climate" class="flex flex-col gap-4">
+		<div v-if="calculateMethod === 'detailed' && modelValue.climate" class="flex flex-col gap-6">
 			<Construction
+				class="shadow-md shadow-gray-950"
 				v-for="({}, index) in modelValue.constructions"
 				:key="index"
 				v-model="modelValue.constructions[index]"
@@ -33,7 +38,11 @@
 				@duplicate="duplicateConstruction(index)"
 			/>
 
-			<EmptyBox v-if="modelValue.constructions.length === 0" label="конструкции отсутствуют" />
+			<EmptyBox
+				v-if="modelValue.constructions.length === 0"
+				label="конструкции отсутствуют"
+				class="min-h-20 bg-gray-800 text-gray-50"
+			/>
 
 			<!-- Кнопка добавления конструкции -->
 			<BaseButton
@@ -41,7 +50,7 @@
 				label="Добавить поверхность"
 				severity="primary"
 				@click="newConstruction"
-				class="self-end"
+				class="self-start shadow-md shadow-gray-950"
 			/>
 		</div>
 

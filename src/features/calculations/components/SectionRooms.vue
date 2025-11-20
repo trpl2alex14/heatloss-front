@@ -2,14 +2,14 @@
 	<div class="flex flex-col gap-3.5">
 		<!-- Заголовок секции -->
 		<div class="flex flex-col gap-1.5">
-			<h3 class="text-xl font-normal text-gray-900">Помещения</h3>
-			<p class="text-sm font-normal text-gray-600">
+			<h3 class="text-2xl font-normal text-gray-900">Помещения</h3>
+			<p class="text-md font-normal text-gray-600">
 				Перечень всех помещений на объекте, даже тех где установка
 				оборудования не предполагается
 			</p>
 		</div>
 
-		<div class="flex items-center gap-2">
+		<div class="flex items-center gap-2 mb-4">
 			<!-- Переключатели режимов -->
 			<BaseSelectButton
 				v-model="constructionMode"
@@ -24,7 +24,7 @@
 		</div>
 
 		<!-- Список помещений -->
-		<div class="flex flex-col gap-4">
+		<div class="flex flex-col gap-8">
 			<Room
 				v-for="(room, index) in modelValue.rooms"
 				:key="room.id"
@@ -44,6 +44,7 @@
 				@remove="removeRoom(index)"
 				@add-floor="addFloor(index)"
 				@add-equipment="addEquipment(index)"
+				class="shadow-md shadow-gray-300 hover:shadow-lg transition-shadow"
 			/>
 
 			<EmptyBox
@@ -57,7 +58,7 @@
 				label="Добавить помещение"
 				severity="primary"
 				@click="newRoom"
-				class="self-end"
+				class="self-start"
 			/>
 		</div>
 	</div>

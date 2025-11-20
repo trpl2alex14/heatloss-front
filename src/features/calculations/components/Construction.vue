@@ -41,8 +41,19 @@
 			</div>
 
 			<div v-if="selectedSurface">
-				<!-- Заголовок секции слоев -->
-				<h3 class="mt-4 mb-2">Слои ограждающей конструкции</h3>
+				<div class="flex gap-4 items-center mt-6 mb-2">
+					<!-- Заголовок секции слоев -->
+					<h3 class="text-lg">Слои ограждающей конструкции</h3>
+					<!-- Кнопка добавления слоя -->
+					<BaseButton
+						icon="bars"
+						label="Добавить слой"
+						text
+						severity="primary"
+						@click="addLayer"
+						class="self-start"
+					/>
+				</div>
 
 				<!-- Список слоев -->
 				<div class="flex flex-col gap-2">
@@ -60,15 +71,7 @@
 						label="слои отсутствуют"
 					/>
 
-					<!-- Кнопка добавления слоя -->
-					<BaseButton
-						icon="bars"
-						label="Добавить слой"
-						text
-						severity="primary"
-						@click="addLayer"
-						class="self-end"
-					/>
+
 				</div>
 			</div>
 

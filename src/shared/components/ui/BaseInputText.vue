@@ -8,7 +8,7 @@
 					:placeholder="placeholder"
 					:type="type"
 					class="w-full"
-					variant="filled"
+					:variant="filled ? 'filled' : ''"
 					:disabled="disabled"
 				/>
 				<label v-if="label" class="block text-sm font-medium text-gray-700">{{
@@ -36,6 +36,7 @@ interface Props {
 	disabled?: boolean,
 	clearable?: boolean,
 	fieldError?: string | undefined
+	filled?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -45,7 +46,8 @@ const props = withDefaults(defineProps<Props>(), {
 	type: "text",
 	disabled: false,
 	clearable: false,
-	fieldError: ""
+	fieldError: "",
+	filled: true
 });
 
 const emit = defineEmits(["update:modelValue"]);

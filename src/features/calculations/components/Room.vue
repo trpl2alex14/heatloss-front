@@ -1,50 +1,45 @@
 <template>
 	<div
-		class="flex flex-col gap-3 rounded-xl relative bg-gray-50 border border-gray-300"
+		class="flex flex-col gap-3 rounded-xl relative bg-gray-100 border-1 border-gray-400 overflow-hidden"
 	>
-		<div class="p-4">
-			<!-- Заголовок с основными полями -->
-			<div class="flex items-center gap-3.5">
-				<!-- Выбор этажа -->
-				<div class="w-auto">
-					<BaseSelectButton
-						v-model="floorValue"
-						:options="floorOptions"
-						option-label="label"
-						option-value="value"
-						:allow-empty="false"
+		<div class="pt-8 pb-4 px-4">
+			<div class="flex items-center gap-3.5 mt-4 flex-wrap">
+				<!-- Название помещения -->
+				<div class="flex-1 min-w-[40%]">
+					<BaseInputText
+						v-model="nameValue"
+						label="Название"
+						placeholder="Введите название помещения"
+						class="font-bold"
 					/>
 				</div>
 
-				<!-- Кнопка добавления этажа -->
-				<BaseButton
-					icon="plus"
-					label="Этаж"
-					text
-					severity="primary"
-					@click="addFloor"
-				/>
+				<div class="flex flex-1 items-center gap-2">
+					<!-- Выбор этажа -->
+					<div class="w-auto">
+						<BaseSelectButton
+							v-model="floorValue"
+							:options="floorOptions"
+							option-label="label"
+							option-value="value"
+							:allow-empty="false"
+							class="border-1 border-gray-300"
+						/>
+					</div>
 
-				<!-- Переключатель мансарды -->
-				<div class="flex items-center gap-2.5">
-					<BaseToggleSwitch
-						v-model="isMansardValue"
-						label="Мансарда"
+					<!-- Кнопка добавления этажа -->
+					<BaseButton
+						icon="plus"
+						label="Этаж"
+						text
+						severity="primary"
+						@click="addFloor"
 					/>
 				</div>
 			</div>
 
 			<!-- Основные параметры помещения -->
 			<div class="flex items-center gap-3.5 mt-4">
-				<!-- Название помещения -->
-				<div class="flex-1">
-					<BaseInputText
-						v-model="nameValue"
-						label="Название"
-						placeholder="Введите название помещения"
-					/>
-				</div>
-
 				<!-- Размеры помещения -->
 				<div class="flex items-center gap-2">
 					<div class="w-20">
@@ -113,148 +108,170 @@
 						/>
 					</div>
 				</div>
+
+				<div class="flex items-center gap-2">
+					<!-- Переключатель мансарды -->
+					<div class="flex items-center gap-2.5">
+						<BaseToggleSwitch
+							v-model="isMansardValue"
+							label="Мансарда"
+						/>
+					</div>
+				</div>
 			</div>
 		</div>
 
 		<div class="px-4 flex flex-col gap-3" >
-			<div
-				class="flex flex-col gap-2"
-				v-if="props.constructions.length > 0"
-				v-show="isShow"
-			>
-				<div class="flex items-center">
-					<!-- Заголовок секции конструкций -->
-					<h3>Ограждающие конструкции помещения</h3>
+			<Transition name="slide-fade">
+				<div
+					class="flex flex-col gap-2 transition-all"
+					v-if="props.constructions.length > 0"
+					v-show="isShow"
+				>
+					<div class="flex items-center">
+						<!-- Заголовок секции конструкций -->
+						<h3>Ограждающие конструкции помещения</h3>
 
-					<!-- Кнопка выбора конструкций -->
-					<BaseButton
-						icon="bars"
-						label="Выбрать"
-						text
-						severity="primary"
-						@click="toggleConstructionPopover"
-						:disabled="modelValue.area === 0"
+						<!-- Кнопка выбора конструкций -->
+						<BaseButton
+							icon="bars"
+							label="Выбрать"
+							text
+							severity="primary"
+							@click="toggleConstructionPopover"
+							:disabled="modelValue.area === 0"
+						/>
+					</div>
+					<!-- Список конструкций помещения -->
+					<RoomConstruction
+						v-for="(
+							roomConstruction, index
+						) in modelValue.roomConstructions"
+						:key="roomConstruction.id"
+						v-model="modelValue.roomConstructions[index]"
+						:construction="getConstructionById(roomConstruction.id)"
+						:min-temp="minTemp"
+						:required-temp="requiredTemp"
+						:is-auto-mode="isAutoMode(roomConstruction)"
+						@remove="removeRoomConstruction(index)"
 					/>
-				</div>
-				<!-- Список конструкций помещения -->
-				<RoomConstruction
-					v-for="(
-						roomConstruction, index
-					) in modelValue.roomConstructions"
-					:key="roomConstruction.id"
-					v-model="modelValue.roomConstructions[index]"
-					:construction="getConstructionById(roomConstruction.id)"
-					:min-temp="minTemp"
-					:required-temp="requiredTemp"
-					:is-auto-mode="isAutoMode(roomConstruction)"
-					@remove="removeRoomConstruction(index)"
-				/>
 
-				<!-- Popover для выбора конструкций -->
-				<Popover ref="constructionPopoverRef">
-					<div class="px-2 pb-2 min-w-80">
-						<h4 class="font-medium mb-3">Конструкции</h4>
-						<div class="flex flex-col gap-2">
-							<div
-								v-for="construction in constructions"
-								:key="construction.id"
-								class="flex items-center gap-2"
-							>
-								<BaseToggleSwitch
-									v-model="
-										selectedConstructions[construction.id]
-									"
-									:label="construction.name"
-									@update:model-value="
-										(value) =>
-											toggleConstruction(
-												construction.id,
-												value
-											)
-									"
-								/>
+					<!-- Popover для выбора конструкций -->
+					<Popover ref="constructionPopoverRef">
+						<div class="px-2 pb-2 min-w-80">
+							<h4 class="font-medium mb-3">Конструкции</h4>
+							<div class="flex flex-col gap-2">
+								<div
+									v-for="construction in constructions"
+									:key="construction.id"
+									class="flex items-center gap-2"
+								>
+									<BaseToggleSwitch
+										v-model="
+											selectedConstructions[construction.id]
+										"
+										:label="construction.name"
+										@update:model-value="
+											(value) =>
+												toggleConstruction(
+													construction.id,
+													value
+												)
+										"
+									/>
+								</div>
 							</div>
 						</div>
+					</Popover>
+				</div>
+			</Transition>
+
+			<div class="bg-white my-4 p-4 rounded-xl">
+				<div class="flex gap-4 justify-between items-center mb-4">
+					<!-- Заголовок секции оборудования -->
+					<div>
+						<h3>Отопительное оборудование</h3>
+						<p class="text-sm text-gray-600">
+							Перечень оборудования рекомендованного к установке
+						</p>
 					</div>
-				</Popover>
-			</div>
 
-			<!-- Заголовок секции оборудования -->
-			<div>
-				<h3>Отопительное оборудование</h3>
-				<p class="text-sm text-gray-600">
-					Перечень оборудования рекомендованного к установке
-				</p>
-			</div>
+					<!-- Кнопки действий для оборудования -->
+					<div class="flex gap-5 self-end items-center">
+						<BaseToggleSwitch
+							v-model="manualEquipValue"
+							label="Авто расчёт"
+							:disabled="totalHeatLoss === 0"
+						/>
+						<BaseButton
+							icon="plus"
+							label="Добавить оборудование"
+							text
+							severity="primary"
+							@click="$emit('addEquipment')"
+						/>
+					</div>
+				</div>
 
-			<!-- Список оборудования -->
-			<div class="flex flex-col gap-2">
-				<RoomEquipment
-					v-for="(equipment, index) in modelValue.equipment"
-					:key="equipment.id"
-					v-model="modelValue.equipment[index]"
-					:index="index"
-					:disabled="manualEquipValue"
-					@remove="removeEquipment(index)"
-				/>
-
-				<EmptyBox
-					v-if="!modelValue.equipment || modelValue.equipment.length === 0"
-					label="оборудование отсутствует"
-				/>
-
-				<!-- Кнопки действий для оборудования -->
-				<div class="flex gap-5 self-end">
-					<BaseToggleSwitch
-						v-model="manualEquipValue"
-						label="Авто расчёт"
-						:disabled="totalHeatLoss === 0"
+				<!-- Список оборудования -->
+				<div class="flex flex-col gap-2">
+					<RoomEquipment
+						v-for="(equipment, index) in modelValue.equipment"
+						:key="equipment.id"
+						v-model="modelValue.equipment[index]"
+						:index="index"
+						:disabled="manualEquipValue"
+						@remove="removeEquipment(index)"
 					/>
-					<BaseButton
-						icon="plus"
-						label="Добавить оборудование"
-						text
-						severity="primary"
-						@click="$emit('addEquipment')"
+
+					<EmptyBox
+						v-if="!modelValue.equipment || modelValue.equipment.length === 0"
+						label="оборудование отсутствует"
+						class="bg-white min-h-15"
 					/>
 				</div>
 			</div>
 		</div>
 
 		<!-- Кнопки действий -->
-		<div class="absolute top-0 right-0 flex gap-1">
-			<BaseButton
-				:icon="isShow ? 'eye-slash' : 'eye'"
-				text
-				severity="secondary"
-				@click="isShow = !isShow"
-			/>
-			<BaseButton
-				icon="arrow-up"
-				text
-				severity="secondary"
-				@click="$emit('moveUp')"
-				:disabled="isFirst"
-			/>
-			<BaseButton
-				icon="arrow-down"
-				text
-				severity="secondary"
-				@click="$emit('moveDown')"
-				:disabled="isLast"
-			/>
-			<BaseButton
-				icon="copy"
-				text
-				severity="secondary"
-				@click="$emit('duplicate')"
-			/>
-			<BaseButton
-				icon="trash"
-				text
-				severity="secondary"
-				@click="$emit('remove')"
-			/>
+		<div class="absolute top-0 right-0 flex gap-1 bg-gray-200 left-0 justify-between items-center">
+			<div class="pl-4">
+				<p class="text-gray-600">Помещение</p>
+			</div>
+			<div class="flex gap-1">
+				<BaseButton
+					:icon="isShow ? 'eye-slash' : 'eye'"
+					text
+					severity="secondary"
+					@click="isShow = !isShow"
+				/>
+				<BaseButton
+					icon="arrow-up"
+					text
+					severity="secondary"
+					@click="$emit('moveUp')"
+					:disabled="isFirst"
+				/>
+				<BaseButton
+					icon="arrow-down"
+					text
+					severity="secondary"
+					@click="$emit('moveDown')"
+					:disabled="isLast"
+				/>
+				<BaseButton
+					icon="copy"
+					text
+					severity="secondary"
+					@click="$emit('duplicate')"
+				/>
+				<BaseButton
+					icon="trash"
+					text
+					severity="secondary"
+					@click="$emit('remove')"
+				/>
+			</div>
 		</div>
 
 		<!-- Итоговые результаты -->
@@ -317,7 +334,13 @@ import {useDebounce} from "@shared/utils/debounce";
 import Popover from "primevue/popover";
 import RoomConstruction from "./RoomConstruction.vue";
 import RoomEquipment from "./RoomEquipment.vue";
-import type {Construction, Room, RoomConstruction as RoomConstructionType, RoomConstructionMethod,} from "../types";
+import type {
+	Construction,
+	Equipment,
+	Room,
+	RoomConstruction as RoomConstructionType,
+	RoomConstructionMethod,
+} from "../types";
 import {useAutoEquip} from "../composables/useAutoEquip";
 import {useEquipRules} from "../composables/useEquipRules";
 
@@ -534,7 +557,7 @@ watch(
 			removedConstructionIds.forEach((id) => {
 				removeRoomConstruction(
 					props.modelValue.roomConstructions.findIndex(
-						(rc) => rc.id === id
+						(rc: RoomConstructionType) => rc.id === id
 					)
 				);
 			});
@@ -579,7 +602,7 @@ const toggleConstructionPopover = (event: Event) => {
 	// Инициализируем selectedConstructions при открытии popover
 	props.constructions.forEach((construction) => {
 		selectedConstructions.value[construction.id] = props.modelValue.roomConstructions.some(
-			(rc) => rc.id === construction.id
+			(rc: RoomConstructionType) => rc.id === construction.id
 		);
 	});
 	constructionPopoverRef.value.toggle(event);
@@ -611,7 +634,7 @@ const toggleConstruction = (constructionId: number, isSelected: boolean) => {
 	} else {
 		// Убираем конструкцию
 		const newConstructions = props.modelValue.roomConstructions.filter(
-			(rc) => rc.id !== constructionId
+			(rc: RoomConstructionType) => rc.id !== constructionId
 		);
 
 		emit("update:modelValue", {
@@ -634,14 +657,14 @@ const removeEquipment = (index: number) => {
 // Вычисляемые итоговые значения
 const totalEquipmentPower = computed(() => {
 	return props.modelValue?.equipment?.reduce(
-		(sum, eq) => sum + eq.quantity * (eq.power || 0),
+		(sum: number, eq: Equipment) => sum + eq.quantity * (eq.power || 0),
 		additionalHeatSource.value ? (baseHeat.value || 0) : 0
 	) || 0;
 });
 
 const totalHeatLoss = computed(() => {
 	return props.modelValue?.roomConstructions?.reduce(
-		(sum, rc) => sum + (rc.enabled ? rc.heatLoss : 0),
+		(sum: number, rc: RoomConstructionType) => sum + (rc.enabled ? rc.heatLoss : 0),
 		0
 	) || 0;
 });
@@ -740,3 +763,20 @@ const autoEquip = () => {
 	});
 };
 </script>
+
+
+<style lang="css">
+	.slide-fade-enter-active {
+		transition: all 0.3s ease-out;
+	}
+
+	.slide-fade-leave-active {
+		transition: all 0.3s ease-out;
+	}
+
+	.slide-fade-enter-from,
+	.slide-fade-leave-to {
+		max-height: 0;
+		opacity: 0;
+	}
+</style>

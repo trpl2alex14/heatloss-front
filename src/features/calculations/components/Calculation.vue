@@ -14,16 +14,13 @@
 				ref="sectionClimateRef"
 			/>
 
-			<div
-				class="my-8 border-t border-gray-100"
-				ref="constructionsRef"
-			></div>
+			<div class="my-10" ref="constructionsRef"></div>
 			<SectionConstructions
 				v-model="modelValueProxy"
 				ref="sectionConstructionsRef"
 			/>
 
-			<div class="my-8 border-t border-gray-100" ref="roomsRef"></div>
+			<div class="my-10" ref="roomsRef"></div>
 			<SectionRooms
 				v-model="modelValueProxy"
 				ref="sectionRoomsRef"
@@ -31,12 +28,12 @@
 			/>
 
 			<div
-				class="my-8 border-t border-gray-100"
+				class="my-10 border-t border-gray-100"
 				ref="equipmentsRef"
 			></div>
 			<SectionEquipments v-model="modelValueProxy" />
 
-			<div class="my-8 border-t border-gray-100" ref="otherRef"></div>
+			<div class="my-10 border-t border-gray-100" ref="otherRef"></div>
 			<SectionOther v-model="modelValueProxy" />
 		</div>
 	</div>

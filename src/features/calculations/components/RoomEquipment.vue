@@ -4,13 +4,17 @@
 		<div
 			class="flex items-center justify-center w-6 h-6 text-sm font-normal text-black"
 		>
-			{{ index + 1 }}.
+			<img
+				:src="HeaterIcon"
+				alt="Оборудование"
+				class="w-5 h-5 opacity-40"
+			/>
 		</div>
 
 		<!-- Наименование оборудования -->
 		<div class="flex-1">
 			<BaseInputText
-				v-model="nameValue"
+				:value="index + 1 + '. ' + nameValue"
 				label="Наименование"
 				placeholder="Введите наименование"
 				class="w-full"
@@ -91,6 +95,7 @@ import BaseInputText from "@shared/components/ui/BaseInputText.vue";
 import BaseInputNumber from "@shared/components/ui/BaseInputNumber.vue";
 import BaseButton from "@shared/components/ui/BaseButton.vue";
 import type { Equipment } from "../types";
+import HeaterIcon from "@assets/icons/heater.svg";
 
 interface Props {
 	modelValue: Equipment;
