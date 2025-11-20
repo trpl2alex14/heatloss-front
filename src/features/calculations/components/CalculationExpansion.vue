@@ -23,8 +23,7 @@
 			</div>
 			<div class="flex-1">
 				<h5 class="font-bold mb-2">Список оборудования</h5>
-				<hr>
-				<div class="flex flex-col gap-2 w-full">
+				<div class="flex flex-col gap-2 w-full mb-1">
 					<div class="flex gap-4" v-for="(equip, index) in result.equipments">
 						<div class="w-[20px]">{{ index+1 }}.</div>
 						<div class="flex-1">{{equip.name}}</div>
@@ -35,12 +34,10 @@
 						<div  class="w-[80px] text-right">{{equip.price * equip.count }} ₽</div>
 					</div>
 				</div>
-				<hr>
 				<div class="font-bold text-right">Сумма: {{result.totalAmount}} ₽</div>
 			</div>
 			<div class="flex-1">
 				<h5 class="font-bold mb-2">Список помещений</h5>
-				<hr>
 				<div class="flex flex-col gap-2 w-full">
 					<div class="flex gap-0 flex-col bg-gray-100 py-2 px-4 rounded-xl" v-for="(floor, index) in result.rooms">
 						<div class="font-bold">Этаж {{ index+1 }}</div>
