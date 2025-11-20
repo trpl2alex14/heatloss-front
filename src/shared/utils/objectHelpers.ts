@@ -18,3 +18,10 @@ export function isDeepEqual(x: any, y: any): boolean {
 
 	return false;
 }
+
+export function groupBy<T = any>(xs: T[], key: keyof T): [T[]] {
+	return xs.reduce(function(rv: any, x) {
+		(rv[x[key]] ??= []).push(x);
+		return rv;
+	}, {});
+};

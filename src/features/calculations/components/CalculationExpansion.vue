@@ -48,7 +48,7 @@
 								{{room.size}}м&sup2;&nbsp;<span class="text-gray-400">({{ room.size3 }}м&sup3;)</span>
 							</div>
 							<div class="flex-1">
-								{{room.floor}}&nbsp;<span class="text-gray-400">{{plural(room.floor, ['окно', 'окна', 'окон'])}}</span>
+								{{room.windows}}&nbsp;<span class="text-gray-400">{{plural(room.windows, ['окно', 'окна', 'окон'])}}</span>
 							</div>
 							<div class="w-[70px] text-right">{{room.hLoss}}Вт</div>
 							<div class="w-[10px] text-center">/</div>

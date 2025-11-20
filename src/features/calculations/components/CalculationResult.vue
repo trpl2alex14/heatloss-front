@@ -58,41 +58,58 @@
 
 		<!-- Секция оборудования -->
 		<div v-if="result.equipment?.length" class="flex flex-col gap-2">
-			<div class="font-medium border-b border-gray-300 mt-2">Суммарное количество оборудования</div>
-
-			<div v-for="(equipment, index) in result.equipment" :key="index" class="flex gap-x-2">
-				<BaseTextArea
-					v-model="equipment.name"
-					label="Наименование"
-					class="flex-1"
-					rows="1"
-					autoResize
-					style="resize: none"
-					disabled
-				/>
-				<BaseInputNumber v-model="equipment.quantity" label="Количество" class="w-22" suffix=" шт." disabled />
-				<BaseInputNumber v-model="equipment.price" label="Цена" class="w-26" suffix=" ₽" disabled />
+			<div class="border-b border-gray-300 mt-2 flex justify-between">
+				<p class="font-medium">Суммарное количество оборудования</p>
+				<div>
+					<i
+						@click="showEquipments=!showEquipments"
+						class="pi text-(--p-primary-color) cursor-pointer"
+						:class="{
+							'pi-arrow-down-left-and-arrow-up-right-to-center': showEquipments,
+							'pi-arrow-up-right-and-arrow-down-left-from-center': !showEquipments
+						}"
+					></i>
+				</div>
 			</div>
 
-			<div class="flex justify-end">
-				<BaseInputNumber
-					v-model="result.equipmentCost"
-					label="Стоимость оборудования"
-					class="w-50"
-					disabled
-					suffix=" ₽"
-				/>
-			</div>
+			<Transition name="slide-fade">
+				<div v-show="showEquipments" class="flex flex-col gap-2">
+					<div v-for="(equipment, index) in result.equipment" :key="index" class="flex gap-x-2">
+						<BaseTextArea
+							v-model="equipment.name"
+							label="Наименование"
+							class="flex-1"
+							rows="1"
+							autoResize
+							style="resize: none"
+							disabled
+						/>
+						<BaseInputNumber v-model="equipment.quantity" label="Количество" class="w-22" suffix=" шт."
+										 disabled/>
+						<BaseInputNumber v-model="equipment.price" label="Цена" class="w-26" suffix=" ₽" disabled/>
+					</div>
 
-			<div v-if="result.deliveryCost" class="flex justify-end">
-				<BaseInputNumber
-					v-model="result.deliveryCost"
-					label="Стоимость доставки"
-					class="w-50"
-					disabled
-					suffix=" ₽"
-				/>
-			</div>
+					<div class="flex justify-end">
+						<BaseInputNumber
+							v-model="result.equipmentCost"
+							label="Стоимость оборудования"
+							class="w-50"
+							disabled
+							suffix=" ₽"
+						/>
+					</div>
+
+					<div v-if="result.deliveryCost" class="flex justify-end">
+						<BaseInputNumber
+							v-model="result.deliveryCost"
+							label="Стоимость доставки"
+							class="w-50"
+							disabled
+							suffix=" ₽"
+						/>
+					</div>
+				</div>
+			</Transition>
 		</div>
 
 		<!-- Секция теплопотерь -->
@@ -140,33 +157,91 @@
 					class="flex-1"
 					disabled
 				/>
-				<BaseInputText :model-value="totalHeatLoss" label="Общие теплопотери объекта" class="flex-1" disabled />
+				<BaseInputText :model-value="totalHeatLoss" label="Общие теплопотери объекта" class="flex-1" disabled/>
 			</div>
 		</div>
 
 		<!-- Секция конструкций -->
 		<div v-if="result.constructions?.length" class="flex flex-col gap-2">
-			<div class="font-medium border-b border-gray-300 mt-2">Конструкции</div>
-
-			<div v-for="(constr, index) in result.constructions" :key="index" class="flex gap-x-2">
-				<BaseTextArea
-					v-model="constr.name"
-					label="Конструкция"
-					class="flex-1"
-					disabled
-					rows="1"
-					autoResize
-					style="resize: none"
-				/>
-				<BaseInputNumber
-					:model-value="constr.heatLoss"
-					:label="`Теплопотери в ${result.minTemp} С°`"
-					class="w-35"
-					disabled
-					suffix=" Вт*ч"
-					:style="getStyleHeatLoss(constr)"
-				/>
+			<div class="border-b border-gray-300 mt-2 flex justify-between">
+				<p class="font-medium">Конструкции</p>
+				<div>
+					<i
+						@click="showConstructions=!showConstructions"
+						class="pi text-(--p-primary-color) cursor-pointer"
+						:class="{
+							'pi-arrow-down-left-and-arrow-up-right-to-center': showConstructions,
+							'pi-arrow-up-right-and-arrow-down-left-from-center': !showConstructions
+						}"
+					></i>
+				</div>
 			</div>
+
+			<Transition name="slide-fade">
+				<div v-if="showConstructions">
+					<div
+						v-for="(constr, index) in result.constructions"
+						:key="index"
+						class="flex gap-x-2">
+						<BaseTextArea
+							v-model="constr.name"
+							label="Конструкция"
+							class="flex-1"
+							disabled
+							rows="1"
+							autoResize
+							style="resize: none"
+						/>
+						<BaseInputNumber
+							:model-value="constr.heatLoss"
+							:label="`Теплопотери в ${result.minTemp} С°`"
+							class="w-35"
+							disabled
+							suffix=" Вт*ч"
+							:style="getStyleHeatLoss(constr)"
+						/>
+					</div>
+				</div>
+			</Transition>
+		</div>
+
+		<!-- Секция помещения -->
+		<div v-if="result.rooms?.length" class="flex flex-col gap-2 mb-8">
+			<div class="border-b border-gray-300 mt-2 flex justify-between">
+				<p class="font-medium">Помещения</p>
+				<div>
+					<i
+						@click="showRooms=!showRooms"
+						class="pi text-(--p-primary-color) cursor-pointer"
+						:class="{
+							'pi-arrow-down-left-and-arrow-up-right-to-center': showRooms,
+							'pi-arrow-up-right-and-arrow-down-left-from-center': !showRooms
+						}"
+					></i>
+				</div>
+			</div>
+
+			<Transition name="slide-fade">
+				<div v-if="showRooms" class="flex flex-col gap-4">
+					<div
+						v-for="(floor, index) in groupRooms"
+						class="bg-gray-100 rounded-xl px-4 py-2"
+					>
+						<div class="font-bold">Этаж {{ index+1 }} ({{getFloorSize(floor)}} м&sup2;)</div>
+						<div class="flex gap-2" v-for="(room, index) in floor">
+							<div class="w-[20px]">{{ index+1 }}.</div>
+							<div class="flex-2">{{room.name}}</div>
+							<div class="w-[120px]">
+								{{room.area}}м&sup2;&nbsp;<span class="text-gray-400">({{ room.volume }}м&sup3;)</span>
+							</div>
+							<div class="flex-1">
+								{{room.floor}}&nbsp;<span class="text-gray-400">{{plural(room.floor, ['окно', 'окна', 'окон'])}}</span>
+							</div>
+							<div class="w-[70px] text-right">{{room.heatLoss}} Вт</div>
+						</div>
+					</div>
+				</div>
+			</Transition>
 		</div>
 	</div>
 </template>
@@ -175,12 +250,13 @@
 import BaseButton from "@shared/components/ui/BaseButton.vue";
 import BaseInputText from "@shared/components/ui/BaseInputText.vue";
 import BaseInputNumber from "@shared/components/ui/BaseInputNumber.vue";
-import type { CalculationResult, Construction } from "../types";
+import type {CalculationResult, Construction, RoomResult} from "../types";
 import BaseTextArea from "@shared/components/ui/BaseTextArea.vue";
-import { plural } from "@shared/utils/text";
-import { computed } from "vue";
-import { useSettings } from "@features/settings/composables/useSettings.ts";
-import { useRouter } from "vue-router";
+import {plural} from "@shared/utils/text";
+import {computed, ref} from "vue";
+import {useSettings} from "@features/settings/composables/useSettings.ts";
+import {useRouter} from "vue-router";
+import {groupBy} from "@shared/utils/objectHelpers.ts";
 
 type Props = {
 	result: CalculationResult;
@@ -190,9 +266,21 @@ type Props = {
 
 const props = defineProps<Props>();
 
-const { powerPrice } = useSettings();
+const {powerPrice} = useSettings();
 
 const router = useRouter();
+
+const showEquipments = ref(true);
+const showConstructions = ref(true);
+const showRooms = ref(true);
+
+const getFloorSize = (floor: RoomResult[]) => {
+	return Math.round(floor.reduce((acc: number, room: RoomResult) => acc + room.area, 0));
+}
+
+const groupRooms = computed(()=>{
+	return groupBy<RoomResult>(props.result.rooms || [], 'floor')
+});
 
 const totalHeatLoss = computed(() => {
 	const heatLossInCube = props.result.volume ? props.result.totalHeatLoss / props.result.volume : 0;
@@ -202,7 +290,7 @@ const totalHeatLoss = computed(() => {
 const getUrl = (name: string, id?: number) => {
 	return id && router.resolve({
 		name,
-		params: { id }
+		params: {id}
 	}).href || "";
 }
 
@@ -225,3 +313,24 @@ const getStyleHeatLoss = (c: Construction) => {
 	};
 };
 </script>
+
+<style lang="css">
+.slide-fade-enter-active {
+	transition: all 0.3s ease-out;
+}
+
+.slide-fade-leave-active {
+	transition: all 0.3s ease-out;
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+	max-height: 0;
+	opacity: 0;
+}
+
+.slide-fade-enter-to,
+.slide-fade-leave-from {
+	max-height: 1000px;
+}
+</style>

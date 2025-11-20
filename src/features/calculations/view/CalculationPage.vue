@@ -46,7 +46,7 @@
 						class="mb-2"
 						optionDisabled="disabled"
 					/>
-					<div class="max-h-[95dvh] overflow-y-auto">
+					<div class="max-h-[95dvh] overflow-y-scroll">
 						<div v-if="tab == 'client'">
 							<ClientDetails :client="client" :attachments="attachments" />
 						</div>
