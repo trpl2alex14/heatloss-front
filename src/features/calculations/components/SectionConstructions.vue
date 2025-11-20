@@ -211,7 +211,7 @@ const updateConstructionsForMethod = (value: "detailed" | "snip" | "simple") => 
 }
 
 const makeConstructionsForMethod = (method: "detailed" | "snip" | "simple") => {
-	let constructions = [];
+	let constructions;
 
 	if (method === "snip") {
 		const surfaces: { key: SurfaceType, label: string }[] = [
