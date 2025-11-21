@@ -33,10 +33,10 @@ export const useSettings = () => {
 		crmDealPath: "deal/details/",
 
 		defaultSurfaces: [
+			'Окно',
 			'Стена наружная',
-			'Крыша наклонная',
+			'Крыша плоская',
 			'Пол (граничит с улицей)',
-			'Окно'
 		]
 	};
 }
