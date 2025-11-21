@@ -142,7 +142,7 @@ const constructionModeOptions = computed(() => {
 		nonWindowConstructionsHaveArea &&
 		props.modelValue.calculateMethod === "detailed"
 	) {
-		options.push({ value: "windows", label: "Витражи" });
+		options.push({ value: "windows", label: "Авто (Кроме окон)" });
 	}
 
 	if (props.modelValue.calculateMethod !== "simple") {
