@@ -157,16 +157,22 @@ export const useCalculator = () => {
 		return heatLoss;
 	});
 
+	const getRequiredTemp  = (): number => {
+		return calculation.value.useSeason === 'freeze'
+			? calculation.value.freezeTemp : calculation.value.requiredTemp;
+	};
+
 	const tempDiff = computed(() => {
+		const requiredTemp = getRequiredTemp();
 		return (
-			calculation.value.requiredTemp - (calculation.value.climate?.minTemp || 0)
+			requiredTemp - (calculation.value.climate?.minTemp || 0)
 		);
 	});
 
 	const averageHeatLoss = computed(() => {
 		return Math.round(
 			totalHeatLoss.value *
-				((calculation.value.requiredTemp -
+				((getRequiredTemp() -
 					(calculation.value.climate?.avgTemp || 0)) /
 					tempDiff.value)
 		);
@@ -297,7 +303,7 @@ export const useCalculator = () => {
 			humidity: calculation.value.climate?.humidity || "-",
 			minTemp: calculation.value.climate?.minTemp || 0,
 			avgTemp: calculation.value.climate?.avgTemp || 0,
-			requiredTemp: calculation.value.requiredTemp || 0,
+			requiredTemp: getRequiredTemp() || 0,
 			heatingSeason: calculation.value.climate?.heatingSeason || 0,
 			area: Math.round(totalArea.value * 10) / 10,
 			volume: Math.round(totalVolume.value * 10) / 10,

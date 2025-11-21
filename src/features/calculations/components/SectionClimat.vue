@@ -32,7 +32,7 @@
 			</p>
 			<BaseSelectButton
 				v-model="localModel.useSeason"
-				:options="seasonOptiopns"
+				:options="seasonOptions"
 				optionLabel="label"
 				optionValue="value"
 				class="w-auto"
@@ -148,7 +148,7 @@ const emit = defineEmits<{
 }>();
 
 // Опции для типа климата
-const seasonOptiopns: (SelectButtonOption & { value: UseSeason })[] = [
+const seasonOptions: (SelectButtonOption & { value: UseSeason })[] = [
 	{ label: "Постоянное проживание", value: "permanent" },
 	{ label: "Весна / Осень", value: "seasonal" },
 	{ label: "Защита от промерзания", value: "freeze" },
@@ -175,11 +175,11 @@ const getCurrentClimate = (city: string, useSeason?: UseSeason) => {
 	return useSeason === "seasonal"
 		? {
 				...item,
-				minTemp: item.avgTemp || 0,
+				minTemp: item?.avgTemp || 0,
 				avgTemp:
-					(props.modelValue.requiredTemp + item.avgTemp) / 2 || 0,
+					(props.modelValue?.requiredTemp + (item?.avgTemp || 0)) / 2 || 0,
 		  }
-		: item;
+		: {...item};
 };
 
 const localModel = computed({
@@ -195,13 +195,7 @@ watch(
 		if (!val.useSeason) {
 			val.useSeason = "permanent";
 		}
-		if (val.freezeTemp === undefined || val.freezeTemp === null) {
-			val.freezeTemp = freezeTemp;
-		}
-		if (val.requiredTemp === undefined || val.requiredTemp === null) {
-			val.requiredTemp = getRequiredTemp(val.useSeason);
-		}
-		if (val.climate === undefined || val.climate === null) {
+		if (val.climate === undefined) {
 			val.climate = getCurrentClimate(val.city, val.useSeason);
 		}
 	},
