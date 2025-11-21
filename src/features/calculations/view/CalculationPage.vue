@@ -21,7 +21,7 @@
 					<div class="flex flex-col gap-2">
 						<BaseButton v-if="needSave" icon="save" class="w-full" label="Сохранить" @click="save" />
 						<BaseButton
-							v-if="isCorrect && calculation.status !=='published'"
+							v-if="isCorrect && calculation.status !=='published' && calculation.status !== 'case'"
 							icon="eye"
 							class="w-full"
 							label="Опубликовать"
