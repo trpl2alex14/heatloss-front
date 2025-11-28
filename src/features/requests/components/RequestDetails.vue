@@ -115,14 +115,7 @@
 							<BaseInputText :model-value="room.name" label="Название" class="flex-1" disabled />
 							<BaseInputText
 								v-if="room.windows"
-								:model-value="
-									room.windows
-										? `${room.windows.reduce((sum, w) => sum + w.count, 0)} (${room.windows.reduce(
-												(sum, w) => sum + (w.area || 0),
-												0
-										  )} м²)`
-										: ''
-								"
+								:model-value="getWindowsText(room.windows)"
 								label="Окна"
 								class="w-22"
 								disabled
@@ -182,6 +175,7 @@ import { useStatus } from "../composables/useStatus";
 import BaseStatusTag from "@shared/components/ui/BaseStatusTag.vue";
 import BaseProgressBar from "@shared/components/ui/BaseProgressBar.vue";
 import CalculationBtn from "@shared/components/CalculationBtn.vue";
+import type {Window} from "@features/requests/types/request.ts";
 
 interface Dialog {
 	data: { id: number };
@@ -194,6 +188,13 @@ const { productCategory } = useTypes();
 const dialogRef = inject("dialogRef") as Ref<Dialog>;
 
 const { requestData: request, attachments, client, loadRequestData } = useRequestResource();
+
+const getWindowsText = (windows: Window[]) => {
+	const size = windows.reduce((sum, w) => sum + (w.area || 0),0);
+	const sizeText = size > 0 ? ` (${size} м²)` : '';
+
+	return `${windows.reduce((sum, w) => sum + w.count, 0)}${sizeText}`;
+}
 
 onMounted(() => {
 	if (dialogRef && dialogRef.value?.data) {

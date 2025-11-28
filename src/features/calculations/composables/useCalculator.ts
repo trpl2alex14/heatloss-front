@@ -246,7 +246,7 @@ export const useCalculator = () => {
 	const totalArea = computed(() => {
 		return Math.round( 10 *
 			calculation.value.rooms?.reduce(
-				(acc: number, item: Room) => acc + item.area,
+				(acc: number, item: Room) => acc + Number(item.area),
 				0
 			) || 0
 		) / 10;

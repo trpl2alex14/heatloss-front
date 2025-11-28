@@ -371,7 +371,7 @@ const hasRoomsConstructionsChanges = (
 	});
 };
 
-const addRooms = (rooms: any) => {
+const addRooms = (rooms: RoomFromRequest[]) => {
 	let index = 0;
 	const newRooms = rooms.map((room: RoomFromRequest) => {
 		const id = ++index;
@@ -386,6 +386,7 @@ const addRooms = (rooms: any) => {
 			minHeight: room.minHeight,
 			isMansard: room.isMansard,
 			defaultWindows: room.windows,
+			defaultWindowsArea: room.windowsArea,
 			heatLoss: 0,
 			baseHeat: 0,
 			roomConstructions: [],

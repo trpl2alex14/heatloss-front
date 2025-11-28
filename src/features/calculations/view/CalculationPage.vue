@@ -235,6 +235,8 @@ const save = async () => {
 };
 
 const copyAll = async () => {
+	calculation.value.product = requestData.value.product || 'all';
+
 	await nextTick(()=>copyTags());
 	await nextTick(()=>copyCity());
 	await nextTick(()=>copyConstructions());
@@ -268,18 +270,23 @@ const copyRooms = () => {
 					let diffHeight = (requestData.value.ridgeHeight || 0) - (requestData.value.wallHeight || 0);
 					diffHeight = diffHeight > 0 && diffHeight < height ? diffHeight : 0;
 
+					const windows = room.windows?.reduce((sum, w) => sum + w.count, 0) || 0;
 					return {
 						...room,
 						height: height,
 						minHeight: isMansard ? (room.minHeight ? room.minHeight : height - diffHeight) : undefined,
 						isMansard: isMansard,
 						floor: index + 1,
-						windows: room.windows?.reduce((sum, w) => sum + w.count, 0) || 0,
+						windows: windows,
+						windowsArea: windows
+							? room.windows?.reduce((sum, w) => sum + (w.area || 0), 0) || 0
+							: undefined,
 					};
 				});
 			})
 			.flat() || [];
 
+	//see SectionRooms
 	calculationRef.value?.addRooms(rooms);
 };
 

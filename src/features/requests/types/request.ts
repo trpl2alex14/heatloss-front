@@ -62,7 +62,7 @@ export interface Floor {
 export interface RequestDetails {
 	id: number;
 	status: RequestStatus;
-	progress: number;
+	progress: number; // 0-100
 	date: string;
 	product: Product;
 

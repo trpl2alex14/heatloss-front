@@ -316,7 +316,7 @@ const addConstructions = (constructions: ConstructionFromRequest[]) => {
 			surface: surface,
 			area: construction.area,
 			layers: construction.materials.map((material) => {
-				const layer = materialData.value.find((m: MaterialItem) => m.id === material.id);
+				const layer = materialData.value.find((m: MaterialItem) => m.name === material.name);
 				if (!layer) {
 					warning("Материал отсутствует: " + material.name, 20000);
 					return null;
@@ -325,7 +325,7 @@ const addConstructions = (constructions: ConstructionFromRequest[]) => {
 					enabled: true,
 					name: layer.name,
 					materialId: layer.id,
-					thickness: material.width,
+					thickness: Number(material.width),
 					type: layer.type,
 				};
 			}).filter((v) => v) as ConstructionLayer[],
