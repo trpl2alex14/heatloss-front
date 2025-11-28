@@ -87,9 +87,9 @@ const columns: ColumnDef[] = [
 const filterOptions = [
 	{ label: "Все", value: "all" },
 	{ label: "Заполняются", value: "pending" },
-	{ label: "Заполнены", value: "processed" },
+	{ label: "Заполнена", value: "processed" },
 	{ label: "В работе", value: "working" },
-	{ label: "Обработаны", value: "completed" },
+	{ label: "Обработана", value: "completed" },
 ];
 
 export const useRequestData = () => {
