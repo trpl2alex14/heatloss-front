@@ -291,10 +291,6 @@ const copyRooms = () => {
 };
 
 const copyCity = () => {
-	if (requestData.value.city) {
-		calculationRef.value?.cityChange(requestData.value.city);
-	}
-
 	if (requestData.value.tags?.includes(seasonTag)) {
 		calculation.value.useSeason = "seasonal";
 	}
@@ -305,6 +301,10 @@ const copyCity = () => {
 
 	if (requestData.value.electricity?.price) {
 		calculation.value.powerPrice = requestData.value.electricity?.price;
+	}
+
+	if (requestData.value.city) {
+		calculationRef.value?.cityChange(requestData.value.city);
 	}
 };
 
