@@ -259,7 +259,7 @@ const calculatedResistance = computed(() => {
 				(sum, layer) => sum + (layer.resistance || 0),
 				baseResistance
 			)
-			.toFixed(3) * multiplier
+			.toFixed(3) / multiplier
 	);
 });
 
