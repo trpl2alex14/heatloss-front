@@ -619,7 +619,7 @@ const toggleConstruction = (constructionId: number, isSelected: boolean) => {
 		const newRoomConstruction = {
 			id: construction.id,
 			enabled: true,
-			area: construction.surface?.type === "window" ? (props.modelValue.defaultWindowsArea || 0) : construction.area || 0,
+			area: construction.surface?.type === "window" ? (props.modelValue.defaultWindowsArea || 0) : 0, // убрал construction.area
 			count: construction.surface?.type === "window" ? (props.modelValue.defaultWindows || 1) : undefined,
 			heatLoss: 0,
 		};
