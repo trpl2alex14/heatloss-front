@@ -156,7 +156,7 @@ const sortedColumns = computed(() => {
 					key: "table-actions",
 					label: "",
 					type: "actions",
-					style: "max-width: 20px;"
+					style: "width:35px;"
 				} as ColumnDef,
 				...columns,
 		  ]
