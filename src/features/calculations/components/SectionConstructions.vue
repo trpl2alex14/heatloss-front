@@ -142,12 +142,13 @@ const calculateMethod = computed({
 });
 
 // Методы для работы с конструкциями
-let constructionId =
-	props.modelValue.constructions.reduce((max, construction) => Math.max(max, construction.id), 0) + 1;
+let maxConstructionId = computed(()=>
+	props.modelValue.constructions.reduce((max, construction) => Math.max(max, construction.id), 0) || 0
+);
 
 const newConstruction = () => {
 	const newConstruction: ConstructionType = {
-		id: constructionId++,
+		id: maxConstructionId.value + 1,
 		name: "",
 		layers: [
 			{
@@ -180,7 +181,7 @@ const duplicateConstruction = (index: number) => {
 	const constructionToDuplicate = props.modelValue.constructions[index];
 	const duplicatedConstruction: ConstructionType = {
 		...constructionToDuplicate,
-		id: constructionId++,
+		id: maxConstructionId.value + 1,
 		name: `${constructionToDuplicate.name} (копия)`,
 	};
 
