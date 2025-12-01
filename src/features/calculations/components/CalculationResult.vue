@@ -235,7 +235,10 @@
 								{{room.area}}м&sup2;&nbsp;<span class="text-gray-400">({{ room.volume }}м&sup3;)</span>
 							</div>
 							<div class="flex-1">
-								{{room.floor}}&nbsp;<span class="text-gray-400">{{plural(room.floor, ['окно', 'окна', 'окон'])}}</span>
+								{{room.windows || '-'}}&nbsp;<span
+									v-if="room.windows"
+									class="text-gray-400"
+								>{{plural(room.windows, ['окно', 'окна', 'окон'])}}</span>
 							</div>
 							<div class="w-[70px] text-right">{{room.heatLoss}} Вт</div>
 						</div>
