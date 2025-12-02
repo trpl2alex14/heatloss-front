@@ -76,7 +76,8 @@ import type {
 	CalculationDetails, Equipment,
 	Room as RoomType, RoomConstruction,
 	RoomConstructionMethod,
-	RoomFromRequest
+	RoomFromRequest,
+	Construction
 } from "../types";
 import { useAutoDistribution } from "../composables/useAutoDistribution";
 import { useCalculator } from "../composables/useCalculator";
@@ -375,6 +376,22 @@ const addRooms = (rooms: RoomFromRequest[]) => {
 	let index = 0;
 	const newRooms = rooms.map((room: RoomFromRequest) => {
 		const id = ++index;
+		let roomConstructions = [];
+		if(room.windows && room.windowsArea){
+			const windowsConstruction = props.modelValue.constructions.find(
+				(c: Construction) => c.surface?.type === 'window'
+			);
+			if(windowsConstruction) {
+				roomConstructions.push({
+					id: windowsConstruction.id,
+					enabled: true,
+					area: room.windowsArea,
+					count: room.windows,
+					heatLoss: 0,
+				});
+			}
+		}
+
 		return {
 			id: id,
 			name: room.name || `Комната ${id}`,
@@ -389,7 +406,7 @@ const addRooms = (rooms: RoomFromRequest[]) => {
 			defaultWindowsArea: room.windowsArea,
 			heatLoss: 0,
 			baseHeat: 0,
-			roomConstructions: [],
+			roomConstructions: roomConstructions,
 			equipment: [],
 		};
 	})
