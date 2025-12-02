@@ -232,7 +232,7 @@
 							<div class="w-[20px]">{{ index+1 }}.</div>
 							<div class="flex-2">{{room.name}}</div>
 							<div class="w-[120px]">
-								{{room.area}}м&sup2;&nbsp;<span class="text-gray-400">({{ room.volume }}м&sup3;)</span>
+								{{Math.round(room.area * 10) / 10}} м&sup2;&nbsp;<span class="text-gray-400">( {{ Math.round(room.volume * 10) / 10 }}м&sup3; )</span>
 							</div>
 							<div class="flex-1">
 								{{room.windows || '-'}}&nbsp;<span
