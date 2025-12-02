@@ -210,9 +210,9 @@ export const useCalculator = () => {
 		if (!calculation.value.constructions) return [];
 		return calculation.value.constructions.map((item) => ({
 			...item,
-			area: item.area || getConstructionAreaFromRooms(item.id),
+			area: getConstructionAreaFromRooms(item.id) || item.area,
 			heatLoss: calculatedHeatLoss(
-				item.area || getConstructionAreaFromRooms(item.id),
+				getConstructionAreaFromRooms(item.id) || item.area,
 				item.calculatedResistance,
 				tempDiff.value
 			),
