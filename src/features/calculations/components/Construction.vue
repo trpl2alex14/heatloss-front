@@ -169,7 +169,7 @@ const selectedSurface = computed({
 		const selectedSurfaceData = getSurface(value);
 		const materials = getFilteredMaterials(value);
 
-		const exsistingLayers =
+		const existingLayers =
 			props.modelValue?.layers?.filter((layer) =>
 				materials.find((m) => m.id === layer.materialId)
 			) || [];
@@ -181,7 +181,7 @@ const selectedSurface = computed({
 			snipResistance: getSnipResistance(
 				selectedSurfaceData?.type || "other"
 			),
-			layers: [...exsistingLayers],
+			layers: [...existingLayers],
 		});
 	},
 });
