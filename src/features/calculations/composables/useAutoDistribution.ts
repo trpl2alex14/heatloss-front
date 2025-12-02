@@ -15,6 +15,11 @@ export const useAutoDistribution = (rooms: Room[], constructions: Construction[]
 		return rooms.filter((room) => room.floor === floor).reduce((sum, room) => sum + room.area, 0);
 	};
 
+	const getTotalAreaOnlyMansard = (): number => {
+		const maxFloor = getMaxFloor();
+		return rooms.filter((room) => room.floor !== maxFloor && room.isMansard).reduce((sum, room) => sum + room.area, 0);
+	};
+
 	const getTotalVolume = (): number => {
 		return rooms.reduce((sum, room) => sum + room.area * getRoomHeight(room), 0);
 	};
@@ -56,7 +61,7 @@ export const useAutoDistribution = (rooms: Room[], constructions: Construction[]
 
 		const maxFloor = getMaxFloor();
 		const totalAreaFirstFloor = getTotalAreaByFloor(1);
-		const totalAreaLastFloor = getTotalAreaByFloor(maxFloor);
+		const totalAreaLastFloor = getTotalAreaByFloor(maxFloor) + getTotalAreaOnlyMansard();
 		const totalVolume = getTotalVolume();
 
 		const surfaceType = (construction.surface?.type as SurfaceType) || "other";
@@ -64,7 +69,7 @@ export const useAutoDistribution = (rooms: Room[], constructions: Construction[]
 
 		if (surfaceType === "floor" && room.floor === 1 && totalAreaFirstFloor > 0) {
 			areaMultiplier = room.area / totalAreaFirstFloor;
-		} else if (surfaceType === "roof" && room.floor === maxFloor && totalAreaLastFloor > 0) {
+		} else if (surfaceType === "roof" && (room.floor === maxFloor || room.isMansard ) && totalAreaLastFloor > 0) {
 			areaMultiplier = room.area / totalAreaLastFloor;
 		} else if (["wall", "window", "other"].includes(surfaceType) && totalVolume > 0) {
 			const roomVolume = room.area * getRoomHeight(room);
