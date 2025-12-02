@@ -253,11 +253,14 @@ const copyTags = () => {
 	}
 };
 
-const copyConstructions = () => {
-	const importConstructions =
-		requestData.value.constructions || [];
+const copyConstructions = async() => {
+	const importConstructions = requestData.value.constructions || null;
 
-	calculationRef.value?.addConstructions(importConstructions);
+	if(importConstructions) {
+		await nextTick(() => calculation.value.constructions = [])
+
+		await nextTick(() => calculationRef.value?.addConstructions(importConstructions));
+	}
 };
 
 const copyRooms = () => {
