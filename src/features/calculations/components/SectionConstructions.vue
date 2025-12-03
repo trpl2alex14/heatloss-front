@@ -1,6 +1,5 @@
 <template>
 	<div
-		v-if="!isLoadingMaterial && !isLoadingSurface"
 		class="flex flex-col gap-3.5 bg-neutral-800 rounded-xl p-4 -mx-4"
 	>
 		<!-- Заголовок секции -->
@@ -12,77 +11,89 @@
 			</p>
 		</div>
 
-		<!-- Переключатель метода расчета -->
-		<div class="flex mb-4">
-			<BaseSelectButton
-				class="shadow-md shadow-gray-950"
-				v-model="calculateMethod"
-				:options="calculateMethodOptions"
-				option-label="label"
-				option-value="value"
-				:allow-empty="false"
-			/>
+		<div
+			v-if="!isLoadingMaterial && !isLoadingSurface"
+			class="flex flex-col gap-3.5"
+		>
+			<!-- Переключатель метода расчета -->
+			<div class="flex mb-4">
+				<BaseSelectButton
+					class="shadow-md shadow-gray-950"
+					v-model="calculateMethod"
+					:options="calculateMethodOptions"
+					option-label="label"
+					option-value="value"
+					:allow-empty="false"
+				/>
+			</div>
+
+			<!-- Список конструкций -->
+			<div v-if="calculateMethod === 'detailed' && modelValue.climate" class="flex flex-col gap-6">
+				<Construction
+					class="shadow-md shadow-gray-950"
+					v-for="({}, index) in modelValue.constructions"
+					:key="index"
+					v-model="modelValue.constructions[index]"
+					:materials="materialData"
+					:climate="modelValue.climate"
+					:surfaces="surfaces"
+					@remove="removeConstruction(index)"
+					@duplicate="duplicateConstruction(index)"
+				/>
+
+				<EmptyBox
+					v-if="modelValue.constructions.length === 0"
+					label="конструкции отсутствуют"
+					class="min-h-20 bg-gray-800 text-gray-50"
+				/>
+
+				<!-- Кнопка добавления конструкции -->
+				<BaseButton
+					icon="hammer"
+					label="Добавить поверхность"
+					severity="primary"
+					@click="newConstruction"
+					class="self-start shadow-md shadow-gray-950"
+				/>
+			</div>
+
+			<!-- Список конструкций для SNIP режима -->
+			<div v-if="calculateMethod === 'snip'" class="flex flex-col gap-4">
+				<ConstructionSnip
+					v-for="({}, index) in modelValue.constructions"
+					:key="index"
+					v-model="modelValue.constructions[index]"
+					@remove="removeConstruction(index)"
+				/>
+			</div>
+
+			<div v-if="calculateMethod === 'simple'" class="flex gap-4">
+				<BaseInputNumber
+					class="w-45"
+					v-model="modelValue.baseHeatLoss"
+					label="Теплопотери"
+					placeholder="0"
+					:allowEmpty="false"
+					:min="0"
+					:suffix="' кВт*ч'"
+				/>
+				<BaseInputNumber
+					class="w-45"
+					v-model="area"
+					label="Площадь объекта"
+					placeholder="0"
+					:allowEmpty="false"
+					:min="1"
+					:suffix="' м²'"
+				/>
+			</div>
 		</div>
-
-		<!-- Список конструкций -->
-		<div v-if="calculateMethod === 'detailed' && modelValue.climate" class="flex flex-col gap-6">
-			<Construction
-				class="shadow-md shadow-gray-950"
-				v-for="({}, index) in modelValue.constructions"
-				:key="index"
-				v-model="modelValue.constructions[index]"
-				:materials="materialData"
-				:climate="modelValue.climate"
-				:surfaces="surfaces"
-				@remove="removeConstruction(index)"
-				@duplicate="duplicateConstruction(index)"
-			/>
-
-			<EmptyBox
-				v-if="modelValue.constructions.length === 0"
-				label="конструкции отсутствуют"
-				class="min-h-20 bg-gray-800 text-gray-50"
-			/>
-
-			<!-- Кнопка добавления конструкции -->
-			<BaseButton
-				icon="hammer"
-				label="Добавить поверхность"
-				severity="primary"
-				@click="newConstruction"
-				class="self-start shadow-md shadow-gray-950"
-			/>
-		</div>
-
-		<!-- Список конструкций для SNIP режима -->
-		<div v-if="calculateMethod === 'snip'" class="flex flex-col gap-4">
-			<ConstructionSnip
-				v-for="({}, index) in modelValue.constructions"
-				:key="index"
-				v-model="modelValue.constructions[index]"
-				@remove="removeConstruction(index)"
-			/>
-		</div>
-
-		<div v-if="calculateMethod === 'simple'" class="flex gap-4">
-			<BaseInputNumber
-				class="w-45"
-				v-model="modelValue.baseHeatLoss"
-				label="Теплопотери"
-				placeholder="0"
-				:allowEmpty="false"
-				:min="0"
-				:suffix="' кВт*ч'"
-			/>
-			<BaseInputNumber
-				class="w-45"
-				v-model="area"
-				label="Площадь объекта"
-				placeholder="0"
-				:allowEmpty="false"
-				:min="1"
-				:suffix="' м²'"
-			/>
+		<div
+			v-else
+			class="flex flex-col gap-3.5"
+		>
+			<PreloaderBox :size=30 class="bg-neutral-800 rounded-xl px-4 -ml-4 mr-[50%] mb-4" />
+			<PreloaderBox :size=400 class="bg-neutral-800 rounded-xl pb-4 px-4 -mx-4" />
 		</div>
 	</div>
 </template>
@@ -103,6 +114,7 @@ import type {MaterialItem, Surface, SurfaceType} from "@features/directories/typ
 import {useCalculator} from "../composables/useCalculator";
 import {useMessage} from "@shared/composables/useMessage";
 import {useSettings} from "@features/settings/composables/useSettings.ts";
+import PreloaderBox from "@shared/components/PreloaderBox.vue";
 
 interface Props {
 	modelValue: CalculationDetails;
