@@ -184,13 +184,14 @@
 						:key="index"
 						class="flex gap-x-2">
 						<BaseTextArea
-							v-model="constr.name"
-							label="Конструкция"
+							:value="constr.name"
+							:label="'Конструкция' + (constr.area ? ' - <b>' + constr.area + ' м&sup2;</b>' : '')"
 							class="flex-1"
 							disabled
 							rows="1"
 							autoResize
 							style="resize: none"
+							:suffix="(constr.area ? constr.area + ' м&sup2;' : '')"
 						/>
 						<BaseInputNumber
 							:model-value="constr.heatLoss"

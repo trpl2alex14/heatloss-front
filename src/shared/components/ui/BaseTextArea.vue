@@ -1,8 +1,6 @@
 <template>
 	<IftaLabel class="">
-		<label v-if="label" class="block text-sm font-medium text-gray-700">{{
-			label
-		}}</label>
+		<label v-if="label" class="block text-sm font-medium text-gray-700" v-html="label"></label>
 		<Textarea
 			v-bind="inputAttrs"
 			v-model="modelValueProxy"
@@ -12,6 +10,7 @@
 			:disabled="disabled"
 			:rows="rows"
 		/>
+		<span v-if="suffix" class="text-gray-500 absolute right-3 bottom-2">{{ suffix }}</span>
 	</IftaLabel>
 </template>
 
@@ -39,6 +38,10 @@ const props = defineProps({
 	rows: {
 		type: String,
 		default: 3,
+	},
+	suffix: {
+		type: String,
+		default: "",
 	},
 });
 
